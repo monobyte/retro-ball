@@ -279,8 +279,8 @@ class Laser {
     this.group.position.set(def.x, 0, def.z);
     const along = def.axis === 'x' ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 0, 1);
 
-    this.coreMat = additive(new THREE.Color(1.0, 0.75, 0.88), 1.0);
-    this.glowMat = additive(LASER_RED, 0.55);
+    this.coreMat = additive(new THREE.Color(1.8, 1.2, 1.5), 1.0);
+    this.glowMat = additive(LASER_RED.clone().multiplyScalar(1.8), 0.7);
     const core = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, def.length, 8, 1, true), this.coreMat);
     const glow = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, def.length, 12, 1, true), this.glowMat);
     for (const m of [core, glow]) {
@@ -290,7 +290,7 @@ class Laser {
       this.beamGroup.add(m);
     }
     // Red stripe on the floor so the kill line reads from the isometric view.
-    this.stripeMat = additive(LASER_RED, 0.45);
+    this.stripeMat = additive(LASER_RED.clone().multiplyScalar(1.5), 0.6);
     const stripe = new THREE.Mesh(
       new THREE.PlaneGeometry(def.axis === 'x' ? def.length : 0.5, def.axis === 'x' ? 0.5 : def.length),
       this.stripeMat,
@@ -341,7 +341,7 @@ class Laser {
     const flicker = 0.9 + 0.1 * Math.sin(time * 40.0);
     this.coreMat.opacity = this.on * (0.85 + 0.15 * beat) * flicker;
     this.glowMat.opacity = this.on * (0.45 + 0.25 * beat) * flicker;
-    this.stripeMat.opacity = this.on * (0.32 + 0.25 * beat);
+    this.stripeMat.opacity = this.on * (0.45 + 0.3 * beat);
     for (const m of this.emitterMats) m.opacity = 0.35 + 0.65 * this.on;
   }
 
