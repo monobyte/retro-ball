@@ -118,7 +118,9 @@ class JumpPad {
     const vy = Math.sqrt(2 * g * apex);
     const disc = Math.max(0, vy * vy - 2 * g * dh);
     const t = (vy + Math.sqrt(disc)) / g;
-    this.launchVelocity.set((def.targetX - def.x) / t, vy, (def.targetZ - def.z) / t);
+    // Linear damping bleeds ~10% of velocity over the flight; compensate.
+    const dragComp = 1.0 + 0.06 * t;
+    this.launchVelocity.set(((def.targetX - def.x) / t) * dragComp, vy * (1.0 + 0.03 * t), ((def.targetZ - def.z) / t) * dragComp);
 
     this.group.position.set(def.x, def.y, def.z);
     const base = new THREE.Mesh(new THREE.CylinderGeometry(this.half, this.half, 0.12, 32), additive(CYAN, 0.35));

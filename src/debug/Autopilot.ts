@@ -34,7 +34,7 @@ export const CIRCUIT_ROUTE: Waypoint[] = [
   { x: 21, z: -19, speed: 8, label: 'checkpoint A' },
   { x: 21, z: -22.5, speed: 6 },
   { x: 21, z: -24.6, speed: 5, radius: 0.7, label: 'jump pad 1' },
-  { x: 21, z: -33.5, radius: 2.5, speed: 6, label: 'landing' },
+  { x: 21, z: -33, radius: 2.5, speed: 6, label: 'landing' },
   { x: 27, z: -33.5, speed: 9, label: 'corridor' },
   { x: 31.5, z: -33.5, speed: 6, radius: 0.8, waitForY: 9.7, label: 'elevator 1' },
   { x: 31.5, z: -38, speed: 7, label: 'high platform' },
@@ -55,8 +55,8 @@ export const CIRCUIT_ROUTE: Waypoint[] = [
   { x: -13.5, z: -27, speed: 8, label: 'skyway end' },
   { x: -13.5, z: -25, speed: 5 },
   { x: -13.5, z: -23.2, speed: 4, radius: 0.7, label: 'jump pad 2' },
-  { x: -20, z: -16, radius: 2.5, speed: 6, label: 'island' },
-  { x: -20, z: -13, speed: 6, label: 'drop ramp' },
+  { x: -19.5, z: -16.5, radius: 2.5, speed: 6, label: 'island' },
+  { x: -20, z: -12.5, speed: 6, label: 'drop ramp' },
   { x: -20, z: -6.5, speed: 8 },
   { x: -20, z: -5, speed: 6, label: 'final approach' },
   { x: -16, z: -5, speed: 7 },
@@ -155,6 +155,12 @@ export class Autopilot {
     }
     const p = this.game.ballPosition;
     const v = this.game.ballVelocity;
+    if (Math.abs(v.y) > 3) {
+      // Airborne (jump pad flight or falling): let the ballistic arc play out.
+      this.input.override = { x: 0, y: 0 };
+      this.stuck += dt;
+      return;
+    }
     const dx = wp.x - p.x;
     const dz = wp.z - p.z;
     const dist = Math.hypot(dx, dz);

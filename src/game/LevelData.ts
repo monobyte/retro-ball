@@ -231,10 +231,10 @@ export const LEVEL: LevelDefinition = {
     // ---------------------------------------------------------------- 05
     // JUMP PAD over a gap toward -z, landing on a raised platform.
     { kind: 'slab', x: 21, z: -23, w: 2.4, d: 4, y: 3, tone: 'cyan' },
-    { kind: 'jumppad', x: 21, z: -24.6, y: 3, targetX: 21, targetZ: -33, targetY: 4.6 },
-    { kind: 'slab', x: 21, z: -33.5, w: 6, d: 6, y: 4 },
-    { kind: 'wall', x: 21, z: -36.75, w: 6, d: 0.5, y: 4, h: 1.2 },
-    { kind: 'wall', x: 18.25, z: -33.5, w: 0.5, d: 6, y: 4, h: 1.2 },
+    { kind: 'jumppad', x: 21, z: -24.6, y: 3, targetX: 21, targetZ: -32.5, targetY: 4.6 },
+    { kind: 'slab', x: 21, z: -34, w: 6, d: 7, y: 4 },
+    { kind: 'wall', x: 21, z: -37.25, w: 6, d: 0.5, y: 4, h: 1.2 },
+    { kind: 'wall', x: 18.25, z: -34, w: 0.5, d: 7, y: 4, h: 1.2 },
 
     // ---------------------------------------------------------------- 06
     // Corridor +x to the first light-elevator.
@@ -286,11 +286,11 @@ export const LEVEL: LevelDefinition = {
     // SPIRAL DROP: jump pad off the skyway onto a floating island, then a
     // steep ramp down to the final approach.
     { kind: 'slab', x: -13.5, z: -24, w: 5, d: 3, y: 9, tone: 'cyan' },
-    { kind: 'jumppad', x: -13.5, z: -23.2, y: 9, targetX: -20, targetZ: -16, targetY: 7.6 },
-    { kind: 'slab', x: -20, z: -16, w: 5, d: 5, y: 7 },
-    { kind: 'wall', x: -22.25, z: -16, w: 0.5, d: 5, y: 7, h: 1.2, tone: 'pink' },
-    { kind: 'wall', x: -20, z: -18.25, w: 5, d: 0.5, y: 7, h: 1.2, tone: 'pink' },
-    { kind: 'ramp', x: -20, z: -10, len: 7, w: 3, y0: 7, y1: 3, dir: '+z' },
+    { kind: 'jumppad', x: -13.5, z: -23.2, y: 9, targetX: -19.5, targetZ: -16.5, targetY: 7.6 },
+    { kind: 'slab', x: -20, z: -15.5, w: 7, d: 7, y: 7 },
+    { kind: 'wall', x: -23.25, z: -15.5, w: 0.5, d: 7, y: 7, h: 1.2, tone: 'pink' },
+    { kind: 'wall', x: -20, z: -18.75, w: 7, d: 0.5, y: 7, h: 1.2, tone: 'pink' },
+    { kind: 'ramp', x: -20, z: -8.5, len: 7, w: 3, y0: 7, y1: 3, dir: '+z' },
 
     // ---------------------------------------------------------------- 13
     // FINAL APPROACH: a narrow S-bend of ledges toward +x with one last

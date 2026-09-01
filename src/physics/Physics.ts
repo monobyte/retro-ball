@@ -11,7 +11,7 @@ export const TUNING = {
   density: 1.9,
   /** Ground acceleration (units/s^2), scaled by mass into an impulse. */
   groundAccel: 26,
-  airAccel: 8,
+  airAccel: 4,
   maxSpeed: 22,
   linearDamping: 0.12,
   angularDamping: 0.35,
