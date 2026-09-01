@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEON GRID CIRCUIT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/ui/style.css" />
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+    <div id="hud" class="hud">
+      <div class="hud-row">
+        <div class="hud-label">SYSTEM CLOCK</div>
+        <div class="hud-value" id="hud-clock">00:00.00</div>
+      </div>
+      <div class="hud-divider"></div>
+      <div class="hud-row">
+        <div class="hud-label">VELOCITY</div>
+        <div class="hud-value"><span id="hud-velocity">0.0</span><span class="hud-unit">M/S</span></div>
+      </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+    <div id="flash" class="flash"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
