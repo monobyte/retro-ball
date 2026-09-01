@@ -30,9 +30,12 @@ export const CIRCUIT_ROUTE: Waypoint[] = [
   { x: 0, z: -17.5, speed: 13, label: 'ramp top' },
   { x: 0, z: -22, speed: 10, label: 'plateau' },
   { x: 4.5, z: -22, speed: 8, label: 'ledge start' },
-  { x: 10.8, z: -22, speed: 7, label: 'ledge jog' },
-  { x: 11.5, z: -19.2, speed: 6, label: 'jog corner' },
-  { x: 15, z: -19, speed: 8 },
+  { x: 8.5, z: -22, speed: 7 },
+  { x: 11.3, z: -22, speed: 5, radius: 0.6, label: 'ledge jog' },
+  { x: 11.5, z: -20.5, speed: 5, radius: 0.6 },
+  { x: 11.7, z: -19.1, speed: 5, radius: 0.6, label: 'jog corner' },
+  { x: 14, z: -19, speed: 6, radius: 0.7 },
+  { x: 17, z: -19, speed: 8 },
   { x: 21, z: -19, speed: 8, label: 'checkpoint A' },
   { x: 21, z: -22.5, speed: 6 },
   { x: 21, z: -24.6, speed: 5, radius: 0.7, label: 'jump pad 1' },
@@ -187,7 +190,7 @@ export class Autopilot {
     const dx = wp.x - p.x;
     const dz = wp.z - p.z;
     const dist = Math.hypot(dx, dz);
-    const radius = wp.radius ?? 1.0;
+    const radius = wp.radius ?? 0.9;
 
     let desiredX: number;
     let desiredZ: number;
