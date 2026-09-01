@@ -113,6 +113,22 @@ export class Autopilot {
     };
   }
 
+  /** Advance past the current or any of the next few waypoints we are already on top of (e.g. after a jump). */
+  private skipPassedWaypoints(p: THREE.Vector3): void {
+    for (let k = Math.min(this.index + 3, this.route.length - 1); k >= this.index; k--) {
+      const w = this.route[k]!;
+      if (w.waitForY !== undefined) continue;
+      if (Math.hypot(w.x - p.x, w.z - p.z) < (w.radius ?? 1.0)) {
+        if (k >= this.index) {
+          this.log.push(`wp ${k} ${w.label ?? ''} t=${this.game.elapsed.toFixed(1)}`);
+          this.index = Math.min(k + 1, this.route.length - 1);
+          this.stuck = 0;
+        }
+        return;
+      }
+    }
+  }
+
   update(dt: number): void {
     if (!this.enabled || this.done) {
       this.input.override = null;
@@ -159,6 +175,7 @@ export class Autopilot {
     }
     const p = this.game.ballPosition;
     const v = this.game.ballVelocity;
+    this.skipPassedWaypoints(p);
     if (Math.abs(v.y) > 3) {
       // Airborne (jump pad flight or falling): let the ballistic arc play out.
       this.input.override = { x: 0, y: 0 };
