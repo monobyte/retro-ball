@@ -181,9 +181,13 @@ class Elevator {
   private readonly beamMat: BeamMaterial;
   readonly material: GridMaterial;
 
+  /** Collider height: the elevator is a solid light column, so the shaft is never an open hole. */
+  private readonly columnHeight: number;
+
   constructor(readonly def: ElevatorPiece, physics: Physics) {
-    this.size = new THREE.Vector3(def.w, 1, def.d);
-    const start = new THREE.Vector3(def.x, this.heightAt(0) - 0.5, def.z);
+    this.columnHeight = def.y1 - def.y0 + 1;
+    this.size = new THREE.Vector3(def.w, this.columnHeight, def.d);
+    const start = new THREE.Vector3(def.x, this.heightAt(0) - this.columnHeight / 2, def.z);
     this.body = physics.createKinematicBox(start, this.size);
 
     this.platform = new THREE.Group();
@@ -240,16 +244,17 @@ class Elevator {
 
   /** Called once per physics sub-step. */
   stepKinematic(time: number): void {
-    const y = this.heightAt(time) - 0.5;
+    const y = this.heightAt(time) - this.columnHeight / 2;
     this.body.setNextKinematicTranslation({ x: this.def.x, y, z: this.def.z });
   }
 
   update(time: number, beat: number): void {
     this.beamMat.setTime(time);
     const t = this.body.translation();
-    this.platform.position.set(t.x, t.y, t.z);
+    const topY = t.y + this.columnHeight / 2;
+    this.platform.position.set(t.x, topY - 0.5, t.z);
     const bottom = this.def.y0 - 1.2;
-    const h = Math.max(0.05, t.y - 0.5 - bottom);
+    const h = Math.max(0.05, topY - 1 - bottom);
     this.beam.position.set(t.x, bottom + h / 2, t.z);
     this.beam.scale.set(1, h, 1);
     this.beamMat.setOpacity(0.25 + 0.25 * beat);

@@ -215,14 +215,13 @@ export const LEVEL: LevelDefinition = {
     { kind: 'slab', x: 0, z: -22, w: 9, d: 9, y: 3 },
     { kind: 'wall', x: -4.75, z: -22, w: 0.5, d: 9, y: 3, h: 1.2 },
     { kind: 'wall', x: 0, z: -26.75, w: 9, d: 0.5, y: 3, h: 1.2 },
-    { kind: 'laser', x: 0, z: -20, y: 3, axis: 'x', length: 9, sweep: 1.4, speed: 0.35 },
-    { kind: 'laser', x: 0, z: -24.5, y: 3, axis: 'x', length: 9, sweep: 1.4, speed: 0.35, phase: 0.5 },
+    { kind: 'laser', x: 0, z: -22, y: 3, axis: 'x', length: 9, sweep: 3.2, speed: 0.16 },
 
     // ---------------------------------------------------------------- 04
     // NARROW LEDGE heading +x over the void, with a jog in the middle.
-    { kind: 'slab', x: 8, z: -22, w: 7, d: 1.4, y: 3, tone: 'pink' },
-    { kind: 'slab', x: 11.5, z: -20.5, w: 1.4, d: 4.4, y: 3, tone: 'pink' },
-    { kind: 'slab', x: 15.5, z: -19, w: 7, d: 1.4, y: 3, tone: 'pink' },
+    { kind: 'slab', x: 8, z: -22, w: 7, d: 2.2, y: 3, tone: 'pink' },
+    { kind: 'slab', x: 11.5, z: -20.5, w: 2.2, d: 4.4, y: 3, tone: 'pink' },
+    { kind: 'slab', x: 15.5, z: -19, w: 7, d: 2.2, y: 3, tone: 'pink' },
 
     // Checkpoint pad A.
     { kind: 'slab', x: 21, z: -19, w: 4, d: 4, y: 3, tone: 'cyan' },
@@ -251,25 +250,23 @@ export const LEVEL: LevelDefinition = {
     // ---------------------------------------------------------------- 08
     // VOID FIELD: a wide slab riddled with data voids at speed.
     ...tileField(-5, -42, 14, 8, 4, [
-      [9, 3], [9, 4],
-      [8, 1], [8, 6],
-      [6, 3], [6, 4],
-      [4, 0], [4, 1], [4, 6], [4, 7],
-      [2, 2], [2, 3], [2, 4], [2, 5],
-      [0, 0], [0, 7],
+      [8, 0], [8, 7],
+      [6, 2], [6, 3], [6, 4],
+      [3, 5], [3, 6], [3, 7], [4, 5], [4, 6], [4, 7],
+      [0, 0], [0, 1], [0, 6], [0, 7],
     ]),
     { kind: 'wall', x: -5.25, z: -38, w: 0.5, d: 8, y: 4, h: 1.2 },
 
     // ---------------------------------------------------------------- 09
     // Narrow ledge -z to checkpoint B.
-    { kind: 'slab', x: -2, z: -46, w: 2, d: 8, y: 4, tone: 'pink' },
+    { kind: 'slab', x: -2, z: -46, w: 2.4, d: 8, y: 4, tone: 'pink' },
     { kind: 'slab', x: -2, z: -52, w: 4, d: 4, y: 4, tone: 'cyan' },
     { kind: 'checkpoint', x: -2, z: -52, y: 4, id: 2 },
 
     // ---------------------------------------------------------------- 10
     // Corridor -x with a laser gate, then the second light-elevator.
     { kind: 'slab', x: -8, z: -52, w: 8, d: 3, y: 4 },
-    { kind: 'laser', x: -8, z: -52, y: 4, axis: 'z', length: 3, sweep: 0, speed: 0, gatePeriod: 2.4, gateDuty: 0.5 },
+    { kind: 'laser', x: -8, z: -52, y: 4, axis: 'z', length: 3, sweep: 0, speed: 0, gatePeriod: 2.6, gateDuty: 0.4 },
     { kind: 'elevator', x: -13.5, z: -52, w: 3, d: 3, y0: 4, y1: 9, period: 8, phase: 0.5 },
 
     // ---------------------------------------------------------------- 11
@@ -278,9 +275,9 @@ export const LEVEL: LevelDefinition = {
     { kind: 'slab', x: -13.5, z: -47.5, w: 5, d: 6, y: 9 },
     { kind: 'wall', x: -15.75, z: -47.5, w: 0.5, d: 6, y: 9, h: 1.2, tone: 'pink' },
     { kind: 'slab', x: -13.5, z: -35, w: 3, d: 19, y: 9 },
-    { kind: 'laser', x: -13.5, z: -42, y: 9, axis: 'x', length: 3, sweep: 0, speed: 0, gatePeriod: 2.0, gateDuty: 0.5, phase: 0.0 },
-    { kind: 'laser', x: -13.5, z: -37, y: 9, axis: 'x', length: 3, sweep: 0, speed: 0, gatePeriod: 2.0, gateDuty: 0.5, phase: 0.5 },
-    { kind: 'laser', x: -13.5, z: -32, y: 9, axis: 'x', length: 3, sweep: 0, speed: 0, gatePeriod: 2.0, gateDuty: 0.5, phase: 0.0 },
+    { kind: 'laser', x: -13.5, z: -42, y: 9, axis: 'x', length: 3, sweep: 0, speed: 0, gatePeriod: 2.4, gateDuty: 0.42, phase: 0.0 },
+    { kind: 'laser', x: -13.5, z: -37, y: 9, axis: 'x', length: 3, sweep: 0, speed: 0, gatePeriod: 2.4, gateDuty: 0.42, phase: 0.75 },
+    { kind: 'laser', x: -13.5, z: -32, y: 9, axis: 'x', length: 3, sweep: 0, speed: 0, gatePeriod: 2.4, gateDuty: 0.42, phase: 0.5 },
 
     // ---------------------------------------------------------------- 12
     // SPIRAL DROP: jump pad off the skyway onto a floating island, then a
@@ -296,11 +293,11 @@ export const LEVEL: LevelDefinition = {
     // FINAL APPROACH: a narrow S-bend of ledges toward +x with one last
     // sweeping laser, then the GOAL plateau.
     { kind: 'slab', x: -20, z: -5, w: 3, d: 3, y: 3 },
-    { kind: 'slab', x: -16, z: -5, w: 5, d: 1.4, y: 3, tone: 'pink' },
-    { kind: 'slab', x: -13.8, z: -2.5, w: 1.4, d: 6.4, y: 3, tone: 'pink' },
-    { kind: 'slab', x: -11, z: 0, w: 4.2, d: 1.4, y: 3, tone: 'pink' },
+    { kind: 'slab', x: -16, z: -5, w: 5, d: 2.2, y: 3, tone: 'pink' },
+    { kind: 'slab', x: -13.8, z: -2.5, w: 2.2, d: 6.4, y: 3, tone: 'pink' },
+    { kind: 'slab', x: -11, z: 0, w: 4.2, d: 2.2, y: 3, tone: 'pink' },
     { kind: 'slab', x: -9.5, z: 3.5, w: 7, d: 7, y: 3 },
-    { kind: 'laser', x: -9.5, z: 3.5, y: 3, axis: 'z', length: 7, sweep: 2.4, speed: 0.3 },
+    { kind: 'laser', x: -9.5, z: 3.5, y: 3, axis: 'x', length: 7, sweep: 2.4, speed: 0.18 },
     { kind: 'slab', x: -9.5, z: 9.5, w: 7, d: 5, y: 3, label: 'GOAL' },
     { kind: 'wall', x: -9.5, z: 12.25, w: 7, d: 0.5, y: 3, h: 1.4, tone: 'pink' },
     { kind: 'goal', x: -9.5, z: 10, w: 3, d: 2.4, y: 3 },
