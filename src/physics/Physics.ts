@@ -19,7 +19,7 @@ export const TUNING = {
   ballRestitution: 0.42,
   trackFriction: 1.0,
   trackRestitution: 0.35,
-  wallRestitution: 0.75,
+  wallRestitution: 0.6,
 } as const;
 
 export interface BallHandles {

@@ -289,6 +289,7 @@ export const LEVEL: LevelDefinition = {
     { kind: 'slab', x: -13.5, z: -24, w: 5, d: 3, y: 9, tone: 'cyan' },
     { kind: 'jumppad', x: -13.5, z: -23.2, y: 9, targetX: -19.5, targetZ: -16.5, targetY: 7.6 },
     { kind: 'slab', x: -20, z: -15.5, w: 7, d: 7, y: 7 },
+    { kind: 'checkpoint', x: -20, z: -15.5, y: 7, id: 3 },
     { kind: 'wall', x: -23.25, z: -15.5, w: 0.5, d: 7, y: 7, h: 1.2, tone: 'pink' },
     { kind: 'wall', x: -20, z: -18.75, w: 7, d: 0.5, y: 7, h: 1.2, tone: 'pink' },
     { kind: 'wall', x: -22.5, z: -12.25, w: 2, d: 0.5, y: 7, h: 1.2, tone: 'pink' },
@@ -298,7 +299,9 @@ export const LEVEL: LevelDefinition = {
     // ---------------------------------------------------------------- 13
     // FINAL APPROACH: a narrow S-bend of ledges toward +x with one last
     // sweeping laser, then the GOAL plateau.
-    { kind: 'slab', x: -20, z: -5, w: 3, d: 3, y: 3 },
+    { kind: 'slab', x: -20, z: -4.5, w: 4, d: 4, y: 3 },
+    { kind: 'wall', x: -20, z: -2.25, w: 4, d: 0.5, y: 3, h: 1.2, tone: 'pink' },
+    { kind: 'wall', x: -22.25, z: -4.5, w: 0.5, d: 4, y: 3, h: 1.2, tone: 'pink' },
     { kind: 'slab', x: -16, z: -5, w: 5, d: 2.2, y: 3, tone: 'pink' },
     { kind: 'slab', x: -13.8, z: -2.5, w: 2.2, d: 6.4, y: 3, tone: 'pink' },
     { kind: 'slab', x: -11, z: 0, w: 4.2, d: 2.2, y: 3, tone: 'pink' },
