@@ -22,8 +22,10 @@ export interface Waypoint {
 /** Reference route through THE NEON GRID CIRCUIT, one entry per turn. */
 export const CIRCUIT_ROUTE: Waypoint[] = [
   { x: 0, z: -3, label: 'leave start' },
-  { x: 0.9, z: -5.5, speed: 8, label: 'chicane 1' },
-  { x: -0.9, z: -8.5, speed: 8, label: 'chicane 2' },
+  { x: 1, z: -4.6, speed: 7, radius: 0.6 },
+  { x: 1, z: -6.4, speed: 7, radius: 0.6, label: 'chicane 1' },
+  { x: -1, z: -7.6, speed: 7, radius: 0.6 },
+  { x: -1, z: -9.4, speed: 7, radius: 0.6, label: 'chicane 2' },
   { x: 0, z: -11, label: 'ramp foot' },
   { x: 0, z: -17.5, speed: 13, label: 'ramp top' },
   { x: 0, z: -22, speed: 10, label: 'plateau' },

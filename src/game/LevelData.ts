@@ -202,9 +202,9 @@ export const LEVEL: LevelDefinition = {
     // ---------------------------------------------------------------- 01
     // BOOT SECTOR: start pad with a bumper chicane.
     { kind: 'slab', x: 0, z: 0, w: 7, d: 7, y: 0, label: 'START' },
-    { kind: 'slab', x: 0, z: -7.5, w: 3, d: 8, y: 0 },
-    { kind: 'wall', x: -0.75, z: -5.5, w: 1.5, d: 0.5, y: 0, h: 1, tone: 'pink' },
-    { kind: 'wall', x: 0.75, z: -8.5, w: 1.5, d: 0.5, y: 0, h: 1, tone: 'pink' },
+    { kind: 'slab', x: 0, z: -7.5, w: 4, d: 8, y: 0 },
+    { kind: 'wall', x: -1, z: -5.5, w: 2, d: 0.5, y: 0, h: 1, tone: 'pink' },
+    { kind: 'wall', x: 1, z: -8.5, w: 2, d: 0.5, y: 0, h: 1, tone: 'pink' },
 
     // ---------------------------------------------------------------- 02
     // Ramp up onto the laser plateau.
