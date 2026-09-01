@@ -121,12 +121,20 @@ through roughly 50 × 65 tiles, several screens in each direction:
 4. The **void field**: a wide slab shot through with data voids, at speed.
 5. A narrow ledge to **checkpoint B**, a timed **laser gate**, and
    **light-elevator 2**.
-6. The elevated **skyway** through three timed laser gates, a second jump pad
-   onto a floating island, and a drop ramp.
+6. The elevated **skyway** through three timed laser gates (phased as a wave
+   you can ride at cruising speed), a second jump pad onto a floating island
+   with **checkpoint C**, and a walled drop ramp.
 7. A final S-bend of ledges, one last sweeping laser, and the **GOAL** portal.
 
+Difficulty notes: ledges are at least 2.2 tiles wide (marble diameter is 1),
+every sweeping laser crosses the path so it can be timed rather than dodged,
+jump pads solve their own trajectory, elevators are solid light columns (the
+shaft is never an open hole), and edges that a fast landing would overshoot
+carry bumper rails. The reference route is verified end to end by the dev
+autopilot (see below).
+
 Falling off, touching a live beam, or dropping into a void triggers a
-glitch-burst reset at the last checkpoint. The system clock keeps running, so
+glitch-burst reset at the last of three checkpoints. The system clock keeps running, so
 resets cost time.
 
 ## Audio

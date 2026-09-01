@@ -268,6 +268,7 @@ class Laser {
   private readonly beamGroup = new THREE.Group();
   private readonly coreMat: THREE.MeshBasicMaterial;
   private readonly glowMat: THREE.MeshBasicMaterial;
+  private readonly stripeMat: THREE.MeshBasicMaterial;
   private readonly emitterMats: THREE.MeshBasicMaterial[] = [];
   private on = 1;
   private readonly a = new THREE.Vector3();
@@ -278,16 +279,25 @@ class Laser {
     this.group.position.set(def.x, 0, def.z);
     const along = def.axis === 'x' ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 0, 1);
 
-    this.coreMat = additive(new THREE.Color(1.0, 0.7, 0.85), 0.95);
-    this.glowMat = additive(LASER_RED, 0.32);
-    const core = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, def.length, 8, 1, true), this.coreMat);
-    const glow = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, def.length, 12, 1, true), this.glowMat);
+    this.coreMat = additive(new THREE.Color(1.0, 0.75, 0.88), 1.0);
+    this.glowMat = additive(LASER_RED, 0.55);
+    const core = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, def.length, 8, 1, true), this.coreMat);
+    const glow = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, def.length, 12, 1, true), this.glowMat);
     for (const m of [core, glow]) {
       m.rotation.z = def.axis === 'x' ? Math.PI / 2 : 0;
       m.rotation.x = def.axis === 'z' ? Math.PI / 2 : 0;
       m.position.y = beamY;
       this.beamGroup.add(m);
     }
+    // Red stripe on the floor so the kill line reads from the isometric view.
+    this.stripeMat = additive(LASER_RED, 0.45);
+    const stripe = new THREE.Mesh(
+      new THREE.PlaneGeometry(def.axis === 'x' ? def.length : 0.5, def.axis === 'x' ? 0.5 : def.length),
+      this.stripeMat,
+    );
+    stripe.rotation.x = -Math.PI / 2;
+    stripe.position.y = def.y + 0.03;
+    this.beamGroup.add(stripe);
     // Emitter posts at both ends.
     for (const s of [-1, 1]) {
       const post = new THREE.Group();
@@ -328,8 +338,10 @@ class Laser {
     else this.beamGroup.position.x = off;
     const target = this.isOn(time) ? 1 : 0;
     this.on += (target - this.on) * Math.min(1, dt * 18);
-    this.coreMat.opacity = this.on * (0.8 + 0.2 * beat);
-    this.glowMat.opacity = this.on * (0.25 + 0.2 * beat);
+    const flicker = 0.9 + 0.1 * Math.sin(time * 40.0);
+    this.coreMat.opacity = this.on * (0.85 + 0.15 * beat) * flicker;
+    this.glowMat.opacity = this.on * (0.45 + 0.25 * beat) * flicker;
+    this.stripeMat.opacity = this.on * (0.32 + 0.25 * beat);
     for (const m of this.emitterMats) m.opacity = 0.35 + 0.65 * this.on;
   }
 

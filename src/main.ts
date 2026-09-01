@@ -39,7 +39,7 @@ async function main(): Promise<void> {
 
   let last = performance.now();
   const frame = (now: number): void => {
-    const wallDt = Math.min(0.05, (now - last) / 1000);
+    const wallDt = Math.max(0, Math.min(0.05, (now - last) / 1000));
     last = now;
     const steps = Math.max(1, debug.stepsPerFrame | 0);
     for (let i = 0; i < steps; i++) {
