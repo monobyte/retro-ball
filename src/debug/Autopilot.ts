@@ -126,6 +126,10 @@ export class Autopilot {
       return;
     }
     if (state !== 'play') {
+      if (state === 'reset' && this.lastState === 'play') {
+        const d = this.game.lastDeathInfo;
+        if (d) this.log.push(`DEATH ${d.cause} at ${d.pos.x.toFixed(1)},${d.pos.y.toFixed(1)},${d.pos.z.toFixed(1)} (wp ${this.index} ${this.route[this.index]?.label ?? ''})`);
+      }
       this.input.override = null;
       this.lastState = state;
       return;

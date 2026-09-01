@@ -237,7 +237,9 @@ export const LEVEL: LevelDefinition = {
 
     // ---------------------------------------------------------------- 06
     // Corridor +x to the first light-elevator.
-    { kind: 'slab', x: 27, z: -33.5, w: 6, d: 3, y: 4 },
+    { kind: 'slab', x: 27, z: -34, w: 6, d: 7, y: 4 },
+    { kind: 'wall', x: 30.25, z: -36.25, w: 0.5, d: 2.5, y: 4, h: 1.2 },
+    { kind: 'wall', x: 30.25, z: -31.25, w: 0.5, d: 1.5, y: 4, h: 1.2 },
     { kind: 'elevator', x: 31.5, z: -33.5, w: 3, d: 3, y0: 4, y1: 10, period: 9 },
 
     // ---------------------------------------------------------------- 07
@@ -245,6 +247,8 @@ export const LEVEL: LevelDefinition = {
     { kind: 'slab', x: 31.5, z: -38, w: 5, d: 6, y: 10 },
     { kind: 'wall', x: 33.75, z: -38, w: 0.5, d: 6, y: 10, h: 1.2, tone: 'pink' },
     { kind: 'wall', x: 31.5, z: -40.75, w: 5, d: 0.5, y: 10, h: 1.2, tone: 'pink' },
+    { kind: 'wall', x: 29.25, z: -36, w: 0.5, d: 2, y: 10, h: 1.2, tone: 'pink' },
+    { kind: 'wall', x: 29.25, z: -40.5, w: 0.5, d: 1, y: 10, h: 1.2, tone: 'pink' },
     { kind: 'ramp', x: 19, z: -38.5, len: 20, w: 3, y0: 10, y1: 4, dir: '-x' },
 
     // ---------------------------------------------------------------- 08
@@ -287,6 +291,8 @@ export const LEVEL: LevelDefinition = {
     { kind: 'slab', x: -20, z: -15.5, w: 7, d: 7, y: 7 },
     { kind: 'wall', x: -23.25, z: -15.5, w: 0.5, d: 7, y: 7, h: 1.2, tone: 'pink' },
     { kind: 'wall', x: -20, z: -18.75, w: 7, d: 0.5, y: 7, h: 1.2, tone: 'pink' },
+    { kind: 'wall', x: -22.5, z: -12.25, w: 2, d: 0.5, y: 7, h: 1.2, tone: 'pink' },
+    { kind: 'wall', x: -17.5, z: -12.25, w: 2, d: 0.5, y: 7, h: 1.2, tone: 'pink' },
     { kind: 'ramp', x: -20, z: -8.5, len: 7, w: 3, y0: 7, y1: 3, dir: '+z' },
 
     // ---------------------------------------------------------------- 13

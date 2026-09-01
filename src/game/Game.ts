@@ -71,6 +71,8 @@ export class Game {
   audio: GameAudio | null = null;
   /** Dev flag: ignore laser and void deaths (falls still count). */
   godMode = false;
+  /** Dev diagnostics: where and why the marble last died. */
+  lastDeathInfo: { cause: DeathCause; pos: THREE.Vector3 } | null = null;
 
   /** Seconds since the game object was created. */
   get elapsed(): number {
@@ -369,6 +371,7 @@ export class Game {
     this.resets += 1;
     this.setState('reset');
     this.resetFocus.copy(this.ballPos);
+    this.lastDeathInfo = { cause, pos: this.ballPos.clone() };
     this.burst.emit(this.ballPos, [MARBLE_COLOR, new THREE.Color(0.3, 1, 1), new THREE.Color(1, 0.15, 0.35)], 11, 0.6);
     this.marble.scale = 0;
     this.fx.glitch = manual ? 0.6 : 1.0;
