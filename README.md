@@ -1,5 +1,7 @@
 # NEON GRID CIRCUIT
 
+[**Play NEON GRID CIRCUIT in your browser**](https://monobyte.github.io/retro-ball/)
+
 A single-level, isometric marble obstacle course in the spirit of *Marble
 Madness*, rebuilt as a Synthwave / Outrun fever dream: glowing grid slabs
 floating in a purple nebula, sweeping laser grids, data voids, light-elevators,
