@@ -23,8 +23,9 @@ npm run build      # type-checks, then bundles to dist/
 | Arrows / WASD      | Roll (relative to the isometric camera) |
 | R                  | Reboot at the last checkpoint / re-run  |
 | M                  | Mute                                    |
+| F (or ⛶)          | Enter / exit browser fullscreen         |
 | Esc (or ⚙)         | Open / close the quality settings panel |
-| Any key or click   | Boot from the intro screen              |
+| Space              | Boot from the intro screen              |
 
 Screen-up pushes the marble "into" the screen (world `-x, -z`), so following a
 corridor that runs up-right means holding **Up + Right**, exactly as in the

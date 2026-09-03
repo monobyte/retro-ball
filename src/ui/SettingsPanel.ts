@@ -53,6 +53,7 @@ const BOOL_ROWS: BoolRow[] = [
 export class SettingsPanel {
   private readonly root: HTMLElement;
   private readonly panel: HTMLElement;
+  private readonly fullscreenButton: HTMLButtonElement;
   private readonly buttons = new Map<string, HTMLButtonElement[]>();
   private settings: QualitySettings;
   onChange: ((s: QualitySettings) => void) | null = null;
@@ -60,6 +61,12 @@ export class SettingsPanel {
   constructor(initial: QualitySettings) {
     this.settings = { ...initial };
     this.root = document.getElementById('settings')!;
+
+    this.fullscreenButton = document.createElement('button');
+    this.fullscreenButton.className = 'fullscreen-toggle';
+    this.fullscreenButton.type = 'button';
+    this.fullscreenButton.addEventListener('click', () => void this.toggleFullscreen());
+    this.root.appendChild(this.fullscreenButton);
 
     const toggle = document.createElement('button');
     toggle.className = 'settings-toggle';
@@ -102,13 +109,17 @@ export class SettingsPanel {
     });
     this.panel.appendChild(reset);
 
-    // Clicks inside the panel must not count as the "press any key" boot gesture.
-    this.root.addEventListener('pointerdown', (e) => e.stopPropagation());
     window.addEventListener('keydown', (e) => {
-      if (e.code === 'Escape' || e.key === 'Escape') this.toggle();
+      if (e.code === 'KeyF' && !e.repeat) {
+        e.preventDefault();
+        void this.toggleFullscreen();
+      }
+      if ((e.code === 'Escape' || e.key === 'Escape') && !document.fullscreenElement) this.toggle();
     });
+    document.addEventListener('fullscreenchange', () => this.refreshFullscreen());
 
     this.refresh();
+    this.refreshFullscreen();
   }
 
   get isOpen(): boolean {
@@ -117,6 +128,27 @@ export class SettingsPanel {
 
   toggle(): void {
     this.panel.hidden = !this.panel.hidden;
+  }
+
+  private async toggleFullscreen(): Promise<void> {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else if (document.fullscreenEnabled) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (error) {
+      console.warn('Unable to change fullscreen mode.', error);
+    }
+  }
+
+  private refreshFullscreen(): void {
+    const active = document.fullscreenElement !== null;
+    this.fullscreenButton.textContent = active ? '✕' : '⛶';
+    this.fullscreenButton.title = active ? 'Exit fullscreen (Esc)' : 'Enter fullscreen (F)';
+    this.fullscreenButton.setAttribute('aria-label', active ? 'Exit fullscreen' : 'Enter fullscreen');
+    this.fullscreenButton.setAttribute('aria-pressed', String(active));
+    this.fullscreenButton.disabled = !document.fullscreenEnabled;
   }
 
   private addRow(

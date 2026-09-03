@@ -4,8 +4,8 @@ const THREE_clamp = (v: number): number => Math.max(-1, Math.min(1, v));
 export class Input {
   private readonly down = new Set<string>();
   private readonly pressedThisFrame = new Set<string>();
-  /** Fired on the first user gesture (needed to unlock audio). */
-  onAnyKey: (() => void) | null = null;
+  /** Fired when Space is pressed to start the game and unlock audio. */
+  onStartRequested: (() => void) | null = null;
   /** When set (dev autopilot), replaces the keyboard axis. */
   override: { x: number; y: number } | null = null;
 
@@ -14,14 +14,11 @@ export class Input {
       if (e.repeat) return;
       this.down.add(e.code);
       this.pressedThisFrame.add(e.code);
-      if (this.onAnyKey && e.code !== 'Escape' && e.key !== 'Escape') this.onAnyKey();
+      if (e.code === 'Space') this.onStartRequested?.();
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
     });
     target.addEventListener('keyup', (e) => this.down.delete(e.code));
     target.addEventListener('blur', () => this.down.clear());
-    target.addEventListener('pointerdown', () => {
-      if (this.onAnyKey) this.onAnyKey();
-    });
   }
 
   isDown(code: string): boolean {

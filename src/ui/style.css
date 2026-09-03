@@ -230,10 +230,9 @@ canvas#game {
 }
 
 /* -------------------------------------------------------- settings */
-.settings-toggle {
+.settings-toggle, .fullscreen-toggle {
   position: fixed;
   top: 22px;
-  right: 22px;
   width: 40px;
   height: 40px;
   padding: 0;
@@ -248,7 +247,10 @@ canvas#game {
   opacity: 0.7;
   transition: opacity 0.2s ease;
 }
-.settings-toggle:hover { opacity: 1; }
+.settings-toggle { right: 22px; }
+.fullscreen-toggle { right: 72px; }
+.settings-toggle:hover, .fullscreen-toggle:hover { opacity: 1; }
+.fullscreen-toggle:disabled { cursor: not-allowed; opacity: 0.25; }
 .settings-panel {
   position: fixed;
   top: 72px;

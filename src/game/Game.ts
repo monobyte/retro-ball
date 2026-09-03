@@ -135,7 +135,7 @@ export class Game {
     this.marble.resetTrail(this.spawn);
     this.hud.showIntro(def.name);
     this.hud.setHudVisible(false);
-    this.input.onAnyKey = () => this.boot();
+    this.input.onStartRequested = () => this.boot();
   }
 
   private onResize(): void {
@@ -148,7 +148,7 @@ export class Game {
   /** Leaves the intro: unlocks audio and starts the run. */
   private boot(): void {
     if (this.state !== 'intro') return;
-    this.input.onAnyKey = null;
+    this.input.onStartRequested = null;
     this.audio?.start();
     this.hud.clearOverlay();
     this.hud.setHudVisible(true);

@@ -57,7 +57,7 @@ export class Hud {
           <span><b>M</b> MUTE</span>
           <span><b>ESC</b> SETTINGS</span>
         </div>
-        <div class="prompt">PRESS ANY KEY TO BOOT</div>
+        <div class="prompt">PRESS SPACE TO BOOT</div>
       </div>`;
   }
 
