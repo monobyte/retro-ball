@@ -28,6 +28,14 @@ const PINK = new THREE.Color(1.0, 0.18, 0.72);
 const CYAN = new THREE.Color(0.25, 1.0, 1.0);
 const VIOLET = new THREE.Color(0.6, 0.3, 1.0);
 const LASER_RED = new THREE.Color(1.0, 0.12, 0.35);
+/** Seconds a laser flickers as a warning before it goes live. */
+const LASER_WARN = 0.5;
+/** Beam colours: hot red/white when live, cool blue when safe. */
+const LASER_CORE_LIVE = new THREE.Color(1.8, 1.2, 1.5);
+const LASER_CORE_SAFE = new THREE.Color(1.0, 2.2, 2.6);
+const LASER_GLOW_LIVE = LASER_RED.clone().multiplyScalar(1.8);
+const LASER_STRIPE_LIVE = LASER_RED.clone().multiplyScalar(1.5);
+const LASER_GLOW_SAFE = new THREE.Color(0.3, 1.2, 2.2);
 
 function additive(color: THREE.Color, opacity: number): THREE.MeshBasicMaterial {
   const m = new THREE.MeshBasicMaterial({
@@ -108,9 +116,12 @@ class JumpPad {
   private readonly ringMats: THREE.MeshBasicMaterial[] = [];
   readonly launchVelocity = new THREE.Vector3();
   private cooldownUntil = 0;
-  private readonly half = 0.9;
+  /** Visual radius of the pad. */
+  private readonly half = 1.0;
+  /** Half-width of the launch trigger square: wider than the visual so a rail-guided approach cannot miss it. */
+  private readonly triggerHalf = 1.5;
 
-  constructor(readonly def: JumpPadPiece, gravity: number) {
+  constructor(readonly def: JumpPadPiece, gravity: number, damping: number) {
     // Deterministic ballistic solve so every launch lands on the target.
     const g = Math.abs(gravity);
     const dh = def.targetY - (def.y + 0.5);
@@ -118,9 +129,13 @@ class JumpPad {
     const vy = Math.sqrt(2 * g * apex);
     const disc = Math.max(0, vy * vy - 2 * g * dh);
     const t = (vy + Math.sqrt(disc)) / g;
-    // Linear damping bleeds ~10% of velocity over the flight; compensate.
-    const dragComp = 1.0 + 0.06 * t;
-    this.launchVelocity.set(((def.targetX - def.x) / t) * dragComp, vy * (1.0 + 0.03 * t), ((def.targetZ - def.z) / t) * dragComp);
+    // Linear damping bleeds velocity over the flight; compensate.
+    // Horizontal: exact for v' = -c v, so that the distance covered in t equals the target distance.
+    // Vertical: gravity dominates, a small empirical lift keeps the apex height.
+    const ct = damping * t;
+    const dragComp = ct > 1e-4 ? ct / (1 - Math.exp(-ct)) : 1;
+    const liftComp = 1.0 + 0.25 * damping * t;
+    this.launchVelocity.set(((def.targetX - def.x) / t) * dragComp, vy * liftComp, ((def.targetZ - def.z) / t) * dragComp);
 
     this.group.position.set(def.x, def.y, def.z);
     const base = new THREE.Mesh(new THREE.CylinderGeometry(this.half, this.half, 0.12, 32), additive(CYAN, 0.35));
@@ -162,7 +177,7 @@ class JumpPad {
   test(p: THREE.Vector3, time: number): boolean {
     if (time < this.cooldownUntil) return false;
     const d = this.def;
-    if (Math.abs(p.x - d.x) < this.half && Math.abs(p.z - d.z) < this.half && p.y > d.y && p.y < d.y + 1.4) {
+    if (Math.abs(p.x - d.x) < this.triggerHalf && Math.abs(p.z - d.z) < this.triggerHalf && p.y > d.y && p.y < d.y + 1.4) {
       this.cooldownUntil = time + 0.6;
       return true;
     }
@@ -319,37 +334,72 @@ class Laser {
     this.group.add(this.beamGroup);
   }
 
-  private sweepOffset(time: number): number {
+  /**
+   * Beam state at `time`: sweep offset, whether the beam is live (deadly), and
+   * a 0..1 pre-warn ramp over the last LASER_WARN seconds before it goes live.
+   */
+  private stateAt(time: number): { offset: number; live: boolean; warn: number } {
     const d = this.def;
-    if (d.sweep === 0) return 0;
-    return d.sweep * Math.sin(2 * Math.PI * (time * d.speed + (d.phase ?? 0)));
-  }
-
-  private isOn(time: number): boolean {
-    const d = this.def;
-    if (!d.gatePeriod) return true;
-    const u = ((time / d.gatePeriod + (d.phase ?? 0)) % 1 + 1) % 1;
-    return u < (d.gateDuty ?? 0.5);
+    let offset = 0;
+    let live = true;
+    let warn = 0;
+    if (d.sweep !== 0 && d.dwell) {
+      // Sweep end to end, then park (switched off) at each end for `dwell` seconds.
+      const half = 0.5 / d.speed;
+      const cycle = 2 * half + 2 * d.dwell;
+      const t = (((time + (d.phase ?? 0) * cycle) % cycle) + cycle) % cycle;
+      const ease = (u: number) => -Math.cos(Math.PI * u); // -1 .. 1
+      if (t < half) {
+        offset = d.sweep * ease(t / half);
+      } else if (t < half + d.dwell) {
+        offset = d.sweep;
+        live = false;
+        warn = Math.max(0, 1 - (half + d.dwell - t) / LASER_WARN);
+      } else if (t < 2 * half + d.dwell) {
+        offset = -d.sweep * ease((t - half - d.dwell) / half);
+      } else {
+        offset = -d.sweep;
+        live = false;
+        warn = Math.max(0, 1 - (cycle - t) / LASER_WARN);
+      }
+    } else if (d.sweep !== 0) {
+      offset = d.sweep * Math.sin(2 * Math.PI * (time * d.speed + (d.phase ?? 0)));
+    }
+    if (d.gatePeriod) {
+      const duty = d.gateDuty ?? 0.5;
+      const u = (((time / d.gatePeriod + (d.phase ?? 0)) % 1) + 1) % 1;
+      live = live && u < duty;
+      const warnFrac = LASER_WARN / d.gatePeriod;
+      if (!live && u > 1 - warnFrac) warn = Math.max(warn, 1 - (1 - u) / warnFrac);
+    }
+    return { offset, live, warn };
   }
 
   update(time: number, beat: number, dt: number): void {
-    const off = this.sweepOffset(time);
-    if (this.def.axis === 'x') this.beamGroup.position.z = off;
-    else this.beamGroup.position.x = off;
-    const target = this.isOn(time) ? 1 : 0;
+    const s = this.stateAt(time);
+    if (this.def.axis === 'x') this.beamGroup.position.z = s.offset;
+    else this.beamGroup.position.x = s.offset;
+    // The beam is always visible. Live: hot red. Safe: cool blue, dimmer.
+    // Pre-warn: flickers from blue toward red as the warning runs out.
+    const target = s.live ? 1 : s.warn > 0 ? s.warn * (0.5 + 0.5 * Math.sin(time * 60)) : 0;
     this.on += (target - this.on) * Math.min(1, dt * 18);
+    const on = this.on;
     const flicker = 0.9 + 0.1 * Math.sin(time * 40.0);
-    this.coreMat.opacity = this.on * (0.85 + 0.15 * beat) * flicker;
-    this.glowMat.opacity = this.on * (0.45 + 0.25 * beat) * flicker;
-    this.stripeMat.opacity = this.on * (0.45 + 0.3 * beat);
-    for (const m of this.emitterMats) m.opacity = 0.35 + 0.65 * this.on;
+    this.coreMat.color.copy(LASER_CORE_SAFE).lerp(LASER_CORE_LIVE, on);
+    this.glowMat.color.copy(LASER_GLOW_SAFE).lerp(LASER_GLOW_LIVE, on);
+    this.stripeMat.color.copy(LASER_GLOW_SAFE).lerp(LASER_STRIPE_LIVE, on);
+    this.coreMat.opacity = THREE.MathUtils.lerp(0.85, 0.85 + 0.15 * beat, on) * flicker;
+    this.glowMat.opacity = THREE.MathUtils.lerp(0.5, 0.45 + 0.25 * beat, on) * flicker;
+    this.stripeMat.opacity = THREE.MathUtils.lerp(0.45, 0.45 + 0.3 * beat, on);
+    for (const m of this.emitterMats) m.opacity = 0.35 + 0.65 * Math.max(on, s.warn);
   }
 
   /** Distance test of the marble against the live beam segment. */
   test(p: THREE.Vector3, radius: number, time: number): boolean {
-    if (!this.isOn(time)) return false;
+    const s = this.stateAt(time);
+    if (!s.live) return false;
     const d = this.def;
-    const off = this.sweepOffset(time);
+    const off = s.offset;
     const y = d.y + 0.5;
     if (d.axis === 'x') {
       this.a.set(d.x - d.length / 2, y, d.z + off);
@@ -590,11 +640,11 @@ export class LevelDynamics {
   readonly checkpoints: Checkpoint[] = [];
   goal: Goal | null = null;
 
-  constructor(def: LevelDefinition, physics: Physics, labels: LabelSpec[], gravity: number) {
+  constructor(def: LevelDefinition, physics: Physics, labels: LabelSpec[], gravity: number, damping: number) {
     for (const p of def.pieces) {
       switch (p.kind) {
         case 'jumppad': {
-          const j = new JumpPad(p, gravity);
+          const j = new JumpPad(p, gravity, damping);
           this.jumpPads.push(j);
           this.group.add(j.group);
           break;

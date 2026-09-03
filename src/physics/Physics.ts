@@ -10,10 +10,10 @@ export const TUNING = {
   /** Density gives the ball a mass of ~1 unit (V = 0.52). */
   density: 1.9,
   /** Ground acceleration (units/s^2), scaled by mass into an impulse. */
-  groundAccel: 26,
-  airAccel: 4,
-  maxSpeed: 22,
-  linearDamping: 0.12,
+  groundAccel: 20,
+  airAccel: 6,
+  maxSpeed: 16,
+  linearDamping: 0.25,
   angularDamping: 0.35,
   ballFriction: 1.1,
   ballRestitution: 0.42,

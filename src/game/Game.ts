@@ -106,7 +106,7 @@ export class Game {
     renderer.scene.add(this.level.group);
     for (const box of this.level.boxes) physics.addStaticBox(box);
 
-    this.dynamics = new LevelDynamics(def, physics, this.level.labels, TUNING.gravity);
+    this.dynamics = new LevelDynamics(def, physics, this.level.labels, TUNING.gravity, TUNING.linearDamping);
     renderer.scene.add(this.dynamics.group);
 
     const env = buildNeonEnvironment(renderer.renderer);

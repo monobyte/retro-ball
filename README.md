@@ -95,14 +95,14 @@ All numbers live in `TUNING` (`src/physics/Physics.ts`):
   read as *weighty* and keeps jump arcs short and readable in an isometric view.
 * Input applies an **impulse at the centre of mass plus a matching torque**, so
   the sphere both slides and spins up; friction converts one into the other and
-  the result is ~27 m/s² of effective acceleration, i.e. about a second from
-  rest to top speed. Air control is a quarter of that.
+  the result is ~20 m/s² of effective acceleration, i.e. about a second from
+  rest to top speed. Air control is about a third of that.
 * A **soft speed cap** only cancels the component of input that would push the
-  marble beyond `maxSpeed` (22 u/s). Braking and steering always stay
+  marble beyond `maxSpeed` (16 u/s). Braking and steering always stay
   available, and downhill ramps can still exceed the cap, which is where the
   "the marble feels fast" moments come from.
-* Low linear damping (0.12) and moderate angular damping (0.35) produce the
-  long, heavy coast-down of glass on glass.
+* Moderate linear damping (0.25) and angular damping (0.35) produce a heavy
+  coast-down that still settles when you release the keys.
 * Jump pads solve the ballistic launch analytically for their target so every
   launch lands on the same spot, no matter the entry speed.
 
@@ -113,29 +113,35 @@ walls, jump pads, elevators, lasers, voids, checkpoints, goal). The route winds
 through roughly 50 × 65 tiles, several screens in each direction:
 
 1. Boot sector with a bumper chicane, then a ramp onto the **laser plateau**
-   (two sweeping beams).
-2. A narrow pink **ledge** with a jog, then **checkpoint A** and a **jump pad**
+   (one sweeping beam that parks, safe and blue, at each end of its sweep).
+2. A railed pink **ledge** with a jog, then **checkpoint A** and a **jump pad**
    over a void.
-3. A corridor to **light-elevator 1**, a high platform and a 20-tile
-   **downhill speed ramp**.
-4. The **void field**: a wide slab shot through with data voids, at speed.
-5. A narrow ledge to **checkpoint B**, a timed **laser gate**, and
+3. A corridor to **light-elevator 1**, a high platform with **checkpoint B**
+   and a 20-tile **downhill speed ramp**.
+4. The **void field**: a wide slab with data voids on its outer lanes. The
+   centre lanes are clear, so the ramp exit is a straight brake run.
+5. A railed ledge to **checkpoint C**, a timed **laser gate**, and
    **light-elevator 2**.
-6. The elevated **skyway** through three timed laser gates (phased as a wave
-   you can ride at cruising speed), a second jump pad onto a floating island
-   with **checkpoint C**, and a walled drop ramp.
-7. A final S-bend of ledges, one last sweeping laser, and the **GOAL** portal.
+6. The elevated **skyway** (**checkpoint D** at its start) through three timed
+   laser gates that open in travel order, a second jump pad onto a floating
+   island with **checkpoint E**, and a walled drop ramp.
+7. A final railed S-bend of ledges, one last sweeping laser, and the **GOAL**
+   portal.
 
-Difficulty notes: ledges are at least 2.2 tiles wide (marble diameter is 1),
-every sweeping laser crosses the path so it can be timed rather than dodged,
-jump pads solve their own trajectory, elevators are solid light columns (the
-shaft is never an open hole), and edges that a fast landing would overshoot
-carry bumper rails. The reference route is verified end to end by the dev
-autopilot (see below).
+Difficulty notes: ledges are at least 3 tiles wide (marble diameter is 1) and
+carry low bumper rails on every open edge, so a drift is a bounce rather than
+a fall. Lasers are always visible: a live beam burns red, a safe beam turns
+cool blue, and a beam flickers from blue toward red for 0.5 s before it goes
+live. Sweeping lasers park, safe, for 2.5 s at each end of their sweep
+(`dwell`), which is the crossing window. Gated lasers are safe for 2.8 s of
+every 4 s. Jump pads solve
+their own trajectory and their trigger is wider than the pad graphic.
+Elevators are solid light columns (the shaft is never an open hole). The
+reference route is verified end to end by the dev autopilot (see below).
 
 Falling off, touching a live beam, or dropping into a void triggers a
-glitch-burst reset at the last of three checkpoints. The system clock keeps running, so
-resets cost time.
+glitch-burst reset at the last of five checkpoints. The system clock keeps
+running, so resets cost time.
 
 ## Audio
 
