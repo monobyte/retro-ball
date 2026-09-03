@@ -1,5 +1,5 @@
 /**
- * Level data for "The Neon Grid Circuit".
+ * Level data for "The Retro Ball".
  *
  * Everything here is declarative: pieces are described in world units where
  * 1 unit = 1 grid tile. Level.ts turns these into physics colliders and meshes.

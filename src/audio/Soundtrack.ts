@@ -1,7 +1,7 @@
 /**
  * Procedural synthwave soundtrack rendered live with the Web Audio API.
  *
- * "Neon Grid Circuit (Main Theme)" is an original composition written for
+ * "Retro Ball (Main Theme)" is an original composition written for
  * this game and released into the public domain (CC0). Because every note is
  * scheduled by this sequencer we know the exact time of every kick drum, so
  * the visuals pulse in perfect sync instead of relying on FFT beat detection.

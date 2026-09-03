@@ -152,7 +152,7 @@ running, so resets cost time.
 
 ## Audio
 
-The soundtrack, *Neon Grid Circuit (Main Theme)*, is an original composition
+The soundtrack, *Retro Ball (Main Theme)*, is an original composition
 written for this project and dedicated to the public domain (CC0). Rather than
 ship an MP3, `src/audio/Soundtrack.ts` *performs* it live with the Web Audio
 API: a 112 BPM, eight-bar A-minor loop (Am F C G | Am F Dm E) with a

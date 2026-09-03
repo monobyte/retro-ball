@@ -2,7 +2,7 @@
   "name": "retro-ball",
   "private": true,
   "version": "1.0.0",
-  "description": "Neon Grid Circuit — a synthwave isometric marble obstacle game",
+  "description": "Retro Ball — a synthwave isometric marble obstacle game",
   "type": "module",
   "scripts": {
     "dev": "vite",
