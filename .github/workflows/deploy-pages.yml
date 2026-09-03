@@ -3,7 +3,7 @@ name: Deploy game to GitHub Pages
 on:
   push:
     branches:
-      - claude/synthwave-marble-game-i3yqvo
+      - main
   workflow_dispatch:
 
 permissions:
