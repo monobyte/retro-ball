@@ -90,19 +90,32 @@ const VCRShader = {
   `,
 };
 
+export interface PostFXOptions {
+  /** 4x MSAA on the scene render target. Changing it requires a new PostFX. */
+  antialias: boolean;
+  bloom: boolean;
+}
+
 export class PostFX {
   readonly composer: EffectComposer;
   private readonly bloom: UnrealBloomPass;
   private readonly vcr: ShaderPass;
   private readonly baseBloom = 0.42;
 
-  constructor(private readonly r: Renderer) {
+  constructor(private readonly r: Renderer, options: PostFXOptions) {
     const size = new THREE.Vector2();
     r.renderer.getSize(size);
-    this.composer = new EffectComposer(r.renderer);
-    this.composer.setPixelRatio(r.renderer.getPixelRatio());
+    const pr = r.renderer.getPixelRatio();
+    // Scene target: half float for the bloom range, multisampled when antialias is on.
+    const target = new THREE.WebGLRenderTarget(size.x * pr, size.y * pr, {
+      type: THREE.HalfFloatType,
+      samples: options.antialias ? 4 : 0,
+    });
+    this.composer = new EffectComposer(r.renderer, target);
+    this.composer.setPixelRatio(pr);
     this.composer.addPass(new RenderPass(r.scene, r.camera));
     this.bloom = new UnrealBloomPass(size.clone(), this.baseBloom, 0.35, 0.62);
+    this.bloom.enabled = options.bloom;
     this.composer.addPass(this.bloom);
     this.vcr = new ShaderPass(VCRShader);
     this.composer.addPass(this.vcr);
@@ -110,10 +123,23 @@ export class PostFX {
     this.setSize(size.x, size.y);
   }
 
+  setBloomEnabled(on: boolean): void {
+    this.bloom.enabled = on;
+  }
+
+  /** Matches the composer to the renderer's current size and pixel ratio. */
   setSize(w: number, h: number): void {
-    this.composer.setSize(w, h);
     const pr = this.r.renderer.getPixelRatio();
+    this.composer.setPixelRatio(pr);
+    this.composer.setSize(w, h);
     (this.vcr.uniforms['uResolution']!.value as THREE.Vector2).set(w * pr, h * pr);
+  }
+
+  /** Frees GPU buffers. Call before building a replacement PostFX. */
+  dispose(): void {
+    this.bloom.dispose();
+    this.vcr.dispose();
+    this.composer.dispose();
   }
 
   render(time: number, fx: FxState): void {

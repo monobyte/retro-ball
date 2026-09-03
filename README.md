@@ -23,6 +23,7 @@ npm run build      # type-checks, then bundles to dist/
 | Arrows / WASD      | Roll (relative to the isometric camera) |
 | R                  | Reboot at the last checkpoint / re-run  |
 | M                  | Mute                                    |
+| Esc (or ⚙)         | Open / close the quality settings panel |
 | Any key or click   | Boot from the intro screen              |
 
 Screen-up pushes the marble "into" the screen (world `-x, -z`), so following a
@@ -190,18 +191,19 @@ src/
   render/
     Renderer.ts         isometric orthographic camera
     GridMaterial.ts     neon grid surface shader
-    PostFX.ts           bloom + VCR pass
-    Background.ts       nebula, floor grid, stars, data shards
+    PostFX.ts           bloom + VCR pass (MSAA target, bloom toggle)
+    Background.ts       nebula (optionally offscreen), floor grid, stars, data shards
+  settings/Settings.ts  quality settings + localStorage persistence
   audio/                procedural soundtrack, SFX, glue
   input/Input.ts        keyboard -> screen-space axis
-  ui/                   HUD + overlays
+  ui/                   HUD, overlays, settings panel
   debug/Autopilot.ts    dev-only waypoint driver used for automated play-tests
 ```
 
 ### Dev hooks
 
-In development builds `window.__retro` exposes `game`, `input`, `autopilot`
-and `debug`. `autopilot.start()` drives the marble around the reference
+In development builds `window.__retro` exposes `game`, `input`, `autopilot`,
+`debug` and `applySettings`. `autopilot.start()` drives the marble around the reference
 route (used to verify the course is completable end to end);
 `debug.stepsPerFrame` / `debug.fixedDt` run the simulation faster than real
 time for headless testing; `game.godMode` ignores hazard deaths.

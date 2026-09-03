@@ -14,7 +14,7 @@ export class Input {
       if (e.repeat) return;
       this.down.add(e.code);
       this.pressedThisFrame.add(e.code);
-      if (this.onAnyKey) this.onAnyKey();
+      if (this.onAnyKey && e.code !== 'Escape' && e.key !== 'Escape') this.onAnyKey();
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
     });
     target.addEventListener('keyup', (e) => this.down.delete(e.code));

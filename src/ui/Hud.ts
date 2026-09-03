@@ -55,6 +55,7 @@ export class Hud {
           <span><b>ARROWS / WASD</b> ROLL</span>
           <span><b>R</b> REBOOT AT CHECKPOINT</span>
           <span><b>M</b> MUTE</span>
+          <span><b>ESC</b> SETTINGS</span>
         </div>
         <div class="prompt">PRESS ANY KEY TO BOOT</div>
       </div>`;

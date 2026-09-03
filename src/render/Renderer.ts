@@ -17,14 +17,16 @@ export class Renderer {
   viewHeight = 24;
   readonly target = new THREE.Vector3();
 
-  constructor(readonly canvas: HTMLCanvasElement) {
+  constructor(readonly canvas: HTMLCanvasElement, pixelRatioCap = 2) {
+    // Canvas MSAA is off on purpose: the scene renders into the PostFX
+    // composer target, which carries its own multisampling when enabled.
     this.renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      antialias: false,
       powerPreference: 'high-performance',
       alpha: false,
     });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatioCap));
     this.renderer.setClearColor(0x05010e, 1);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
@@ -37,6 +39,12 @@ export class Renderer {
 
   get aspect(): number {
     return this.canvas.clientWidth / Math.max(1, this.canvas.clientHeight);
+  }
+
+  /** Renders at min(device pixel ratio, cap) and resizes the drawing buffer to match. */
+  setPixelRatioCap(cap: number): void {
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, cap));
+    this.resize();
   }
 
   resize(): void {

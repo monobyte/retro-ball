@@ -58,6 +58,13 @@ const NEBULA_FRAG = /* glsl */ `
   }
 `;
 
+/** Copies the offscreen nebula texture onto the camera-locked plane. */
+const BLIT_FRAG = /* glsl */ `
+  uniform sampler2D uMap;
+  varying vec2 vUv;
+  void main() { gl_FragColor = texture2D(uMap, vUv); }
+`;
+
 const FLOOR_FRAG = /* glsl */ `
   uniform float uTime;
   uniform float uBeat;
@@ -117,13 +124,27 @@ export class Background {
   private readonly starMat: THREE.ShaderMaterial;
   private readonly shards: THREE.Object3D[] = [];
   private readonly nebula: THREE.Mesh;
+  /** Offscreen nebula: the heavy noise shader runs here at reduced size. */
+  private nebulaTarget: THREE.WebGLRenderTarget | null = null;
+  private nebulaScale = 1;
+  private readonly blitMat: THREE.ShaderMaterial;
+  private readonly offscreen = new THREE.Scene();
+  private readonly offscreenCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
   constructor(camera: THREE.Camera, bounds: THREE.Box3, pixelRatio: number) {
     // Nebula plane rides with the camera, far behind everything.
+    const quadVert = /* glsl */ `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`;
     this.nebulaMat = new THREE.ShaderMaterial({
       uniforms: { uTime: { value: 0 }, uOffset: { value: new THREE.Vector2() }, uBeat: { value: 0 }, uAspect: { value: 1.6 } },
-      vertexShader: /* glsl */ `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      vertexShader: quadVert,
       fragmentShader: NEBULA_FRAG,
+      depthWrite: false,
+      depthTest: false,
+    });
+    this.blitMat = new THREE.ShaderMaterial({
+      uniforms: { uMap: { value: null } },
+      vertexShader: quadVert,
+      fragmentShader: BLIT_FRAG,
       depthWrite: false,
       depthTest: false,
     });
@@ -132,6 +153,10 @@ export class Background {
     this.nebula.renderOrder = -100;
     this.nebula.frustumCulled = false;
     camera.add(this.nebula);
+    // Full-screen quad used when the nebula renders offscreen.
+    const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.nebulaMat);
+    quad.frustumCulled = false;
+    this.offscreen.add(quad);
 
     const center = bounds.getCenter(new THREE.Vector3());
     const size = bounds.getSize(new THREE.Vector3());
@@ -216,6 +241,49 @@ export class Background {
 
   setAspect(aspect: number): void {
     this.nebulaMat.uniforms['uAspect']!.value = aspect;
+  }
+
+  /** Star point sizes are in device pixels, so they track the render pixel ratio. */
+  setPixelRatio(pixelRatio: number): void {
+    this.starMat.uniforms['uPixelRatio']!.value = pixelRatio;
+  }
+
+  /**
+   * Sets the nebula render scale. At 1 the noise shader draws straight onto
+   * the plane. Below 1 it draws into an offscreen target of
+   * `bufferWidth * scale` by `bufferHeight * scale`, and the plane shows that texture.
+   */
+  setNebulaScale(scale: number, bufferWidth: number, bufferHeight: number): void {
+    this.nebulaScale = scale;
+    if (scale >= 1) {
+      this.nebulaTarget?.dispose();
+      this.nebulaTarget = null;
+      this.nebula.material = this.nebulaMat;
+      return;
+    }
+    const w = Math.max(1, Math.round(bufferWidth * scale));
+    const h = Math.max(1, Math.round(bufferHeight * scale));
+    if (!this.nebulaTarget) {
+      this.nebulaTarget = new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, depthBuffer: false });
+    } else {
+      this.nebulaTarget.setSize(w, h);
+    }
+    this.blitMat.uniforms['uMap']!.value = this.nebulaTarget.texture;
+    this.nebula.material = this.blitMat;
+  }
+
+  /** Call after a resize so the offscreen target keeps its scale. */
+  setSize(bufferWidth: number, bufferHeight: number): void {
+    if (this.nebulaTarget) this.setNebulaScale(this.nebulaScale, bufferWidth, bufferHeight);
+  }
+
+  /** Draws the offscreen nebula, if enabled. Call once per frame before the main render. */
+  render(renderer: THREE.WebGLRenderer): void {
+    if (!this.nebulaTarget) return;
+    const prev = renderer.getRenderTarget();
+    renderer.setRenderTarget(this.nebulaTarget);
+    renderer.render(this.offscreen, this.offscreenCamera);
+    renderer.setRenderTarget(prev);
   }
 
   /** Called every frame with the camera target so parallax and fades follow the marble. */
