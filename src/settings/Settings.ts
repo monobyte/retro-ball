@@ -25,7 +25,7 @@ export const SETTING_OPTIONS = {
 export const DEFAULT_SETTINGS: QualitySettings = {
   frameCap: 60,
   pixelRatioCap: 2,
-  antialias: true,
+  antialias: false,
   bloom: true,
   nebulaScale: 0.25,
 };
