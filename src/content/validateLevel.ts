@@ -26,7 +26,7 @@ function isDocumentData(value: unknown): boolean {
 }
 
 /** Validate untrusted data before constructing any renderer, audio or physics resource. */
-export function validateLevel(value: unknown): ValidationResult {
+export function validateLevel(value: unknown, options: { draft?: boolean } = {}): ValidationResult {
   const issues: ValidationIssue[] = [];
   const error = (path: string, message: string, instanceId?: string) => issues.push({ severity: 'error' as const, path, message, ...(instanceId ? { instanceId } : {}) });
   const warning = (path: string, message: string, instanceId?: string) => issues.push({ severity: 'warning' as const, path, message, ...(instanceId ? { instanceId } : {}) });
@@ -56,7 +56,7 @@ export function validateLevel(value: unknown): ValidationResult {
   });
   const instances = new Map<string, Record<string, unknown>>();
   const numericCheckpointIds = new Set<number>();
-  if (list('instances').length === 0) error('instances', 'A playable level needs at least one track instance.');
+  if (!options.draft && list('instances').length === 0) error('instances', 'A playable level needs at least one track instance.');
   list('instances').forEach((item, i) => {
     const path = `instances[${i}]`;
     if (!object(item) || !identifier(item['id'])) { error(path, 'Expected an instance with a stable ID.'); return; }
@@ -136,8 +136,8 @@ export function validateLevel(value: unknown): ValidationResult {
     if (typeof o['required'] !== 'boolean') error(`${path}.required`, 'Expected true or false.');
     if (o['required'] === true) required++;
   });
-  if (required !== 1) error('objectives', 'Declare exactly one required reach-goal objective.');
-  if ([...instances.values()].filter(i => i['type'] === 'goal').length !== 1) error('instances', 'Schema 1 requires exactly one goal instance.');
+  if (!options.draft && required !== 1) error('objectives', 'Declare exactly one required reach-goal objective.');
+  if (!options.draft && [...instances.values()].filter(i => i['type'] === 'goal').length !== 1) error('instances', 'Schema 1 requires exactly one goal instance.');
   unique(list('signals'), 'signals', (s, path) => link(s['source'], s['target'], path));
   const nav = value['navigation'];
   if (!object(nav) || !Array.isArray(nav['nodes']) || !Array.isArray(nav['links']) || nav['nodes'].length > 2000 || nav['links'].length > 4000) error('navigation', 'Expected bounded node/link arrays.');
@@ -161,6 +161,11 @@ export function validateLevel(value: unknown): ValidationResult {
   if (!object(validation) || !Array.isArray(validation['intendedRoute']) || !Array.isArray(validation['notes']) || validation['notes'].some(n => !text(n, 1000))) error('validation', 'Expected intendedRoute references and text notes.');
   else for (const id of validation['intendedRoute']) reference(id, 'validation.intendedRoute');
   if (issues.some(i => i.severity === 'error')) return result();
+
+  // Authoring can temporarily lack a goal or floor support. All data shapes,
+  // parameter ranges and references above remain mandatory, even for drafts.
+  // Runtime load/export/play always use the full validation path.
+  if (options.draft) return result();
 
   // Geometry checks operate on the same resolved dimensions passed to the game.
   const doc = value as unknown as LevelDocument;
