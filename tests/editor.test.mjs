@@ -90,3 +90,14 @@ test('autosave recovers geometric drafts; invalid imports and corrupt storage pr
   const exported=broken.exportFile();assert.ok(validateLevel(JSON.parse(exported)).document);
   assert.equal(broken.dirty,true);broken.markExported();assert.equal(broken.dirty,false);
 });
+
+test('authoring validation identifies both overlapping floors and blocked void openings', () => {
+  const model=new EditorModel();model.select(['slab-001']);model.duplicate({x:2,y:0,z:0});
+  const copy=model.selection[0];
+  assert.deepEqual(model.issues.find(i=>i.message.includes('Coplanar')).instanceIds,['slab-001',copy]);
+  model.undo();model.place('void',{x:3,y:0,z:0});
+  const issue=model.issues.find(i=>i.message.includes('do not cut holes'));
+  assert.ok(issue);assert.ok(issue.instanceIds.includes('slab-001'));
+  assert.throws(()=>model.playDocument(),/Partition/);
+  model.undo();assert.ok(validateLevel(model.document).document);
+});

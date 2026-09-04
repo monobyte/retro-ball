@@ -1,7 +1,7 @@
 import { PARTS, hasPart, type PartDefinition } from './PartRegistry.ts';
 import { resolveLevel, type LevelDocument, type Vec3 } from './LevelDocument.ts';
 
-export interface ValidationIssue { severity: 'error' | 'warning'; path: string; message: string; instanceId?: string }
+export interface ValidationIssue { severity: 'error' | 'warning'; path: string; message: string; instanceId?: string; instanceIds?: string[] }
 export interface ValidationResult { document: LevelDocument | null; issues: ValidationIssue[] }
 const object = (v: unknown): v is Record<string, unknown> => v !== null && typeof v === 'object' && !Array.isArray(v) && Object.getPrototypeOf(v) === Object.prototype;
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v) && Math.abs(v) <= 10000;
@@ -28,7 +28,7 @@ function isDocumentData(value: unknown): boolean {
 /** Validate untrusted data before constructing any renderer, audio or physics resource. */
 export function validateLevel(value: unknown, options: { draft?: boolean } = {}): ValidationResult {
   const issues: ValidationIssue[] = [];
-  const error = (path: string, message: string, instanceId?: string) => issues.push({ severity: 'error' as const, path, message, ...(instanceId ? { instanceId } : {}) });
+  const error = (path: string, message: string, instanceId?: string, instanceIds?: string[]) => issues.push({ severity: 'error' as const, path, message, ...(instanceId ? { instanceId } : {}), ...(instanceIds ? { instanceIds } : {}) });
   const warning = (path: string, message: string, instanceId?: string) => issues.push({ severity: 'warning' as const, path, message, ...(instanceId ? { instanceId } : {}) });
   const result = (): ValidationResult => ({ document: issues.some(i => i.severity === 'error') ? null : structuredClone(value) as LevelDocument, issues });
   if (!isDocumentData(value)) { error('$', 'Expected bounded JSON data with no executable values, cycles or special object keys.'); return { document: null, issues }; }
@@ -178,6 +178,11 @@ export function validateLevel(value: unknown, options: { draft?: boolean } = {})
     const p = level.pieces[i]!;
     const id = doc.instances[i]!.id;
     if (p.kind === 'void' && Math.min(p.w, p.d) <= 1) error(`instances.${id}`, 'Void opening must exceed the marble diameter (1).', id);
+    if (p.kind === 'void') for (const floor of floors) {
+      const overlapX = Math.min(p.x + p.w / 2, floor.x + floor.w / 2) - Math.max(p.x - p.w / 2, floor.x - floor.w / 2);
+      const overlapZ = Math.min(p.z + p.d / 2, floor.z + floor.d / 2) - Math.max(p.z - p.d / 2, floor.z - floor.d / 2);
+      if (Math.abs(p.y - floor.y) < .1 && overlapX > 1e-6 && overlapZ > 1e-6) error(`instances.${id}`, 'Void markers do not cut holes in solid floors. Partition the surrounding floor to leave this opening clear.', id, [id, doc.instances[level.pieces.indexOf(floor)]!.id]);
+    }
     if (p.kind === 'jumppad' && !support({ x: p.targetX, y: p.targetY, z: p.targetZ })) warning(`instances.${id}`, 'Jump target is not above a full-clearance floor; verify the landing with physics.', id);
     if (p.kind === 'wall') for (const [label, spawn] of [['spawn', doc.spawn], ...doc.checkpoints.map(c => [`checkpoints.${c.id}.spawn`, c.spawn] as const)] as const) {
       if (Math.abs(spawn.x - p.x) < p.w / 2 + .5 && Math.abs(spawn.z - p.z) < p.d / 2 + .5 && spawn.y - .5 < p.y + p.h && spawn.y + .5 > p.y) error(label, `Spawn intersects wall ${id}.`);
@@ -185,7 +190,7 @@ export function validateLevel(value: unknown, options: { draft?: boolean } = {})
   }
   for (let i = 0; i < floors.length; i++) for (let j = i + 1; j < floors.length; j++) {
     const a = floors[i]!, b = floors[j]!;
-    if (Math.abs(a.y - b.y) < 1e-6 && Math.min(a.x + a.w / 2, b.x + b.w / 2) - Math.max(a.x - a.w / 2, b.x - b.w / 2) > 1e-6 && Math.min(a.z + a.d / 2, b.z + b.d / 2) - Math.max(a.z - a.d / 2, b.z - b.d / 2) > 1e-6) error('instances', 'Coplanar floor overlap would cause flickering; partition the floor footprints.');
+    if (Math.abs(a.y - b.y) < 1e-6 && Math.min(a.x + a.w / 2, b.x + b.w / 2) - Math.max(a.x - a.w / 2, b.x - b.w / 2) > 1e-6 && Math.min(a.z + a.d / 2, b.z + b.d / 2) - Math.max(a.z - a.d / 2, b.z - b.d / 2) > 1e-6) error('instances', 'Coplanar floor overlap would cause flickering; partition the floor footprints.', undefined, [doc.instances[level.pieces.indexOf(a)]!.id, doc.instances[level.pieces.indexOf(b)]!.id]);
   }
   const byId = new Map(doc.instances.map((instance, index) => [instance.id, level.pieces[index]!]));
   const footprint = (p: (typeof level.pieces)[number]) => {

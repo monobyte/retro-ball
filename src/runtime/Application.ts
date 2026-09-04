@@ -7,8 +7,9 @@ import { SettingsPanel } from '../ui/SettingsPanel';
 import { CATALOGUE, loadLevelDocument, validateCatalogue } from '../content/Catalogue';
 import { parseLevel } from '../content/validateLevel';
 import { LevelSession } from './LevelSession';
+import { EditorView } from '../editor/EditorView';
 
-export type ApplicationState = 'boot' | 'hub' | 'loading' | 'intro' | 'playing' | 'paused' | 'resetting' | 'results' | 'transition' | 'error' | 'disposed';
+export type ApplicationState = 'boot' | 'editor' | 'hub' | 'loading' | 'intro' | 'playing' | 'paused' | 'resetting' | 'results' | 'transition' | 'error' | 'disposed';
 
 /** One renderer and frame loop; one explicitly owned course session at a time. */
 export class Application {
@@ -32,6 +33,9 @@ export class Application {
   private last = performance.now();
   private pausedState: ApplicationState = 'playing';
   private readonly pauseButton: HTMLButtonElement;
+  private readonly returnButton: HTMLButtonElement;
+  private editor: EditorView | null = null;
+  private editorTesting = false;
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new Renderer(canvas, this.settings.pixelRatioCap);
@@ -51,7 +55,8 @@ export class Application {
     this.toolbar.setAttribute('aria-label', 'Course actions');
     this.pauseButton = this.button('Pause', () => this.togglePause());
     const retryButton = this.button('Retry course', () => this.retry()); retryButton.dataset['action'] = 'retry';
-    this.toolbar.append(this.pauseButton, retryButton, this.button('Return to relay', () => void this.returnToHub()));
+    this.returnButton = this.button('Return to relay', () => void this.leaveCourse());
+    this.toolbar.append(this.pauseButton, retryButton, this.returnButton);
     document.body.append(this.menu, this.toolbar);
     window.addEventListener('resize', () => this.resize(), { signal: this.listeners.signal });
     window.addEventListener('blur', () => { if (this.session && ['playing', 'resetting'].includes(this.state)) this.togglePause(); }, { signal: this.listeners.signal });
@@ -75,7 +80,7 @@ export class Application {
   }
 
   private showHub(): void {
-    this.state = 'hub'; this.toolbar.hidden = true;
+    this.state = 'hub'; this.toolbar.hidden = true; this.editor?.hide(); this.editorTesting = false;
     this.heading('THE RELAY', 'Choose a signal. Find your way through.');
     for (const entry of CATALOGUE.levels) {
       const button = this.button(entry.name, () => void this.loadLevel(entry.id));
@@ -83,13 +88,14 @@ export class Application {
       const description = document.createElement('span'); description.textContent = entry.description;
       button.append(description); this.menu.append(button);
     }
+    const workshop = this.button('WORKSHOP', () => void this.openEditor()); workshop.dataset['editorOpen'] = ''; this.menu.append(workshop);
     this.menu.querySelector('button')?.focus();
   }
 
   private showError(error: unknown): void {
     this.state = 'error'; this.toolbar.hidden = true;
     this.heading('SIGNAL INTERRUPTED', error instanceof Error ? error.message : String(error));
-    this.menu.append(this.button('Return to relay', () => void this.returnToHub()));
+    this.menu.append(this.button(this.editorTesting ? 'Return to editor' : 'Return to relay', () => void this.leaveCourse()));
     this.menu.querySelector('button')?.focus();
   }
 
@@ -115,7 +121,7 @@ export class Application {
   /** The same validation boundary will serve editor play-tests and imported files. */
   loadDocument(source: unknown | (() => unknown)): Promise<void> {
     return this.transition(async () => {
-      this.state = 'loading'; this.toolbar.hidden = true;
+      this.state = 'loading'; this.toolbar.hidden = true; this.editor?.hide();
       this.heading('TUNING IN', 'Preparing the course…');
       const document = parseLevel(typeof source === 'function' ? source() : source);
       this.session = await LevelSession.create(document, this.renderer, this.settings);
@@ -123,7 +129,7 @@ export class Application {
       this.session.input.configure(loadControls());
       this.session.input.onControllerDisconnected = this.menuInput.onControllerDisconnected;
       this.state = 'intro'; this.menu.hidden = true; this.toolbar.hidden = false;
-      this.pauseButton.textContent = 'Pause';
+      this.pauseButton.textContent = 'Pause'; this.returnButton.textContent = this.editorTesting ? 'Return to editor' : 'Return to relay';
       this.debug.fixedDt = null; this.debug.stepsPerFrame = 1;
       this.readyAtMs = performance.now(); this.last = performance.now();
       this.resize();
@@ -131,6 +137,20 @@ export class Application {
   }
 
   returnToHub(): Promise<void> { return this.transition(async () => this.showHub()); }
+
+  openEditor(): Promise<void> {
+    return this.transition(async () => {
+      if (!this.editor) {
+        this.editor = new EditorView();
+        this.editor.onExit = () => void this.returnToHub();
+        this.editor.onPlay = async document => { this.editorTesting = true; await this.loadDocument(document); };
+      }
+      this.editorTesting = false; this.state = 'editor'; this.menu.hidden = true; this.toolbar.hidden = true;
+      this.editor.show();
+    });
+  }
+
+  private leaveCourse(): Promise<void> { return this.editorTesting ? this.openEditor() : this.returnToHub(); }
 
   retry(): void {
     if (!this.session || !['playing', 'paused', 'resetting', 'results'].includes(this.state)) return;
@@ -148,7 +168,7 @@ export class Application {
     } else if (['playing', 'resetting', 'results'].includes(this.state)) {
       this.pausedState = this.state; this.state = 'paused'; session.input.clear();
       this.heading('SIGNAL HELD', 'Take your time. The course will wait.');
-      this.menu.append(this.button('Resume', () => this.togglePause()), this.button('Return to relay', () => void this.returnToHub()));
+      this.menu.append(this.button('Resume', () => this.togglePause()), this.button(this.editorTesting ? 'Return to editor' : 'Return to relay', () => void this.leaveCourse()));
       this.pauseButton.textContent = 'Resume'; void session.audio.suspend();
       this.menu.querySelector('button')?.focus();
     }
@@ -211,6 +231,6 @@ export class Application {
     if (this.disposed) return;
     await this.returnToHub(); this.disposed = true; this.state = 'disposed';
     cancelAnimationFrame(this.frameId); this.listeners.abort(); this.panel.dispose();
-    this.menuInput.dispose(); this.menu.remove(); this.toolbar.remove(); this.postfx.dispose(); this.renderer.dispose();
+    this.menuInput.dispose(); this.editor?.dispose(); this.menu.remove(); this.toolbar.remove(); this.postfx.dispose(); this.renderer.dispose();
   }
 }

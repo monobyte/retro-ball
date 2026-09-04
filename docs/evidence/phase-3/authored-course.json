@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "untitled-signal",
+  "metadata": {
+    "name": "UNTITLED SIGNAL",
+    "description": "A new route through the relay.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": 0,
+    "y": 0.6,
+    "z": 0
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 18,
+        "d": 12
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-002",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 19,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-1",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 12,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 12,
+        "tone": "blue",
+        "surface": "standard"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-2",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 19,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 12,
+        "tone": "blue",
+        "surface": "standard"
+      },
+      "resetGroup": "group-1",
+      "links": []
+    },
+    {
+      "id": "checkpoint-1",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 12,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "course"
+    },
+    {
+      "id": "group-1",
+      "policy": "course"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-policy-1",
+      "instanceId": "checkpoint-1",
+      "spawn": {
+        "x": 12,
+        "y": 0.6,
+        "z": 0
+      },
+      "resetGroups": []
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-002",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "camera-1",
+      "mode": "arena",
+      "center": {
+        "x": 12,
+        "y": 0,
+        "z": 0
+      },
+      "size": {
+        "x": 20,
+        "y": 10,
+        "z": 20
+      },
+      "viewHeight": 28,
+      "priority": 0
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": []
+  }
+}

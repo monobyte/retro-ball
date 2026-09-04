@@ -2,7 +2,7 @@
 
 Specification: [Game and engine specification](GAME_SPEC.md).  
 Baseline: `9f93950`, reviewed 4 September 2026.  
-Current delivery state: phases 0–2 accepted; phase 3 in progress. Physical input/display checks remain tracked under P2-07 and P9-01.
+Current delivery state: phases 0–3 accepted; phase 4 is next. Physical input/display checks remain tracked under P2-07 and P9-01.
 
 ## How to track progress
 
@@ -39,7 +39,7 @@ existing features; they do not claim campaign, editor or opponent functionality.
 | 0 | Baseline, budgets, audio toggles and development safety | Existing prototype | Done |
 | 1 | Multiple levels and owned runtime lifecycle | 0 | Done |
 | 2 | Movement, camera and player controls | 1 | Done; hardware matrix deferred to P9-01 |
-| 3 | Internal editor foundation | 1; 2 for final play-test UX | In progress |
+| 3 | Internal editor foundation | 1; 2 for final play-test UX | Done |
 | 4 | Obstacles, signals and puzzles | 2, 3 | Not started |
 | 5 | Enemies, rival and guide NPC | 2, 3; 4 for encounter signals | Not started |
 | 6 | Playable first region and soundtrack | 4, 5 | Not started |
@@ -142,25 +142,25 @@ Acceptance gate:
 
 Requirements: EDT-01–07, FND-04–06. Outcome: author basic courses without code edits.
 
-- [ ] **P3-01** Create an editor route/mode using the same registry and document
+- [x] **P3-01** Create an editor route/mode using the same registry and document
   format as the loader. Keep edit state separate from simulation state.
-- [ ] **P3-02** Implement selection/multiselection, place/move/rotate/resize,
+- [x] **P3-02** Implement selection/multiselection, place/move/rotate/resize,
   duplicate/delete, grid snapping and elevation controls.
-- [ ] **P3-03** Add searchable part palettes and a typed parameter inspector.
-- [ ] **P3-04** Implement command-based undo/redo, autosave/recovery and explicit
+- [x] **P3-03** Add searchable part palettes and a typed parameter inspector.
+- [x] **P3-04** Implement command-based undo/redo, autosave/recovery and explicit
   import/export with schema validation and understandable failure messages.
-- [ ] **P3-05** Save a selection as a reusable prefab with exposed parameters;
+- [x] **P3-05** Save a selection as a reusable prefab with exposed parameters;
   implement stable ID remapping when duplicating/importing linked instances.
-- [ ] **P3-06** Add play-from-spawn/checkpoint/selection and return-to-edit without
+- [x] **P3-06** Add play-from-spawn/checkpoint/selection and return-to-edit without
   changing the document or campaign save.
-- [ ] **P3-07** Overlay collider bounds, grid clearance, overlaps and invalid
+- [x] **P3-07** Overlay collider bounds, grid clearance, overlaps and invalid
   links; select offending instances from the validation report.
-- [ ] **P3-08** Add objective, checkpoint and camera-zone authoring plus a basic
+- [x] **P3-08** Add objective, checkpoint and camera-zone authoring plus a basic
   course metadata/music/theme inspector.
 
 Acceptance gate:
 
-- [ ] **G3** Build a small course, duplicate a prefab, undo/redo, save, reload,
+- [x] **G3** Build a small course, duplicate a prefab, undo/redo, save, reload,
   play and return to editing without touching TypeScript. Invalid import and a
   failed play-test preserve the previous document and unsaved edits.
 
@@ -433,8 +433,12 @@ the specific commit, PR, build or play-test report.
 
 | 2026-09-04 | G2 | Accepted | User retest: “all look good now” and instruction to keep going; full automated suite passes | Physical device/display matrix remains explicitly open at P2-07 / P9-01; continue editor work |
 
+| 2026-09-04 | P3-01–08, G3 | Done | [Workshop controls and acceptance evidence](PHASE_3_EDITOR.md); 21 Node tests; full game regressions; five-part course authored entirely through UI, completed with zero resets; prefab override, group transforms, overlap selection, failed import/play preservation, page recovery and three play starts | Phase 4 obstacles, carrying behaviour and signals; phase-2 acceptance was committed/pushed as `74324d3` |
+
 ## Next action
 
-Build the phase-3 editor mode, viewport, palette and inspector on the tested
-command/document foundation. Keep P2-07 hardware coverage in the P9-01 support
-matrix; the accepted Phase 2 fixtures no longer block authoring work.
+Begin **P4-01–03**: complete obstacle component contracts and introduce
+conveyors, moving/rotating platforms, bumpers, seesaws and collapsing floors
+with real contact/carrying checks. Then add signals and puzzle composition.
+Preserve the legacy, movement and Workshop regression workflows. P2-07 physical
+hardware coverage remains tracked in the P9-01 support matrix.

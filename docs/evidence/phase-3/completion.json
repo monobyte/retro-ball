@@ -1,0 +1,23 @@
+{
+  "done": true,
+  "failed": null,
+  "index": 48,
+  "label": "GOAL",
+  "log": [
+    "wp 43  t=53.2",
+    "wp 44 s-bend t=53.7",
+    "wp 45  t=54.5",
+    "wp 46  t=55.0",
+    "wp 47 goal plateau t=55.6",
+    "WIN at t=56.3 resets=3"
+  ],
+  "pos": [
+    -9.5,
+    3.5,
+    8.6
+  ],
+  "resets": 3,
+  "state": "win",
+  "time": 56.9,
+  "total": 49
+}

@@ -1,0 +1,17 @@
+{
+  "completion": {
+    "resets": 0,
+    "state": "win",
+    "time": 1.4833333333333305
+  },
+  "overlap": "offending pair selected and highlighted",
+  "groupTransforms": "rotate and elevate with undo",
+  "exposedParameters": "width override applied",
+  "parts": 5,
+  "prefab": "saved, placed and recovered",
+  "commands": "resize, pointer drag, undo, redo",
+  "import": "valid replacement and invalid preservation",
+  "recovery": "page reload",
+  "play": "spawn/checkpoint/selection and unchanged return",
+  "scope": "UI events with real pointer placement/drag; no direct model edits"
+}

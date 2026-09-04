@@ -2,7 +2,7 @@
   "name": "retro-ball",
   "private": true,
   "version": "1.0.0",
-  "description": "Retro Ball — a synthwave isometric marble obstacle game",
+  "description": "Retro Ball \u2014 a synthwave isometric marble obstacle game",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "test:browser": "node scripts/check-browser.mjs",
-    "benchmark:browser": "node scripts/benchmark-browser.mjs"
+    "benchmark:browser": "node scripts/benchmark-browser.mjs",
+    "test:editor": "node scripts/check-editor.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.20.0",
