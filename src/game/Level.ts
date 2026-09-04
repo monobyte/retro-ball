@@ -189,7 +189,7 @@ export class LevelGeometry {
       const merged = mergeGeometries(bucket.geos, false);
       for (const geometry of bucket.geos) geometry.dispose();
       if (!merged) continue;
-      const mat = new GridMaterial(TONES[tone], .82, SURFACES[bucket.surface].pattern);
+      const mat = new GridMaterial(TONES[tone], .82, bucket.surface);
       this.materials.push(mat);
       const mesh = new THREE.Mesh(merged, mat);
       mesh.renderOrder = 1;
@@ -198,7 +198,7 @@ export class LevelGeometry {
       const lineGeo = new LineSegmentsGeometry();
       lineGeo.setPositions(bucket.edges);
       const lineMat = new LineMaterial({
-        color: TONES[tone].edge.getHex(),
+        color: bucket.surface === 'standard' ? TONES[tone].edge.getHex() : new THREE.Color(...SURFACES[bucket.surface].line).getHex(),
         linewidth: 2.2,
         worldUnits: false,
         transparent: true,

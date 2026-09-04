@@ -72,7 +72,6 @@ export class Game {
   private readonly groundN = new THREE.Vector3();
   private surface: SurfaceId = 'standard';
   private grounded = false;
-  private wasGrounded = false;
   private impactCooldown = 0;
   private readonly camTarget = new THREE.Vector3();
   private viewHeight = INTRO_VIEW_HEIGHT;
@@ -272,6 +271,8 @@ export class Game {
       this.grounded = this.physics.groundNormal(this.ball, this.groundN) !== null;
       this.surface = this.physics.groundSurface;
       this.ball.collider.setRestitution(SURFACES[this.surface].ballRestitution);
+      this.ball.body.setLinearDamping(this.grounded ? SURFACES[this.surface].linearDamping : TUNING.linearDamping);
+      this.ball.body.setAngularDamping(this.grounded ? SURFACES[this.surface].angularDamping : TUNING.angularDamping);
       this.applyControls(axis, basis, stepDt);
     }, stepDt => {
       this.impactCooldown = Math.max(0, this.impactCooldown - stepDt);
@@ -349,12 +350,19 @@ export class Game {
     const len = dir.length();
     if (len < 1e-4) return;
     dir.divideScalar(len);
+    if (this.grounded && profile.turnGrip > 0) {
+      // Grippy mats resist sideways drift; ice deliberately retains momentum.
+      const lateral = this.ballVel.clone().addScaledVector(this.groundN, -this.ballVel.dot(this.groundN));
+      lateral.addScaledVector(dir, -lateral.dot(dir));
+      lateral.multiplyScalar(-this.ball.body.mass() * (1 - Math.exp(-profile.turnGrip * stepDt)));
+      this.ball.body.applyImpulse(lateral, true);
+    }
     const accel = (this.grounded ? TUNING.groundAccel * profile.acceleration : TUNING.airAccel) * Math.min(1, Math.hypot(axis.x, axis.y));
 
     // Soft speed cap: only resist the component that would exceed max speed.
     const horizSpeed = Math.hypot(this.ballVel.x, this.ballVel.z);
     let scale = 1;
-    if (horizSpeed > TUNING.maxSpeed) {
+    if (horizSpeed > (this.grounded ? profile.speedLimit : TUNING.maxSpeed)) {
       const along = (this.ballVel.x * dir.x + this.ballVel.z * dir.z) / horizSpeed;
       if (along > 0) scale = Math.max(0, 1 - along);
     }
@@ -371,7 +379,10 @@ export class Game {
     const dv = this.tmp.copy(this.ballVel).sub(this.prevVel);
     dv.y -= TUNING.gravity * TUNING.timestep; // ignore the gravity step
     const mag = dv.length();
-    const landing = this.grounded && !this.wasGrounded && this.prevVel.y < -2 && dv.dot(this.groundN) > 2;
+    // The ground probe can reach a surface before the solver applies its
+    // contact impulse. Classify the impulse, not the probe's first near frame.
+    const landing = this.grounded && this.impactCooldown <= 0
+      && this.prevVel.dot(this.groundN) < -2 && dv.dot(this.groundN) > 2;
     if (landing) {
       this.contactStats.landings++;
       this.audio?.land(Math.min(1, Math.abs(this.prevVel.y) / 20));
@@ -386,7 +397,6 @@ export class Game {
       this.audio?.impact(Math.min(1, mag / 20));
       this.fx.bloomBoost = Math.max(this.fx.bloomBoost, Math.min(0.5, mag / 40));
     }
-    this.wasGrounded = this.grounded;
   }
 
   private readBall(): void {
@@ -485,7 +495,7 @@ export class Game {
     if (t > 0.75 && this.marble.scale === 0) {
       this.restoreCheckpointGroups();
       this.input.clear();
-      this.prevVel.set(0, 0, 0); this.wasGrounded = false; this.impactCooldown = 0;
+      this.prevVel.set(0, 0, 0); this.impactCooldown = 0;
       this.physics.resetBall(this.ball, this.spawn);
       this.ball.body.setGravityScale(1, true);
       this.marble.resetTrail(this.spawn);
@@ -553,7 +563,7 @@ export class Game {
     this.dynamics.resetCheckpoints();
     for (const component of this.dynamics.components) component.reset(null);
     this.checkpointSnapshot = this.captureCheckpoint(null);
-    this.input.clear(); this.prevVel.set(0, 0, 0); this.wasGrounded = false; this.impactCooldown = 0;
+    this.input.clear(); this.prevVel.set(0, 0, 0); this.impactCooldown = 0;
     this.physics.resetBall(this.ball, this.spawn);
     this.ball.body.setGravityScale(1, true);
     this.marble.resetTrail(this.spawn);

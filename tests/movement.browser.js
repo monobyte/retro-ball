@@ -5,13 +5,31 @@
   const assert = (ok, message) => { if (!ok) throw new Error(message); };
   const frame = () => new Promise(requestAnimationFrame);
   const waitState = async state => { for(let i=0;i<30 && app.state!==state;i++) await frame(); assert(app.state===state, `Expected ${state}; got ${app.state}`); };
-  const samples = [];
+  const samples = [], feel = [];
   for (const surface of Object.keys(SURFACES)) {
     const doc = documentFromLegacy({ name: 'Brake fixture', start: { x: 0, y: .6, z: 0 }, pieces: [
       { kind: 'slab', x: 0, z: 0, y: 0, w: 160, d: 160, surface },
       { kind: 'goal', x: 70, z: 0, y: 0, w: 3, d: 3 },
     ] }, 'brake-fixture');
     await app.loadDocument(doc); const g = r.game; g.audio=null; r.debug.fixedDt=0;
+    // Ordinary play must distinguish surfaces without relying on braking.
+    for (const hz of [30,60,120]) {
+      g.restart();g.physics.clearAccumulator();for(let i=0;i<120;i++)g.update(1/120);
+      r.input.override={x:Math.SQRT1_2,y:-Math.SQRT1_2};
+      for(let i=0;i<hz*2;i++)g.update(1/hz);
+      const poweredSpeed=g.ballVelocity.length();
+      g.physics.resetBall(g.ball,g.ballPosition.clone().set(0,.5,0));
+      g.ball.body.setLinvel({x:8,y:0,z:0},true);g.ball.body.setAngvel({x:0,y:0,z:-16},true);
+      r.input.override={x:0,y:0};
+      for(let i=0;i<hz*2;i++)g.update(1/hz);
+      const coast=g.ballPosition.x,coastSpeed=g.ballVelocity.length();
+      g.physics.resetBall(g.ball,g.ballPosition.clone().set(0,.5,0));
+      g.ball.body.setLinvel({x:8,y:0,z:0},true);g.ball.body.setAngvel({x:0,y:0,z:-16},true);
+      r.input.override={x:Math.SQRT1_2,y:Math.SQRT1_2};
+      for(let i=0;i<hz/2;i++)g.update(1/hz);
+      feel.push({surface,hz,poweredSpeed,coast,coastSpeed,turnDrift:g.ballPosition.x});
+      r.input.override=null;
+    }
     for (const hz of [30, 60, 120]) for (const speed of [4, 8, 16]) {
       g.restart();
       for(let i=0;i<120;i++) g.update(1/120);
@@ -29,6 +47,14 @@
   for(const surface of Object.keys(SURFACES)) for(const speed of [4,8,16]) {
     const distances=samples.filter(s=>s.surface===surface&&s.speed===speed).map(s=>s.distance);
     assert(Math.max(...distances)-Math.min(...distances)<.04,`Display-rate braking drift: ${surface} / ${speed}`);
+  }
+  const measured=(surface,key)=>feel.find(s=>s.surface===surface&&s.hz===60)[key];
+  assert(measured('ice','coast')>measured('standard','coast')*1.2,'Ice must glide visibly farther after release');
+  assert(measured('rough','poweredSpeed')<measured('standard','poweredSpeed')*.5,'Grit must feel slower under normal input');
+  assert(measured('rubber','turnDrift')<measured('ice','turnDrift')*.45,'Rubber should turn much more sharply than ice');
+  for(const surface of Object.keys(SURFACES))for(const key of ['poweredSpeed','coast','coastSpeed','turnDrift']){
+    const values=feel.filter(s=>s.surface===surface).map(s=>s[key]);
+    assert(Math.max(...values)-Math.min(...values)<.06,`Surface feel drift: ${surface}/${key}`);
   }
   const stop = surface => samples.find(s=>s.surface===surface&&s.hz===60&&s.speed===16).distance;
   assert(stop('ice')>stop('standard')*1.5,'Ice does not teach a longer stopping distance');
@@ -66,5 +92,5 @@
     if(descriptor)Object.defineProperty(navigator,'getGamepads',descriptor);else delete navigator.getGamepads;
     await app.returnToHub();
   }
-  return {gripLab:'WIN through four surfaces',brakingSamples:samples,rateComparison:'30/60/120 Hz simulation cadence within 0.04 units',keyboard:'relay WIN',controller:'standard API fixture relay WIN',disconnectRecovery:'passed',physicalController:'not tested'};
+  return {gripLab:'WIN through four surfaces',brakingSamples:samples,surfaceFeel:feel,rateComparison:'30/60/120 Hz simulation cadence within 0.04 units',keyboard:'relay WIN',controller:'standard API fixture relay WIN',disconnectRecovery:'passed',physicalController:'not tested'};
 })()

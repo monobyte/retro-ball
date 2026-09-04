@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import type { Tone } from '../game/LevelData';
+import { SURFACES, type SurfaceId } from '../physics/Surfaces';
 
 export interface ToneColors {
   line: THREE.Color;
@@ -54,6 +55,8 @@ const FRAG = /* glsl */ `
   uniform vec3 uFillSide;
   uniform float uOpacity;
   uniform float uSurface;
+  uniform vec3 uSurfaceFill;
+  uniform vec3 uSurfaceLine;
   uniform float uOccluded;
   uniform vec3 uSightDirection;
   varying vec2 vGrid;
@@ -88,18 +91,31 @@ const FRAG = /* glsl */ `
     vec3 col = fill;
     col += lineCol * (line * (0.85 + 0.35 * top) + subLine * top);
 
-    // Surface signatures use shape as well as palette, so grip remains readable.
-    if (uSurface > 0.5 && top > 0.5) {
+    // Distinct large-scale material signatures survive the camera distance and
+    // CRT treatment. These replace the base grid on special surfaces.
+    if (uSurface > 0.5) {
+      vec3 material = uSurfaceFill * (0.48 + 0.52 * top);
       if (uSurface < 1.5) {
-        float streak = gridLine(vec2(vGrid.x + vGrid.y, vGrid.y * 0.15), 0.0);
-        col += vec3(0.18, 0.38, 0.45) * streak * 0.55;
+        vec2 ice = vec2(vGrid.x * .18 + vGrid.y * .07, vGrid.y * .4);
+        float seam = gridLine(ice, .55);
+        float frost = .5 + .5 * sin(vGrid.x * .7 + sin(vGrid.y * .45));
+        material += uSurfaceLine * (.07 + seam * .3 + frost * .09) * top;
       } else if (uSurface < 2.5) {
-        float dotMark = 1.0 - smoothstep(0.09, 0.16, length(fract(vGrid) - 0.5));
-        col += vec3(0.45, 0.24, 0.04) * dotMark;
+        vec2 cell = fract(vGrid * .65) - .5;
+        float stud = 1.0 - smoothstep(.24, .29, length(cell));
+        float highlight = 1.0 - smoothstep(.20, .27, length(cell + vec2(.05, .06)));
+        material += uSurfaceLine * (stud * .17 + highlight * .12) * top;
+        material += uSurfaceLine * gridLine(vGrid * .16, 1.0) * .3;
       } else {
-        float hatch = gridLine(vec2(vGrid.x + vGrid.y, vGrid.x - vGrid.y) * 3.0, 0.0);
-        col += vec3(0.24, 0.15, 0.12) * hatch * 0.7;
+        vec2 cellId = floor(vGrid * 2.0);
+        float seed = fract(sin(dot(cellId, vec2(127.1, 311.7))) * 43758.5453);
+        vec2 cell = fract(vGrid * 2.0) - .5;
+        float pebble = 1.0 - smoothstep(.20, .40, max(abs(cell.x), abs(cell.y)));
+        material *= .65 + seed * .5;
+        material += uSurfaceLine * pebble * (.07 + seed * .2) * top;
+        material += uSurfaceLine * gridLine(vGrid * .25, .35) * .12;
       }
+      col = material;
     }
 
     // Neon glow from the marble reflecting off the surface.
@@ -110,7 +126,7 @@ const FRAG = /* glsl */ `
     // Slow travelling light band across the whole circuit.
     float band = 1.0 - abs(fract((vWorld.x + vWorld.z) * 0.035 - uTime * 0.12) - 0.5) * 2.0;
     band = pow(clamp(band, 0.0, 1.0), 6.0);
-    col += lineCol * line * band * 0.45;
+    col += lineCol * line * band * (uSurface < .5 ? .45 : .04);
 
     float alpha = uOpacity + (1.0 - uOpacity) * line;
     gl_FragColor = vec4(col, alpha);
@@ -118,7 +134,8 @@ const FRAG = /* glsl */ `
 `;
 
 export class GridMaterial extends THREE.ShaderMaterial {
-  constructor(tone: ToneColors, opacity = 0.82, surfacePattern = 0) {
+  constructor(tone: ToneColors, opacity = 0.82, surface: SurfaceId = 'standard') {
+    const profile = SURFACES[surface];
     super({
       uniforms: {
         uTime: { value: 0 },
@@ -129,7 +146,9 @@ export class GridMaterial extends THREE.ShaderMaterial {
         uFillTop: { value: tone.fillTop.clone() },
         uFillSide: { value: tone.fillSide.clone() },
         uOpacity: { value: opacity },
-        uSurface: { value: surfacePattern },
+        uSurface: { value: profile.pattern },
+        uSurfaceFill: { value: new THREE.Color(...profile.fill) },
+        uSurfaceLine: { value: new THREE.Color(...profile.line) },
         uOccluded: { value: 0 },
         uSightDirection: { value: new THREE.Vector3(1, 1.12, 1).normalize() },
       },

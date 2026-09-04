@@ -4,13 +4,13 @@
   "id": "grip-lab",
   "metadata": {
     "name": "GRIP LAB",
-    "description": "Four surfaces. Four kinds of momentum. Try braking before the ice.",
+    "description": "Roll, turn, then release: ice drifts, rubber bites, grit drags. Shift brakes.",
     "difficulty": "test"
   },
   "themeId": "neon-grid",
   "musicId": "retro-main",
   "spawn": {
-    "x": -17,
+    "x": -32,
     "y": 0.6,
     "z": 0
   },
@@ -20,18 +20,18 @@
       "type": "slab",
       "transform": {
         "position": {
-          "x": -15,
+          "x": -27.0,
           "y": 0,
           "z": 0
         },
         "yaw": 0
       },
       "parameters": {
-        "w": 10,
-        "d": 18,
+        "w": 18,
+        "d": 26,
         "surface": "standard",
         "tone": "pink",
-        "label": "STANDARD"
+        "label": "GRID / COAST"
       },
       "resetGroup": "course",
       "links": []
@@ -41,18 +41,18 @@
       "type": "slab",
       "transform": {
         "position": {
-          "x": -5,
+          "x": -9.0,
           "y": 0,
           "z": 0
         },
         "yaw": 0
       },
       "parameters": {
-        "w": 10,
-        "d": 18,
+        "w": 18,
+        "d": 26,
         "surface": "ice",
         "tone": "cyan",
-        "label": "ICE"
+        "label": "ICE / DRIFT"
       },
       "resetGroup": "course",
       "links": []
@@ -62,18 +62,18 @@
       "type": "slab",
       "transform": {
         "position": {
-          "x": 5,
+          "x": 9.0,
           "y": 0,
           "z": 0
         },
         "yaw": 0
       },
       "parameters": {
-        "w": 10,
-        "d": 18,
+        "w": 18,
+        "d": 26,
         "surface": "rubber",
         "tone": "pink",
-        "label": "RUBBER"
+        "label": "RUBBER / GRIP"
       },
       "resetGroup": "course",
       "links": []
@@ -83,18 +83,18 @@
       "type": "slab",
       "transform": {
         "position": {
-          "x": 15,
+          "x": 27.0,
           "y": 0,
           "z": 0
         },
         "yaw": 0
       },
       "parameters": {
-        "w": 10,
-        "d": 18,
+        "w": 18,
+        "d": 26,
         "surface": "rough",
         "tone": "cyan",
-        "label": "ROUGH"
+        "label": "GRIT / HEAVY"
       },
       "resetGroup": "course",
       "links": []
@@ -106,12 +106,12 @@
         "position": {
           "x": 0,
           "y": 0,
-          "z": -9.2
+          "z": -13.2
         },
         "yaw": 0
       },
       "parameters": {
-        "w": 40.8,
+        "w": 72.8,
         "d": 0.4,
         "h": 0.7,
         "tone": "cyan"
@@ -126,12 +126,12 @@
         "position": {
           "x": 0,
           "y": 0,
-          "z": 9.2
+          "z": 13.2
         },
         "yaw": 0
       },
       "parameters": {
-        "w": 40.8,
+        "w": 72.8,
         "d": 0.4,
         "h": 0.7,
         "tone": "cyan"
@@ -144,7 +144,7 @@
       "type": "wall",
       "transform": {
         "position": {
-          "x": -20.2,
+          "x": -36.2,
           "y": 0,
           "z": 0
         },
@@ -152,7 +152,7 @@
       },
       "parameters": {
         "w": 0.4,
-        "d": 18,
+        "d": 26,
         "h": 0.7,
         "tone": "cyan"
       },
@@ -164,7 +164,7 @@
       "type": "wall",
       "transform": {
         "position": {
-          "x": 20.2,
+          "x": 36.2,
           "y": 0,
           "z": 0
         },
@@ -172,7 +172,7 @@
       },
       "parameters": {
         "w": 0.4,
-        "d": 18,
+        "d": 26,
         "h": 0.7,
         "tone": "cyan"
       },
@@ -184,7 +184,7 @@
       "type": "checkpoint",
       "transform": {
         "position": {
-          "x": 5,
+          "x": 9,
           "y": 0,
           "z": 0
         },
@@ -201,7 +201,7 @@
       "type": "goal",
       "transform": {
         "position": {
-          "x": 18,
+          "x": 33,
           "y": 0,
           "z": 0
         },
@@ -226,7 +226,7 @@
       "id": "checkpoint-1",
       "instanceId": "checkpoint-009",
       "spawn": {
-        "x": 5,
+        "x": 9,
         "y": 0.6,
         "z": 0
       },
@@ -246,7 +246,23 @@
     "nodes": [],
     "links": []
   },
-  "cameraZones": [],
+  "cameraZones": [
+    {
+      "id": "material-study",
+      "mode": "arena",
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 76,
+        "y": 8,
+        "z": 30
+      },
+      "viewHeight": 30
+    }
+  ],
   "validation": {
     "intendedRoute": [
       "slab-001",

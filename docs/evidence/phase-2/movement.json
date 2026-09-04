@@ -64,193 +64,193 @@
       "time": 0.4083333333333333
     },
     {
-      "distance": 1.2099602222442627,
+      "distance": 2.388826847076416,
       "hz": 30,
       "speed": 4,
       "surface": "ice",
-      "time": 0.6333333333333333
+      "time": 1.2
     },
     {
-      "distance": 4.428451061248779,
+      "distance": 9.471840858459473,
       "hz": 30,
       "speed": 8,
       "surface": "ice",
-      "time": 1.1666666666666667
+      "time": 2.3666666666666667
     },
     {
-      "distance": 15.127570152282717,
+      "distance": 37.0765266418457,
       "hz": 30,
       "speed": 16,
       "surface": "ice",
-      "time": 2.066666666666667
+      "time": 4.666666666666667
     },
     {
-      "distance": 1.2099602222442627,
+      "distance": 2.3881871700286865,
       "hz": 60,
       "speed": 4,
       "surface": "ice",
-      "time": 0.6333333333333333
+      "time": 1.1833333333333331
     },
     {
-      "distance": 4.428451061248779,
+      "distance": 9.471840858459473,
       "hz": 60,
       "speed": 8,
       "surface": "ice",
-      "time": 1.1666666666666667
+      "time": 2.3666666666666667
     },
     {
-      "distance": 15.127570152282717,
+      "distance": 37.0765266418457,
       "hz": 60,
       "speed": 16,
       "surface": "ice",
-      "time": 2.066666666666667
+      "time": 4.666666666666667
     },
     {
-      "distance": 1.2097208499908447,
+      "distance": 2.3881871700286865,
       "hz": 120,
       "speed": 4,
       "surface": "ice",
-      "time": 0.625
+      "time": 1.1833333333333331
     },
     {
-      "distance": 4.428451061248779,
+      "distance": 9.471840858459473,
       "hz": 120,
       "speed": 8,
       "surface": "ice",
-      "time": 1.1666666666666667
+      "time": 2.3666666666666667
     },
     {
-      "distance": 15.127570152282717,
+      "distance": 37.0765266418457,
       "hz": 120,
       "speed": 16,
       "surface": "ice",
-      "time": 2.066666666666667
+      "time": 4.666666666666667
     },
     {
-      "distance": 0.22783423960208893,
+      "distance": 0.1746261566877365,
       "hz": 30,
       "speed": 4,
       "surface": "rubber",
-      "time": 0.13333333333333333
+      "time": 0.1
     },
     {
-      "distance": 0.7296280264854431,
+      "distance": 0.5731978416442871,
       "hz": 30,
       "speed": 8,
       "surface": "rubber",
-      "time": 0.23333333333333336
+      "time": 0.2
     },
     {
-      "distance": 2.0977861881256104,
+      "distance": 1.6699589490890503,
       "hz": 30,
       "speed": 16,
       "surface": "rubber",
-      "time": 0.36666666666666664
+      "time": 0.26666666666666666
     },
     {
-      "distance": 0.22783423960208893,
+      "distance": 0.1746261566877365,
       "hz": 60,
       "speed": 4,
       "surface": "rubber",
-      "time": 0.13333333333333333
+      "time": 0.1
     },
     {
-      "distance": 0.7293840646743774,
+      "distance": 0.5731613039970398,
       "hz": 60,
       "speed": 8,
       "surface": "rubber",
-      "time": 0.21666666666666667
+      "time": 0.18333333333333332
     },
     {
-      "distance": 2.097761392593384,
+      "distance": 1.6699589490890503,
       "hz": 60,
       "speed": 16,
       "surface": "rubber",
-      "time": 0.35
+      "time": 0.26666666666666666
     },
     {
-      "distance": 0.22783423960208893,
+      "distance": 0.1746261566877365,
       "hz": 120,
       "speed": 4,
       "surface": "rubber",
-      "time": 0.13333333333333333
+      "time": 0.1
     },
     {
-      "distance": 0.7293840646743774,
+      "distance": 0.57304847240448,
       "hz": 120,
       "speed": 8,
       "surface": "rubber",
-      "time": 0.21666666666666667
+      "time": 0.175
     },
     {
-      "distance": 2.0976850986480713,
+      "distance": 1.6699589490890503,
       "hz": 120,
       "speed": 16,
       "surface": "rubber",
-      "time": 0.3416666666666667
+      "time": 0.26666666666666666
     },
     {
-      "distance": 0.2302047312259674,
+      "distance": 0.20546895265579224,
       "hz": 30,
       "speed": 4,
       "surface": "rough",
       "time": 0.13333333333333333
     },
     {
-      "distance": 0.7186525464057922,
+      "distance": 0.6120406985282898,
       "hz": 30,
       "speed": 8,
       "surface": "rough",
-      "time": 0.23333333333333336
+      "time": 0.2
     },
     {
-      "distance": 2.0084383487701416,
+      "distance": 1.6308974027633667,
       "hz": 30,
       "speed": 16,
       "surface": "rough",
-      "time": 0.3333333333333333
+      "time": 0.3
     },
     {
-      "distance": 0.2302047312259674,
+      "distance": 0.20546895265579224,
       "hz": 60,
       "speed": 4,
       "surface": "rough",
       "time": 0.13333333333333333
     },
     {
-      "distance": 0.7186525464057922,
+      "distance": 0.6120406985282898,
       "hz": 60,
       "speed": 8,
       "surface": "rough",
-      "time": 0.23333333333333336
+      "time": 0.2
     },
     {
-      "distance": 2.0084383487701416,
+      "distance": 1.6307213306427002,
       "hz": 60,
       "speed": 16,
       "surface": "rough",
-      "time": 0.3333333333333333
+      "time": 0.2833333333333333
     },
     {
-      "distance": 0.2302047312259674,
+      "distance": 0.20536673069000244,
       "hz": 120,
       "speed": 4,
       "surface": "rough",
-      "time": 0.13333333333333333
+      "time": 0.125
     },
     {
-      "distance": 0.7185931205749512,
+      "distance": 0.6120406985282898,
       "hz": 120,
       "speed": 8,
       "surface": "rough",
-      "time": 0.225
+      "time": 0.2
     },
     {
-      "distance": 2.0084383487701416,
+      "distance": 1.6307213306427002,
       "hz": 120,
       "speed": 16,
       "surface": "rough",
-      "time": 0.3333333333333333
+      "time": 0.2833333333333333
     }
   ],
   "controller": "standard API fixture relay WIN",
@@ -258,5 +258,103 @@
   "gripLab": "WIN through four surfaces",
   "keyboard": "relay WIN",
   "physicalController": "not tested",
-  "rateComparison": "30/60/120 Hz simulation cadence within 0.04 units"
+  "rateComparison": "30/60/120 Hz simulation cadence within 0.04 units",
+  "surfaceFeel": [
+    {
+      "coast": 12.278830528259276,
+      "coastSpeed": 4.586240252798583,
+      "hz": 30,
+      "poweredSpeed": 16.123745535408137,
+      "surface": "standard",
+      "turnDrift": 3.734995603561402
+    },
+    {
+      "coast": 12.278830528259276,
+      "coastSpeed": 4.586240252798583,
+      "hz": 60,
+      "poweredSpeed": 16.123745535408137,
+      "surface": "standard",
+      "turnDrift": 3.734995603561402
+    },
+    {
+      "coast": 12.278830528259276,
+      "coastSpeed": 4.586240252798583,
+      "hz": 120,
+      "poweredSpeed": 16.123745535408137,
+      "surface": "standard",
+      "turnDrift": 3.734995603561402
+    },
+    {
+      "coast": 15.68559741973877,
+      "coastSpeed": 7.693575176870634,
+      "hz": 30,
+      "poweredSpeed": 14.35821233743771,
+      "surface": "ice",
+      "turnDrift": 3.9825680255889897
+    },
+    {
+      "coast": 15.68559741973877,
+      "coastSpeed": 7.693575176870634,
+      "hz": 60,
+      "poweredSpeed": 14.358216175252451,
+      "surface": "ice",
+      "turnDrift": 3.9825680255889897
+    },
+    {
+      "coast": 15.68559741973877,
+      "coastSpeed": 7.693575176870634,
+      "hz": 120,
+      "poweredSpeed": 14.358216175252451,
+      "surface": "ice",
+      "turnDrift": 3.9825680255889897
+    },
+    {
+      "coast": 6.136170387268066,
+      "coastSpeed": 0.7602286338806152,
+      "hz": 30,
+      "poweredSpeed": 14.078682365138963,
+      "surface": "rubber",
+      "turnDrift": 1.0013388395309448
+    },
+    {
+      "coast": 6.136170387268066,
+      "coastSpeed": 0.7602286338806152,
+      "hz": 60,
+      "poweredSpeed": 14.078682365138963,
+      "surface": "rubber",
+      "turnDrift": 1.0013388395309448
+    },
+    {
+      "coast": 6.136170387268066,
+      "coastSpeed": 0.7602286338806152,
+      "hz": 120,
+      "poweredSpeed": 14.078682365138963,
+      "surface": "rubber",
+      "turnDrift": 1.0013388395309448
+    },
+    {
+      "coast": 3.234299659729004,
+      "coastSpeed": 0.06033104658126831,
+      "hz": 30,
+      "poweredSpeed": 5.600140808448532,
+      "surface": "rough",
+      "turnDrift": 1.54062020778656
+    },
+    {
+      "coast": 3.234299659729004,
+      "coastSpeed": 0.06033104658126831,
+      "hz": 60,
+      "poweredSpeed": 5.6001365794201945,
+      "surface": "rough",
+      "turnDrift": 1.54062020778656
+    },
+    {
+      "coast": 3.234299659729004,
+      "coastSpeed": 0.06033104658126831,
+      "hz": 120,
+      "poweredSpeed": 5.6001365794201945,
+      "surface": "rough",
+      "turnDrift": 1.54062020778656
+    }
+  ]
 }

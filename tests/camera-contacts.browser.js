@@ -27,7 +27,7 @@
   assert(new Set(contacts.map(c=>c.impacts)).size===1,'Impact count differs by display cadence');
   await app.loadLevel('sightlines');g=r.game;g.audio=null;g.restart();r.debug.fixedDt=0;
   const modes=[];
-  for(const [mode,x,y,z] of [['puzzle',0,.6,0],['vertical',0,2.7,-12],['speed',0,8.6,-34],['arena',8,8.6,-43]]){
+  for(const [mode,x,y,z] of [['puzzle',0,.6,0],['vertical',0,4.6,-20],['speed',0,8.6,-34],['arena',8,8.6,-43]]){
     g.physics.resetBall(g.ball,g.ballPosition.clone().set(x,y,z));
     for(let frame=0;frame<90;frame++)g.update(1/60);
     const p=g.ballPosition.project(g.renderer.camera);
@@ -39,20 +39,42 @@
   for(let frame=0;frame<120;frame++)g.update(1/60);
   assert(g.physics.sightlineBlocked(g.ball,g.sightDirection),'Occluder fixture does not block the sightline');
   assert(g.level.materials.every(m=>m.uniforms.uOccluded.value===1),'Solid scenery did not open its viewing window');
-  // Play the full course, checking every frame of the launched ball's trajectory.
-  g.restart();r.input.override={x:Math.SQRT1_2,y:Math.SQRT1_2};let flightFrames=0,maxNdc=0;
-  for(let step=0;step<3600&&g.state!=='win';step++){
-    g.update(1/120);
-    if(g.landingTarget){
-      flightFrames++;
-      for(const point of [g.ballPosition,g.landingTarget.clone()]){
-        const p=point.project(g.renderer.camera);maxNdc=Math.max(maxNdc,Math.abs(p.x),Math.abs(p.y));
-        assert(Math.abs(p.x)<.84&&Math.abs(p.y)<.84,'Ball or target left the jump framing margin');
+  // Complete the whole camera course through keyboard and standard gamepad input
+  // at each presentation cadence; physics remains fixed at 120 Hz.
+  const descriptor=Object.getOwnPropertyDescriptor(navigator,'getGamepads');
+  const pad={index:0,id:'Camera-course controller',connected:true,mapping:'standard',axes:[0,0],buttons:Array.from({length:17},()=>({pressed:false,value:0}))};
+  let pads=[];
+  Object.defineProperty(navigator,'getGamepads',{configurable:true,value:()=>pads});
+  const routes=[];let flightFrames=0,maxNdc=0;
+  try {
+    for(const hz of [30,60,120])for(const control of ['keyboard','controller']){
+      pads=[];r.input.poll();g.restart();r.debug.fixedDt=0;
+      // A synthetic disconnection may pause the app; direct fixed-step checks
+      // use the game's state and do not resume its real-time frame loop.
+      if(control==='controller'){
+        pads=[pad];pad.axes=[0,0];r.input.poll();pad.axes=[Math.SQRT1_2,-Math.SQRT1_2];
+      }else for(const code of ['ArrowUp','ArrowRight'])window.dispatchEvent(new KeyboardEvent('keydown',{code}));
+      let flights=0;
+      for(let frame=0;frame<hz*30&&g.state!=='win';frame++){
+        r.input.poll();g.update(1/hz);
+        if(g.landingTarget){
+          flights++;flightFrames++;
+          for(const point of [g.ballPosition,g.landingTarget.clone()]){
+            const p=point.project(g.renderer.camera);maxNdc=Math.max(maxNdc,Math.abs(p.x),Math.abs(p.y));
+            assert(Math.abs(p.x)<.84&&Math.abs(p.y)<.84,`${control}/${hz}: ball or target left the jump framing margin`);
+          }
+        }
       }
+      for(const code of ['ArrowUp','ArrowRight'])window.dispatchEvent(new KeyboardEvent('keyup',{code}));
+      pad.axes=[0,0];
+      assert(g.state==='win'&&g.resetCount===0,`${control}/${hz}: Sightlines did not complete cleanly`);
+      assert(flights>0,'Sightlines did not exercise jump framing');
+      routes.push({hz,control,state:g.state,resets:g.resetCount,time:g.runTime});
     }
+  }finally{
+    for(const code of ['ArrowUp','ArrowRight'])window.dispatchEvent(new KeyboardEvent('keyup',{code}));
+    if(descriptor)Object.defineProperty(navigator,'getGamepads',descriptor);else delete navigator.getGamepads;
   }
-  assert(g.state==='win'&&g.resetCount===0,'Sightlines course did not complete cleanly');
-  assert(flightFrames>0,'Sightlines did not exercise jump framing');
   await app.returnToHub();
-  return {contacts,modes,sightlines:'WIN without resets',flightFrames,maxNdc,occlusion:'solid scenery only; verify accompanying screenshot',physicalDisplays:'simulation cadence only'};
+  return {contacts,modes,routes,sightlines:'WIN without resets',flightFrames,maxNdc,occlusion:'solid scenery only; verify accompanying screenshot',physicalDisplays:'simulation cadence only'};
 })()

@@ -46,5 +46,7 @@ evaluate('window.__retro.game.renderer.setPixelRatioCap(1)');
 browser(['screenshot', `${output}/completed-course.png`]);
 browser(['press', 'Space']);
 check('lifecycle');
+check('movement');
+check('camera-contacts');
 browser(['screenshot', `${output}/relay-menu.png`]);
 console.log(`Evidence: ${output}`);

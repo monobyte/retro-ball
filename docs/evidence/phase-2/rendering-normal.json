@@ -1,0 +1,46 @@
+{
+  "checks": [
+    "checkpoint 1 at 21,-19; AA=false, bloom=false",
+    "elevator  at 31.5,-33.5; AA=false, bloom=false",
+    "checkpoint 2 at 31.5,-38; AA=false, bloom=false",
+    "checkpoint 3 at -2,-52; AA=false, bloom=false",
+    "elevator  at -13.5,-52; AA=false, bloom=false",
+    "checkpoint 4 at -13.5,-47.5; AA=false, bloom=false",
+    "checkpoint 5 at -20,-15.5; AA=false, bloom=false",
+    "goal  at -9.5,10; AA=false, bloom=false",
+    "checkpoint 1 at 21,-19; AA=false, bloom=true",
+    "elevator  at 31.5,-33.5; AA=false, bloom=true",
+    "checkpoint 2 at 31.5,-38; AA=false, bloom=true",
+    "checkpoint 3 at -2,-52; AA=false, bloom=true",
+    "elevator  at -13.5,-52; AA=false, bloom=true",
+    "checkpoint 4 at -13.5,-47.5; AA=false, bloom=true",
+    "checkpoint 5 at -20,-15.5; AA=false, bloom=true",
+    "goal  at -9.5,10; AA=false, bloom=true",
+    "checkpoint 1 at 21,-19; AA=true, bloom=false",
+    "elevator  at 31.5,-33.5; AA=true, bloom=false",
+    "checkpoint 2 at 31.5,-38; AA=true, bloom=false",
+    "checkpoint 3 at -2,-52; AA=true, bloom=false",
+    "elevator  at -13.5,-52; AA=true, bloom=false",
+    "checkpoint 4 at -13.5,-47.5; AA=true, bloom=false",
+    "checkpoint 5 at -20,-15.5; AA=true, bloom=false",
+    "goal  at -9.5,10; AA=true, bloom=false",
+    "checkpoint 1 at 21,-19; AA=true, bloom=true",
+    "elevator  at 31.5,-33.5; AA=true, bloom=true",
+    "checkpoint 2 at 31.5,-38; AA=true, bloom=true",
+    "checkpoint 3 at -2,-52; AA=true, bloom=true",
+    "elevator  at -13.5,-52; AA=true, bloom=true",
+    "checkpoint 4 at -13.5,-47.5; AA=true, bloom=true",
+    "checkpoint 5 at -20,-15.5; AA=true, bloom=true",
+    "goal  at -9.5,10; AA=true, bloom=true"
+  ],
+  "devicePixelRatio": 1,
+  "drawingBuffer": [
+    1511,
+    862
+  ],
+  "passed": 32,
+  "viewport": [
+    1511,
+    862
+  ]
+}

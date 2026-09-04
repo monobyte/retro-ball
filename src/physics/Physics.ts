@@ -67,7 +67,7 @@ export class Physics {
       .setFriction(surface.friction)
       .setRestitution(box.kind === 'wall' ? TUNING.wallRestitution : surface.restitution)
       .setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Max);
-    if (box.surface !== 'standard') desc.setFrictionCombineRule(RAPIER.CoefficientCombineRule.Min);
+    if (box.surface !== 'standard') desc.setFrictionCombineRule(box.surface === 'ice' ? RAPIER.CoefficientCombineRule.Min : RAPIER.CoefficientCombineRule.Max);
     const collider = this.world.createCollider(desc);
     this.colliderSurfaces.set(collider.handle, box.surface);
     return collider;

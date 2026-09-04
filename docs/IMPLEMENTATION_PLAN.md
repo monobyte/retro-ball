@@ -2,7 +2,7 @@
 
 Specification: [Game and engine specification](GAME_SPEC.md).  
 Baseline: `9f93950`, reviewed 4 September 2026.  
-Current delivery state: phases 0–1 complete; phase 2 in progress.
+Current delivery state: phases 0–2 accepted; phase 3 in progress. Physical input/display checks remain tracked under P2-07 and P9-01.
 
 ## How to track progress
 
@@ -38,8 +38,8 @@ existing features; they do not claim campaign, editor or opponent functionality.
 | --- | --- | --- | --- |
 | 0 | Baseline, budgets, audio toggles and development safety | Existing prototype | Done |
 | 1 | Multiple levels and owned runtime lifecycle | 0 | Done |
-| 2 | Movement, camera and player controls | 1 | In progress |
-| 3 | Internal editor foundation | 1; 2 for final play-test UX | Not started |
+| 2 | Movement, camera and player controls | 1 | Done; hardware matrix deferred to P9-01 |
+| 3 | Internal editor foundation | 1; 2 for final play-test UX | In progress |
 | 4 | Obstacles, signals and puzzles | 2, 3 | Not started |
 | 5 | Enemies, rival and guide NPC | 2, 3; 4 for encounter signals | Not started |
 | 6 | Playable first region and soundtrack | 4, 5 | Not started |
@@ -120,18 +120,21 @@ Requirements: MOV-01–06, UX-05. Outcome: dependable controls across course typ
   record stopping distance at several approach speeds.
 - [x] **P2-03** Implement standard, ice, rubber and rough surface profiles with
   shared physics/audio metadata and readable visual differences.
-- [ ] **P2-04** Add camera zones and smooth transitions for speed, vertical,
+- [x] **P2-04** Add camera zones and smooth transitions for speed, vertical,
   puzzle and wide-arena fixtures.
-- [ ] **P2-05** Resolve scenery occlusion and test edge/landing visibility;
+- [x] **P2-05** Resolve scenery occlusion and test edge/landing visibility;
   evaluate optional rotation only if the exploration fixture needs it.
-- [ ] **P2-06** Add contact/landing/sliding feedback and safely handle focus loss,
+- [x] **P2-06** Add contact/landing/sliding feedback and safely handle focus loss,
   disconnected controllers and input clearing during resets.
 - [ ] **P2-07** Verify comparable control behaviour at 30/60/120 Hz displays,
-  repeat landings and contacts, and preserve the legacy route.
+  repeat landings and contacts, and preserve the legacy route. Automated cadence,
+  contact and legacy checks pass. Physical controller/display coverage remains
+  open under **P9-01**; the user accepted the movement fixtures and asked to
+  continue, with further tuning later (4 September 2026).
 
 Acceptance gate:
 
-- [ ] **G2** Keyboard and controller can complete movement fixtures and recover
+- [x] **G2** Keyboard and controller can complete movement fixtures and recover
   from pause/disconnect. The ball stays visible in all camera fixtures. Document
   braking/surface tuning and resolve unexplained physics differences.
 
@@ -422,8 +425,16 @@ the specific commit, PR, build or play-test report.
 
 | 2026-09-04 | P2-01–03 | Done | [Movement progress and measured stopping distances](PHASE_2_MOVEMENT.md); 36 braking samples; Grip Lab and keyboard/controller API relay completion | P2-04–07 and G2 remain open; current work committed at user request with 15 Node tests/build passing and a pending 30 Hz landing-check failure |
 
+| 2026-09-04 | P2-04–06 | Done | [Camera, contact and full regression evidence](PHASE_2_MOVEMENT.md); landing classification fixed; six keyboard/controller Sightlines runs; occlusion screenshot inspected | P2-07 / G2 await human and physical hardware checks |
+
+| 2026-09-04 | P2-03 / G2 | Revised; gate open | Human review: Sightlines looks great; initial Grip Lab surfaces looked/felt too similar. Stronger material identities, drift/turn/drag behaviour and larger lab areas now pass 48 movement samples and the full regression suite | Human retest of revised Grip Lab; hardware matrix remains unverified |
+
+| 2026-09-04 | P3 foundation | In progress | [Editor document model](PHASE_3_EDITOR.md); five tests cover atomic commands, recovery, prefab reference remapping and detached play documents | Editor UI and in-context G3 workflow still to build; no P3 task is marked complete |
+
+| 2026-09-04 | G2 | Accepted | User retest: “all look good now” and instruction to keep going; full automated suite passes | Physical device/display matrix remains explicitly open at P2-07 / P9-01; continue editor work |
+
 ## Next action
 
-Continue **P2-04** through **P2-07**: diagnose the missed landing at 30 Hz,
-validate camera zones and occlusion, and re-run the full regression suite.
-Finish the phase-2 acceptance evidence before marking the phase complete.
+Build the phase-3 editor mode, viewport, palette and inspector on the tested
+command/document foundation. Keep P2-07 hardware coverage in the P9-01 support
+matrix; the accepted Phase 2 fixtures no longer block authoring work.
