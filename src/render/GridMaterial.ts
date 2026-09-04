@@ -112,6 +112,11 @@ export class GridMaterial extends THREE.ShaderMaterial {
       fragmentShader: FRAG,
       transparent: true,
       depthWrite: true,
+      // The neon edge lines lie on these faces. Bias the filled polygons
+      // back slightly so the outlines do not compete with them for depth.
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
       side: THREE.FrontSide,
     });
   }

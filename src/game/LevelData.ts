@@ -31,6 +31,8 @@ export type SlabPiece = {
   thick?: number;
   tone?: Tone;
   label?: string;
+  /** Shared tile-grid origin for fragments of one floor surface. */
+  gridOrigin?: { x: number; z: number };
 };
 
 export type RampPiece = {
@@ -160,8 +162,9 @@ export interface LevelDefinition {
 
 /**
  * Emits a rectangular field of tiles (cols x rows) with holes punched out.
- * Contiguous tiles in each row are merged into single slabs; each hole
- * becomes a `void` hazard marker so it renders as a data void.
+ * Openings have clearance around the one-tile-diameter marble. Split the
+ * floor into horizontal bands around the openings, using the same bounds
+ * for the solid slabs and their void markers.
  */
 function tileField(
   x0: number,
@@ -173,21 +176,32 @@ function tileField(
   tone: Tone = 'blue',
 ): Piece[] {
   const out: Piece[] = [];
-  const isHole = (c: number, r: number) => holes.some(([hc, hr]) => hc === c && hr === r);
-  for (let r = 0; r < rows; r++) {
-    let runStart = -1;
-    for (let c = 0; c <= cols; c++) {
-      const solid = c < cols && !isHole(c, r);
-      if (solid && runStart < 0) runStart = c;
-      if (!solid && runStart >= 0) {
-        const w = c - runStart;
-        out.push({ kind: 'slab', x: x0 + runStart + w / 2, z: z0 + r + 0.5, w, d: 1, y, tone });
-        runStart = -1;
-      }
+  const clearance = 0.25;
+  const openings = holes.map(([c, r]) => ({
+    xMin: Math.max(x0, x0 + c - clearance),
+    xMax: Math.min(x0 + cols, x0 + c + 1 + clearance),
+    zMin: Math.max(z0, z0 + r - clearance),
+    zMax: Math.min(z0 + rows, z0 + r + 1 + clearance),
+  }));
+  const bands = [...new Set([z0, z0 + rows, ...openings.flatMap(h => [h.zMin, h.zMax])])].sort((a, b) => a - b);
+  const gridOrigin = { x: x0, z: z0 };
+  for (let i = 1; i < bands.length; i++) {
+    const zMin = bands[i - 1]!;
+    const zMax = bands[i]!;
+    const cuts = openings.filter(h => h.zMin < zMax && h.zMax > zMin).sort((a, b) => a.xMin - b.xMin);
+    let start = x0;
+    const addSlab = (end: number): void => {
+      if (end <= start) return;
+      out.push({ kind: 'slab', x: (start + end) / 2, z: (zMin + zMax) / 2, w: end - start, d: zMax - zMin, y, tone, gridOrigin });
+    };
+    for (const cut of cuts) {
+      addSlab(cut.xMin);
+      start = Math.max(start, cut.xMax);
     }
+    addSlab(x0 + cols);
   }
-  for (const [c, r] of holes) {
-    out.push({ kind: 'void', x: x0 + c + 0.5, z: z0 + r + 0.5, w: 1, d: 1, y });
+  for (const h of openings) {
+    out.push({ kind: 'void', x: (h.xMin + h.xMax) / 2, z: (h.zMin + h.zMax) / 2, w: h.xMax - h.xMin, d: h.zMax - h.zMin, y });
   }
   return out;
 }
@@ -237,9 +251,10 @@ export const LEVEL: LevelDefinition = {
 
     // ---------------------------------------------------------------- 04
     // LEDGE heading +x over the void, with a jog in the middle. Railed.
-    { kind: 'slab', x: 8, z: -22, w: 7, d: 3, y: 3, tone: 'pink' },
+    // Slabs meet at the jog edges; overlapping coplanar tops cause z-fighting.
+    { kind: 'slab', x: 7.25, z: -22, w: 5.5, d: 3, y: 3, tone: 'pink' },
     { kind: 'slab', x: 11.5, z: -20.5, w: 3, d: 6, y: 3, tone: 'pink' },
-    { kind: 'slab', x: 15.5, z: -19, w: 7, d: 3, y: 3, tone: 'pink' },
+    { kind: 'slab', x: 16, z: -19, w: 6, d: 3, y: 3, tone: 'pink' },
     rail(8.75, -23.75, 8.5, 0.5, 3), // ledge 1 + jog, -z edge (x 4.5..13)
     rail(7.25, -20.25, 5.5, 0.5, 3), // ledge 1, +z edge up to the jog (x 4.5..10)
     rail(13.25, -22, 0.5, 3, 3), // jog, +x edge (z -23.5..-20.5)
@@ -283,7 +298,7 @@ export const LEVEL: LevelDefinition = {
 
     // ---------------------------------------------------------------- 08
     // VOID FIELD: a wide slab with data voids on its outer lanes. The centre
-    // lanes (rows 2..5) are clear, so the ramp exit is a straight brake run.
+    // braking lane stays 3.5 tiles deep after adding clearance to the holes.
     // Rails on three sides; the ramp mouth and the ledge to checkpoint C stay open.
     ...tileField(-5, -42, 14, 8, 4, [
       [0, 1], [6, 1], [9, 1], [12, 1],
@@ -351,9 +366,12 @@ export const LEVEL: LevelDefinition = {
     { kind: 'slab', x: -20, z: -4.5, w: 4, d: 4, y: 3 },
     { kind: 'wall', x: -18.65, z: -2.25, w: 6.7, d: 0.5, y: 3, h: 1.2, tone: 'pink' }, // +z edge (x -22..-15.3)
     { kind: 'wall', x: -22.25, z: -4.5, w: 0.5, d: 4, y: 3, h: 1.2, tone: 'pink' },
-    { kind: 'slab', x: -16, z: -4.5, w: 5, d: 4, y: 3, tone: 'pink' },
-    { kind: 'slab', x: -13.8, z: -2.5, w: 3, d: 8, y: 3, tone: 'pink' },
-    { kind: 'slab', x: -11, z: 0, w: 4.2, d: 3, y: 3, tone: 'pink' },
+    // Partition the bend at the landing, jog and goal boundaries so each
+    // floor point is drawn once, with the same overall track footprint.
+    { kind: 'slab', x: -16.65, z: -4.5, w: 2.7, d: 4, y: 3, tone: 'pink' },
+    { kind: 'slab', x: -13.8, z: -3.25, w: 3, d: 6.5, y: 3, tone: 'pink' },
+    { kind: 'slab', x: -14.15, z: 0.75, w: 2.3, d: 1.5, y: 3, tone: 'pink' },
+    { kind: 'slab', x: -10.6, z: -0.75, w: 3.4, d: 1.5, y: 3, tone: 'pink' },
     rail(-15.4, -6.75, 6.2, 0.5, 3), // ledge 1 + jog, -z edge (x -18.5..-12.3)
     rail(-15.55, -0.5, 0.5, 4, 3), // jog, -x edge (z -2.5..1.5)
     rail(-14.2, 1.75, 2.2, 0.5, 3), // jog, +z edge (x -15.3..-13.1)

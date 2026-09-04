@@ -157,6 +157,17 @@ export class LevelGeometry {
         const geo = gridBoxGeometry(box.size);
         const m = new THREE.Matrix4().compose(box.center, box.quat, new THREE.Vector3(1, 1, 1));
         geo.applyMatrix4(m);
+        if (piece.kind === 'slab' && piece.gridOrigin) {
+          // Keep the floor grid continuous across fractional cutout boundaries.
+          const pos = geo.getAttribute('position');
+          const normal = geo.getAttribute('normal');
+          const grid = geo.getAttribute('aGrid');
+          for (let i = 0; i < pos.count; i++) {
+            if (normal.getY(i) > 0.5) {
+              grid.setXY(i, pos.getX(i) - piece.gridOrigin.x, pos.getZ(i) - piece.gridOrigin.z);
+            }
+          }
+        }
         bucket.geos.push(geo);
         bucket.edges.push(...boxEdgeSegments(box));
         this.bounds.expandByObject(new THREE.Mesh(geo));

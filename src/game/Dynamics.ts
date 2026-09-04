@@ -61,7 +61,10 @@ const BEAM_FRAG = /* glsl */ `
   varying vec2 vUv;
   void main() {
     float h = mix(vUv.y, 1.0 - vUv.y, uInvert);
-    float fade = pow(1.0 - h, 2.2);
+    // MSAA can shade a covered sample whose pixel centre lies outside the
+    // triangle, extrapolating UVs past 0..1. A negative pow base produces
+    // NaNs that spread across the half-float bloom buffers.
+    float fade = pow(clamp(1.0 - h, 0.0, 1.0), 2.2);
     float scan = 0.7 + 0.3 * sin(vUv.y * 60.0 - uTime * 3.0);
     gl_FragColor = vec4(uColor * (1.0 + 0.4 * scan), uOpacity * fade * scan);
   }

@@ -208,3 +208,25 @@ In development builds `window.__retro` exposes `game`, `input`, `autopilot`,
 route (used to verify the course is completable end to end);
 `debug.stepsPerFrame` / `debug.fixedDt` run the simulation faster than real
 time for headless testing; `game.godMode` ignores hazard deaths.
+
+### Regression checks
+
+`npm test` (Node 22.6 or later) checks slab overlap, bend footprints, void
+clearance and the void field's floor coverage. `npm run build`
+checks TypeScript and the production bundle.
+
+For GPU checks, start the dev server, then use an installed `agent-browser`:
+
+```sh
+agent-browser --session retro-check open http://127.0.0.1:5173/retro-ball/
+agent-browser --session retro-check wait --fn '!!window.__retro'
+agent-browser --session retro-check eval --stdin < tests/rendering.browser.js
+agent-browser --session retro-check eval --stdin < tests/voids.browser.js
+```
+
+The browser check reads the HDR scene and post-processing buffers at every
+checkpoint, elevator and the goal, with antialiasing and bloom on and off.
+It fails on non-finite pixel values or WebGL errors. Inspect both bends while
+moving the camera as well: pixel validity alone does not detect depth flicker.
+The void check drops the marble into each opening from five positions and
+verifies a void death followed by a respawn at checkpoint B.
