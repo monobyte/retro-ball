@@ -1,5 +1,7 @@
 # RETRO BALL
 
+Game expansion: [Specification](docs/GAME_SPEC.md) · [Phased implementation checklist](docs/IMPLEMENTATION_PLAN.md).
+
 [**Play RETRO BALL in your browser**](https://monobyte.github.io/retro-ball/)
 
 <img width="3024" height="1728" alt="image" src="https://github.com/user-attachments/assets/677a4904-8646-494f-b877-c3b0d3984f19" />
