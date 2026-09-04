@@ -10,6 +10,7 @@ const CAMERA_DISTANCE = 160;
  * the base renderer can be exercised on its own.
  */
 export class Renderer {
+  private readonly listeners = new AbortController();
   readonly renderer: THREE.WebGLRenderer;
   readonly scene = new THREE.Scene();
   readonly camera: THREE.OrthographicCamera;
@@ -17,7 +18,7 @@ export class Renderer {
   viewHeight = 24;
   readonly target = new THREE.Vector3();
 
-  constructor(readonly canvas: HTMLCanvasElement, pixelRatioCap = 2) {
+  constructor(readonly canvas: HTMLCanvasElement, private pixelRatioCap = 2) {
     // Canvas MSAA is off on purpose: the scene renders into the PostFX
     // composer target, which carries its own multisampling when enabled.
     this.renderer = new THREE.WebGLRenderer({
@@ -34,8 +35,10 @@ export class Renderer {
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 600);
     this.camera.up.set(0, 1, 0);
     this.resize();
-    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('resize', () => { this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, this.pixelRatioCap)); this.resize(); }, { signal: this.listeners.signal });
   }
+
+  dispose(): void { this.listeners.abort(); this.renderer.dispose(); }
 
   get aspect(): number {
     return this.canvas.clientWidth / Math.max(1, this.canvas.clientHeight);
@@ -43,6 +46,7 @@ export class Renderer {
 
   /** Renders at min(device pixel ratio, cap) and resizes the drawing buffer to match. */
   setPixelRatioCap(cap: number): void {
+    this.pixelRatioCap = cap;
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, cap));
     this.resize();
   }

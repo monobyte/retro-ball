@@ -10,9 +10,11 @@ function run(args,input) {
 }
 run(['open',process.env.GAME_URL ?? 'http://127.0.0.1:5173/retro-ball/']);
 run(['wait','--fn','!!window.__retro']);
+run(['eval','--stdin'],"window.__retro.app.loadLevel('legacy')");
 for(const ratio of ['1','2']) {
   run(['set','viewport','1511','862',ratio]);
   run(['reload']); run(['wait','--fn','!!window.__retro']);
+  run(['eval','--stdin'],"window.__retro.app.loadLevel('legacy')");
   const result=run(['eval','--stdin'],readFileSync('tests/performance.browser.js','utf8'));
   writeFileSync(`${output}/performance-dpr${ratio}.json`,result);
   console.log(`Recorded DPR ${ratio}: ${output}/performance-dpr${ratio}.json`);

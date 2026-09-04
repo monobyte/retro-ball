@@ -2,6 +2,7 @@ const THREE_clamp = (v: number): number => Math.max(-1, Math.min(1, v));
 
 /** Keyboard state. Movement is expressed in screen space (right = +x, up = +y). */
 export class Input {
+  private readonly listeners = new AbortController();
   private readonly down = new Set<string>();
   private readonly pressedThisFrame = new Set<string>();
   /** Fired when Space is pressed to start the game and unlock audio. */
@@ -16,10 +17,14 @@ export class Input {
       this.pressedThisFrame.add(e.code);
       if (e.code === 'Space') this.onStartRequested?.();
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) e.preventDefault();
-    });
-    target.addEventListener('keyup', (e) => this.down.delete(e.code));
-    target.addEventListener('blur', () => this.down.clear());
+    }, { signal: this.listeners.signal });
+    target.addEventListener('keyup', (e) => this.down.delete(e.code), { signal: this.listeners.signal });
+    target.addEventListener('blur', () => this.clear(), { signal: this.listeners.signal });
   }
+
+  clear(): void { this.down.clear(); this.pressedThisFrame.clear(); this.override = null; }
+
+  dispose(): void { this.listeners.abort(); this.clear(); this.onStartRequested = null; }
 
   isDown(code: string): boolean {
     return this.down.has(code);

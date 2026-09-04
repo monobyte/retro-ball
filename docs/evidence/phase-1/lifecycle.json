@@ -1,0 +1,407 @@
+{
+  "audit": [
+    {
+      "cycle": 0,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 153,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 1,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 65,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 2,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 154,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 3,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 62,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 4,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 151,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 5,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 62,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 6,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 154,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 7,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 61,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 8,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 157,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 9,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 63,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 10,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 155,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 11,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 57,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 12,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 153,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 13,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 61,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 14,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 151,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 15,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 55,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 16,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 151,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 17,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 55,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 18,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 159,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 19,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 59,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 20,
+      "id": "legacy",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 158,
+        "programs": 28,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    },
+    {
+      "cycle": 21,
+      "id": "relay",
+      "loaded": {
+        "cameraChildren": 1,
+        "geometries": 57,
+        "programs": 27,
+        "roots": 3,
+        "textures": 19
+      },
+      "unloaded": {
+        "cameraChildren": 0,
+        "geometries": 1,
+        "programs": 10,
+        "roots": 1,
+        "textures": 14
+      }
+    }
+  ],
+  "cycles": 20,
+  "malformedRecovery": "passed",
+  "pause": "passed",
+  "queuedTransitions": "passed",
+  "relay": "WIN without resets",
+  "snapshots": "serialisable and reset groups restored",
+  "warmupCycles": 2
+}

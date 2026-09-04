@@ -137,8 +137,7 @@ export class PostFX {
 
   /** Frees GPU buffers. Call before building a replacement PostFX. */
   dispose(): void {
-    this.bloom.dispose();
-    this.vcr.dispose();
+    for (const pass of this.composer.passes) pass.dispose();
     this.composer.dispose();
   }
 

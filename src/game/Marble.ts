@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { disposeObjects } from '../runtime/disposeObjects';
 
 export const MARBLE_COLOR = new THREE.Color(1.0, 0.22, 0.85);
 
@@ -24,7 +25,7 @@ function glowTexture(): THREE.Texture {
  * Builds a small neon environment and bakes it into a PMREM env map so the
  * chrome marble reflects pink/cyan bands instead of a flat colour.
  */
-export function buildNeonEnvironment(renderer: THREE.WebGLRenderer): THREE.Texture {
+export function buildNeonEnvironment(renderer: THREE.WebGLRenderer): THREE.WebGLRenderTarget {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x07021a);
   const add = (color: number, pos: THREE.Vector3, size: [number, number], rot: THREE.Euler) => {
@@ -45,7 +46,8 @@ export function buildNeonEnvironment(renderer: THREE.WebGLRenderer): THREE.Textu
   const pmrem = new THREE.PMREMGenerator(renderer);
   const rt = pmrem.fromScene(scene, 0.04);
   pmrem.dispose();
-  return rt.texture;
+  disposeObjects(scene);
+  return rt;
 }
 
 /** Visual representation of the marble: chrome shell, pink core, glow, light and trail. */

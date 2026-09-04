@@ -53,6 +53,7 @@ const BOOL_ROWS: BoolRow[] = [
  * Every change is reported through `onChange` at once.
  */
 export class SettingsPanel {
+  private readonly listeners = new AbortController();
   private readonly root: HTMLElement;
   private readonly panel: HTMLElement;
   private readonly fullscreenButton: HTMLButtonElement;
@@ -117,12 +118,14 @@ export class SettingsPanel {
         void this.toggleFullscreen();
       }
       if ((e.code === 'Escape' || e.key === 'Escape') && !document.fullscreenElement) this.toggle();
-    });
-    document.addEventListener('fullscreenchange', () => this.refreshFullscreen());
+    }, { signal: this.listeners.signal });
+    document.addEventListener('fullscreenchange', () => this.refreshFullscreen(), { signal: this.listeners.signal });
 
     this.refresh();
     this.refreshFullscreen();
   }
+
+  dispose(): void { this.listeners.abort(); this.root.replaceChildren(); this.onChange = null; }
 
   get isOpen(): boolean {
     return !this.panel.hidden;

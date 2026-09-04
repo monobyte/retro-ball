@@ -9,7 +9,7 @@ Game expansion: [Specification](docs/GAME_SPEC.md) · [Phased implementation che
 <img width="3024" height="1728" alt="image" src="https://github.com/user-attachments/assets/9d5450a0-9a1d-47f0-bbd4-0ba334b2fa0b" />
 
 
-A single-level, isometric marble obstacle course in the spirit of *Marble
+A multi-course, isometric marble game in the spirit of *Marble
 Madness*, rebuilt as a Synthwave / Outrun fever dream: glowing grid slabs
 floating in a purple nebula, sweeping laser grids, data voids, light-elevators,
 jump pads, VCR scanlines and a synth soundtrack whose kick drum drives the glow.
@@ -119,7 +119,9 @@ All numbers live in `TUNING` (`src/physics/Physics.ts`):
 
 ## Level: the circuit
 
-`src/game/LevelData.ts` describes the course declaratively (slabs, ramps,
+`src/content/levels/legacy.json` stores the original course, with
+`src/game/LevelData.ts` retained as its regression fixture. The shared document
+format describes courses declaratively (slabs, ramps,
 walls, jump pads, elevators, lasers, voids, checkpoints, goal). The route winds
 through roughly 50 × 65 tiles, several screens in each direction:
 
@@ -209,8 +211,11 @@ src/
 
 ### Dev hooks
 
-In development builds `window.__retro` exposes `game`, `input`, `autopilot`,
-`debug` and `applySettings`. `autopilot.start()` drives the marble around the reference
+In development builds `window.__retro` exposes `app` and the active session’s
+`game`, `input`, `autopilot`,
+`debug` and `applySettings`. First load a course through the relay or
+`await __retro.app.loadLevel('legacy')`; no session exists while at the hub.
+`autopilot.start()` drives the marble around the reference
 route (used to verify the course is completable end to end);
 `debug.stepsPerFrame` / `debug.fixedDt` run the simulation faster than real
 time for headless testing; `game.godMode` ignores hazard deaths.
@@ -226,6 +231,7 @@ For GPU checks, start the dev server, then use an installed `agent-browser`:
 ```sh
 agent-browser --session retro-check open http://127.0.0.1:5173/retro-ball/
 agent-browser --session retro-check wait --fn '!!window.__retro'
+agent-browser --session retro-check eval "window.__retro.app.loadLevel('legacy')"
 agent-browser --session retro-check eval --stdin < tests/rendering.browser.js
 agent-browser --session retro-check eval --stdin < tests/voids.browser.js
 ```
@@ -241,3 +247,7 @@ For the full rendering/audio/void/course suite, run `npm run test:browser`.
 For recorded frame/physics/resource measurements, run `npm run benchmark:browser`.
 Both require the dev server and installed agent-browser. See the
 [phase-0 baseline](docs/PHASE_0_BASELINE.md) for configuration, budgets and evidence.
+
+[Phase 1 runtime and content contracts](docs/PHASE_1_RUNTIME.md) describe the
+relay selector, course lifecycle, validation, component factories and checkpoint
+snapshots. **P** pauses; the course toolbar provides retry and return-to-relay.

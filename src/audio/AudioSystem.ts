@@ -40,6 +40,19 @@ export class AudioSystem implements GameAudio {
     }
   }
 
+  async suspend(): Promise<void> { if (this.graph?.ctx.state === 'running') await this.graph.ctx.suspend(); }
+  async resume(): Promise<void> { if (this.graph?.ctx.state === 'suspended') await this.graph.ctx.resume(); }
+
+  async dispose(): Promise<void> {
+    this.music?.stop();
+    const graph = this.graph;
+    this.graph = null; this.music = null; this.sfx = null;
+    if (graph && graph.ctx.state !== 'closed') await graph.ctx.close();
+  }
+
+  get isMuted(): boolean { return this.muted; }
+  setMuted(muted: boolean): void { this.muted = muted; this.applyMute(); }
+
   toggleMute(): boolean {
     this.muted = !this.muted;
     this.applyMute();

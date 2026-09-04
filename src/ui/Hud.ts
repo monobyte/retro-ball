@@ -1,5 +1,7 @@
 import type { DeathCause } from '../game/Dynamics';
 
+const escapeHtml = (text: string): string => text.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
 const DEATH_CAPTIONS: Record<DeathCause, string> = {
   laser: 'LASER GRID CONTACT',
   void: 'DATA VOID BREACH',
@@ -21,6 +23,7 @@ export class Hud {
   private readonly overlay = document.getElementById('overlay')!;
   private readonly flashEl = document.getElementById('flash')!;
   private readonly hudEl = document.getElementById('hud')!;
+  private readonly toasts = new Map<number, HTMLElement>();
   private lastClock = '';
   private lastVel = '';
 
@@ -45,6 +48,7 @@ export class Hud {
   }
 
   showIntro(levelName: string): void {
+    levelName = escapeHtml(levelName);
     this.overlay.className = 'overlay intro';
     this.overlay.innerHTML = `
       <div class="intro-card">
@@ -89,7 +93,15 @@ export class Hud {
     el.className = 'toast';
     el.textContent = text;
     document.body.appendChild(el);
-    window.setTimeout(() => el.remove(), 1800);
+    const timer = window.setTimeout(() => { el.remove(); this.toasts.delete(timer); }, 1800);
+    this.toasts.set(timer, el);
+  }
+
+  dispose(): void {
+    for (const [timer, element] of this.toasts) { clearTimeout(timer); element.remove(); }
+    this.toasts.clear();
+    this.clearOverlay();
+    this.setHudVisible(false);
   }
 
   clearOverlay(): void {

@@ -20,10 +20,12 @@ function check(name) {
 }
 console.log(browser(['open', url]));
 browser(['wait', '--fn', '!!window.__retro']);
+evaluate("window.__retro.app.loadLevel('legacy')");
 browser(['press', 'Space']);
 for (const [name, ratio] of [['normal', '1'], ['retina', '2']]) {
   browser(['set', 'viewport', '1511', '862', ratio]);
-  browser(['reload']); browser(['wait', '--fn', '!!window.__retro']); browser(['press', 'Space']);
+  browser(['reload']); browser(['wait', '--fn', '!!window.__retro']);
+  evaluate("window.__retro.app.loadLevel('legacy')"); browser(['press', 'Space']);
   check('rendering');
   writeFileSync(`${output}/rendering-${name}.json`, readFileSync(`${output}/rendering.json`));
 }
@@ -32,6 +34,7 @@ check('audio');
 // Verify persisted choices are reapplied on a real navigation before audio unlock.
 evaluate(`document.querySelector('[aria-label="MUSIC OFF"]').click(); document.querySelector('[aria-label="SOUND FX ON"]').click();`);
 browser(['reload']); browser(['wait', '--fn', '!!window.__retro']);
+evaluate("window.__retro.app.loadLevel('legacy')");
 evaluate(`(() => { const a=window.__retro.game.audio; if (a.musicEnabled !== false || a.soundFxEnabled !== true) throw new Error('Reload lost audio preferences'); return 'Reload passed'; })()`);
 check('course');
 browser(['wait', '--fn', 'window.__retro.autopilot.done']);
@@ -41,4 +44,7 @@ console.log(completion);
 browser(['set', 'viewport', '1280', '800', '1']);
 evaluate('window.__retro.game.renderer.setPixelRatioCap(1)');
 browser(['screenshot', `${output}/completed-course.png`]);
+browser(['press', 'Space']);
+check('lifecycle');
+browser(['screenshot', `${output}/relay-menu.png`]);
 console.log(`Evidence: ${output}`);

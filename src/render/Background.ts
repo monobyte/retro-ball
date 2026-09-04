@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { disposeObjects } from '../runtime/disposeObjects';
 
 const NOISE = /* glsl */ `
   float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
@@ -237,6 +238,15 @@ export class Background {
       this.shards.push(shard);
       this.group.add(shard);
     }
+  }
+
+  dispose(): void {
+    this.nebulaTarget?.dispose();
+    this.nebulaTarget = null;
+    this.blitMat.uniforms['uMap']!.value = null;
+    disposeObjects(this.group, this.nebula, this.offscreen);
+    this.nebulaMat.dispose();
+    this.blitMat.dispose();
   }
 
   setAspect(aspect: number): void {

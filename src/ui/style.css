@@ -300,3 +300,24 @@ canvas#game {
 }
 .settings-hint { margin-top: 5px; font-size: 11px; line-height: 1.4; color: rgba(203, 184, 255, 0.6); }
 .settings-reset { display: block; width: 100%; margin-top: 16px; }
+
+/* Relay selection and explicit session controls. */
+.runtime-menu {
+  position: fixed; inset: 0; z-index: 15; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: center;
+  max-width: 760px; margin: auto; padding: 50px; gap: 18px;
+  background: rgba(7, 2, 22, .94); overflow-y: auto;
+  font-family: var(--font-mono); color: #ddd3fa;
+}
+.runtime-menu[hidden], .runtime-toolbar[hidden] { display: none; }
+.runtime-menu h1 { font-size: clamp(32px, 6vw, 64px); color: var(--cyan); margin: 0; letter-spacing: .05em; }
+.runtime-menu p { margin: 0 0 16px; line-height: 1.6; white-space: pre-wrap; }
+.runtime-menu button, .runtime-toolbar button {
+  font: inherit; color: var(--cyan); cursor: pointer; text-align: left;
+  background: #150a2c; border: 1px solid #7547b5; padding: 16px 20px;
+}
+.runtime-menu button span { display: block; color: #c2b1d9; font-size: 13px; line-height: 1.6; margin-top: 10px; }
+.runtime-menu button:hover, .runtime-menu button:focus-visible, .runtime-toolbar button:focus-visible { border-color: var(--cyan); outline: 2px solid var(--cyan); outline-offset: 3px; }
+.runtime-toolbar { position: fixed; left: 18px; bottom: 18px; z-index: 20; display: flex; gap: 8px; font: 12px var(--font-mono); }
+.runtime-toolbar button { padding: 10px 14px; background: rgba(10, 3, 28, .85); }
+@media(max-width: 600px) { .runtime-menu { padding: 30px 24px; } .runtime-toolbar { left: 8px; bottom: 8px; gap: 4px; } }

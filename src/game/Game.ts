@@ -8,6 +8,9 @@ import { LevelGeometry } from './Level';
 import { LevelDynamics, type DeathCause } from './Dynamics';
 import { Marble, MARBLE_COLOR, buildNeonEnvironment } from './Marble';
 import { Burst } from './Burst';
+import { disposeObjects } from '../runtime/disposeObjects';
+import type { LevelDocument } from '../content/LevelDocument';
+import type { CheckpointSnapshot } from '../runtime/Component';
 import type { LevelDefinition } from './LevelData';
 
 export type GameState = 'intro' | 'play' | 'reset' | 'win';
@@ -41,6 +44,11 @@ const INTRO_VIEW_HEIGHT = 74;
 
 export class Game {
   state: GameState = 'intro';
+  readonly root = new THREE.Group();
+  private readonly listeners = new AbortController();
+  private readonly environment: THREE.WebGLRenderTarget;
+  private disposed = false;
+  private checkpointSnapshot: CheckpointSnapshot;
   readonly fx: FxState = { glitch: 0, bloomBoost: 0, beat: 0 };
   readonly level: LevelGeometry;
   readonly dynamics: LevelDynamics;
@@ -101,27 +109,30 @@ export class Game {
     private readonly physics: Physics,
     private readonly input: Input,
     private readonly hud: Hud,
+    readonly document: LevelDocument,
   ) {
+    renderer.scene.add(this.root);
     this.level = new LevelGeometry(def);
-    renderer.scene.add(this.level.group);
+    this.root.add(this.level.group);
     for (const box of this.level.boxes) physics.addStaticBox(box);
 
-    this.dynamics = new LevelDynamics(def, physics, this.level.labels, TUNING.gravity, TUNING.linearDamping);
-    renderer.scene.add(this.dynamics.group);
+    this.dynamics = new LevelDynamics(def, physics, this.level.labels, TUNING.gravity, TUNING.linearDamping, document);
+    this.root.add(this.dynamics.group);
 
-    const env = buildNeonEnvironment(renderer.renderer);
-    this.marble = new Marble(TUNING.radius, env);
-    renderer.scene.add(this.marble.group);
-    for (const o of this.marble.sceneExtras) renderer.scene.add(o);
-    renderer.scene.add(this.burst.points);
+    this.environment = buildNeonEnvironment(renderer.renderer);
+    this.marble = new Marble(TUNING.radius, this.environment.texture);
+    this.root.add(this.marble.group);
+    for (const o of this.marble.sceneExtras) this.root.add(o);
+    this.root.add(this.burst.points);
 
-    renderer.scene.add(new THREE.HemisphereLight(0x6a3cff, 0x120428, 0.9));
+    this.root.add(new THREE.HemisphereLight(0x6a3cff, 0x120428, 0.9));
     const key = new THREE.DirectionalLight(0x38f5ff, 1.2);
     key.position.set(-6, 10, 4);
-    renderer.scene.add(key);
+    this.root.add(key);
 
     this.spawn = new THREE.Vector3(def.start.x, def.start.y, def.start.z);
     this.ball = physics.createBall(this.spawn);
+    this.checkpointSnapshot = this.captureCheckpoint(null);
     this.level.bounds.getCenter(this.levelCenter);
     this.lowestY = this.level.bounds.min.y;
 
@@ -130,12 +141,23 @@ export class Game {
     this.renderer.updateFrustum();
     this.renderer.lookAt(this.camTarget);
     this.onResize();
-    window.addEventListener('resize', () => this.onResize());
+    window.addEventListener('resize', () => this.onResize(), { signal: this.listeners.signal });
 
     this.marble.resetTrail(this.spawn);
     this.hud.showIntro(def.name);
     this.hud.setHudVisible(false);
     this.input.onStartRequested = () => this.boot();
+  }
+
+  dispose(): void {
+    if (this.disposed) return;
+    this.disposed = true;
+    this.listeners.abort();
+    this.input.onStartRequested = null;
+    this.audio = null;
+    this.dynamics.dispose();
+    disposeObjects(this.root);
+    this.environment.dispose();
   }
 
   private onResize(): void {
@@ -166,6 +188,7 @@ export class Game {
   /* ---------------------------------------------------------------- loop */
 
   update(dt: number): void {
+    if (this.disposed) return;
     this.time += dt;
     this.stateTime += dt;
     const beat = this.audio ? this.audio.beatEnergy() : Math.max(0, 1 - ((this.time * 112) / 60 % 1) * 1.8);
@@ -201,7 +224,7 @@ export class Game {
     this.marble.update(this.time, beat, this.state === 'play' ? speed : 0, TUNING.maxSpeed);
     const glowPos = this.marble.group.visible ? this.marble.group.position : this.resetFocus;
     this.level.setFrame(this.time, beat, glowPos);
-    this.dynamics.update(this.time, dt, beat, glowPos);
+    this.dynamics.update(this.physics.simulationTime, dt, beat, glowPos, this.time);
     this.burst.update(dt, TUNING.gravity);
     this.updateCamera(dt, speed);
 
@@ -217,7 +240,7 @@ export class Game {
     this.camTarget.lerp(this.tmp, 1 - Math.exp(-dt * 1.5));
     this.physics.update(dt, (stepDt) => {
       void stepDt;
-      this.dynamics.stepKinematics(this.time);
+      this.dynamics.stepKinematics(this.physics.simulationTime);
     });
   }
 
@@ -228,7 +251,7 @@ export class Game {
     const basis = this.renderer.groundBasis();
 
     this.physics.update(dt, (stepDt) => {
-      this.dynamics.stepKinematics(this.time);
+      this.dynamics.stepKinematics(this.physics.simulationTime);
       this.readBall();
       this.prevVel.copy(this.ballVel);
       this.grounded = this.physics.groundNormal(this.ball, this.groundN) !== null;
@@ -244,7 +267,7 @@ export class Game {
       return;
     }
 
-    for (const ev of this.dynamics.checkTriggers(this.ballPos, TUNING.radius, this.time)) {
+    for (const ev of this.dynamics.checkTriggers(this.ballPos, TUNING.radius, this.physics.simulationTime)) {
       switch (ev.type) {
         case 'death':
           if (this.godMode) break;
@@ -256,12 +279,17 @@ export class Game {
           this.audio?.jump();
           this.fx.bloomBoost = 0.6;
           break;
-        case 'checkpoint':
+        case 'checkpoint': {
+          const instance = this.document.instances.find(i => i.type === 'checkpoint' && i.parameters.id === ev.id);
+          const policy = this.document.checkpoints.find(c => c.instanceId === instance?.id);
           this.spawn.copy(ev.position);
+          if (policy) this.spawn.set(policy.spawn.x, policy.spawn.y, policy.spawn.z);
+          this.checkpointSnapshot = this.captureCheckpoint(policy?.id ?? null);
           this.hud.showToast('CHECKPOINT LOGGED');
           this.hud.flash('rgba(56,245,255,0.35)', 0.6);
           this.audio?.checkpoint();
           break;
+        }
         case 'goal':
           this.win(ev.position);
           return;
@@ -387,6 +415,9 @@ export class Game {
     this.runTime += dt;
     const t = this.stateTime;
     if (t > 0.75 && this.marble.scale === 0) {
+      this.restoreCheckpointGroups();
+      this.input.clear();
+      this.prevVel.set(0, 0, 0); this.wasGrounded = false; this.impactCooldown = 0;
       this.physics.resetBall(this.ball, this.spawn);
       this.ball.body.setGravityScale(1, true);
       this.marble.resetTrail(this.spawn);
@@ -397,7 +428,7 @@ export class Game {
     if (this.marble.scale > 0) {
       this.marble.scale = Math.min(1, this.marble.scale + dt * 3.5);
     }
-    this.physics.update(dt, () => this.dynamics.stepKinematics(this.time));
+    this.physics.update(dt, () => this.dynamics.stepKinematics(this.physics.simulationTime));
     if (t > 1.15) {
       this.hud.clearOverlay();
       this.setState('play');
@@ -418,7 +449,7 @@ export class Game {
   }
 
   private updateWin(dt: number): void {
-    this.physics.update(dt, () => this.dynamics.stepKinematics(this.time));
+    this.physics.update(dt, () => this.dynamics.stepKinematics(this.physics.simulationTime));
     if (this.stateTime > 0.5 && this.stateTime - dt <= 0.5) {
       this.burst.emit(this.winOrigin.clone().setY(this.winOrigin.y + 2), [new THREE.Color(0.3, 1, 1), MARBLE_COLOR], 10, 0.8);
     }
@@ -427,9 +458,32 @@ export class Game {
     }
   }
 
-  private restart(): void {
+  captureCheckpoint(checkpointId: string | null): CheckpointSnapshot {
+    const snapshot: CheckpointSnapshot = {
+      schemaVersion: 1, levelId: this.document.id, contentVersion: this.document.contentVersion,
+      checkpointId, spawn: { x: this.spawn.x, y: this.spawn.y, z: this.spawn.z }, groups: {},
+    };
+    for (const group of this.document.resetGroups) snapshot.groups[group.id] = { components: {}, actors: {}, puzzles: {}, objectives: {} };
+    for (const component of this.dynamics.components) snapshot.groups[component.resetGroup]!.components[component.id] = component.capture();
+    return structuredClone(snapshot);
+  }
+
+  private restoreCheckpointGroups(): void {
+    const checkpoint = this.document.checkpoints.find(c => c.id === this.checkpointSnapshot.checkpointId);
+    const resetGroups = new Set(checkpoint?.resetGroups ?? this.document.resetGroups.filter(g => g.policy !== 'course').map(g => g.id));
+    for (const component of this.dynamics.components) {
+      if (resetGroups.has(component.resetGroup)) component.reset(this.checkpointSnapshot.groups[component.resetGroup]?.components[component.id] ?? null);
+      // Cooldowns and transient triggers clear even for persistent course groups.
+      else if (component.capture() === null) component.reset(null);
+    }
+  }
+
+  restart(): void {
     this.spawn.set(this.def.start.x, this.def.start.y, this.def.start.z);
     this.dynamics.resetCheckpoints();
+    for (const component of this.dynamics.components) component.reset(null);
+    this.checkpointSnapshot = this.captureCheckpoint(null);
+    this.input.clear(); this.prevVel.set(0, 0, 0); this.wasGrounded = false; this.impactCooldown = 0;
     this.physics.resetBall(this.ball, this.spawn);
     this.ball.body.setGravityScale(1, true);
     this.marble.resetTrail(this.spawn);
@@ -437,6 +491,7 @@ export class Game {
     this.runTime = 0;
     this.resets = 0;
     this.hud.clearOverlay();
+    this.hud.setHudVisible(true);
     this.fx.glitch = 0.8;
     this.setState('play');
   }

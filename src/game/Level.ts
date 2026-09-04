@@ -183,6 +183,7 @@ export class LevelGeometry {
 
     for (const [tone, bucket] of byTone) {
       const merged = mergeGeometries(bucket.geos, false);
+      for (const geometry of bucket.geos) geometry.dispose();
       if (!merged) continue;
       const mat = new GridMaterial(TONES[tone]);
       this.materials.push(mat);

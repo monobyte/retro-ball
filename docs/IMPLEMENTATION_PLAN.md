@@ -2,7 +2,7 @@
 
 Specification: [Game and engine specification](GAME_SPEC.md).  
 Baseline: `9f93950`, reviewed 4 September 2026.  
-Current delivery state: phase 0 complete; phase 1 is next.
+Current delivery state: phases 0–1 complete; phase 2 is next.
 
 ## How to track progress
 
@@ -37,7 +37,7 @@ existing features; they do not claim campaign, editor or opponent functionality.
 | Phase | Outcome | Depends on | Status |
 | --- | --- | --- | --- |
 | 0 | Baseline, budgets, audio toggles and development safety | Existing prototype | Done |
-| 1 | Multiple levels and owned runtime lifecycle | 0 | Not started |
+| 1 | Multiple levels and owned runtime lifecycle | 0 | Done |
 | 2 | Movement, camera and player controls | 1 | Not started |
 | 3 | Internal editor foundation | 1; 2 for final play-test UX | Not started |
 | 4 | Obstacles, signals and puzzles | 2, 3 | Not started |
@@ -87,26 +87,26 @@ Acceptance gate:
 Requirements: FND-01–06, WLD-05. Outcome: switch between real courses without
 leaking state or duplicating game code.
 
-- [ ] **P1-01** Define versioned level/catalogue documents, stable instance IDs,
+- [x] **P1-01** Define versioned level/catalogue documents, stable instance IDs,
   typed references and runtime validation with actionable errors.
-- [ ] **P1-02** Convert the existing `LEVEL` into a catalogue entry and preserve
+- [x] **P1-02** Convert the existing `LEVEL` into a catalogue entry and preserve
   it as the legacy course and a regression fixture.
-- [ ] **P1-03** Extract an application shell and level session from `main.ts`
+- [x] **P1-03** Extract an application shell and level session from `main.ts`
   and `Game`; implement explicit lifecycle states and recoverable load failures.
-- [ ] **P1-04** Define component create/update/reset/dispose contracts and a
+- [x] **P1-04** Define component create/update/reset/dispose contracts and a
   typed registry. Migrate existing dynamic pieces without changing their feel.
-- [ ] **P1-05** Separate fixed simulation, presentation and audio clocks; specify
+- [x] **P1-05** Separate fixed simulation, presentation and audio clocks; specify
   event ordering and queue lifecycle mutations safely.
-- [ ] **P1-06** Implement complete teardown of physics worlds, render objects,
+- [x] **P1-06** Implement complete teardown of physics worlds, render objects,
   owned materials/textures, audio, input listeners and event subscriptions.
-- [ ] **P1-07** Define checkpoint reset groups and serialisable logical snapshots;
+- [x] **P1-07** Define checkpoint reset groups and serialisable logical snapshots;
   cover actors, puzzles and objectives in the contract before implementing them.
-- [ ] **P1-08** Add a minimal hub/selector and a second small test level to prove
+- [x] **P1-08** Add a minimal hub/selector and a second small test level to prove
   loading, retrying, returning and failure recovery.
 
 Acceptance gate:
 
-- [ ] **G1** Complete the legacy course and the test course. Cycle between hub
+- [x] **G1** Complete the legacy course and the test course. Cycle between hub
   and courses twenty times without accumulating owned resources, duplicate input
   handlers, music layers or stale collision objects. A malformed level fails safely.
 
@@ -418,8 +418,10 @@ the specific commit, PR, build or play-test report.
 
 | 2026-09-04 | P0-01–07, G0 | Done | [Baseline, measurements and test evidence](PHASE_0_BASELINE.md); six Node tests, clean install/build, 64 HDR scenarios, 45 void drops, four audio combinations and full course WIN | Phase 1 runtime/schema; high Retina preset remains below 60 FPS target |
 
+| 2026-09-04 | P1-01–08, G1 | Done | [Runtime contracts and gate evidence](PHASE_1_RUNTIME.md); eleven Node tests; legacy WIN; relay WIN; twenty rendered transition cycles; checkpoint reset, pause, invalid-document and audio/input/GPU teardown checks | Phase 2 action map, braking, surfaces and camera fixtures |
+
 ## Next action
 
-Implement **P1-01** and **P1-02**: versioned validated documents and catalogue,
-retaining the current course as the legacy fixture. Then extract the session
-lifecycle and prove transitions and disposal before building new world content.
+Begin **P2-01** through **P2-03**: the action map, keyboard/controller controls,
+braking measurements and surface profiles. Then build camera/occlusion fixtures
+and validate display-rate independence before closing phase 2.

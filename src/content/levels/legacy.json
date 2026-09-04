@@ -1,0 +1,2485 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "legacy",
+  "metadata": {
+    "name": "NEON GRID CIRCUIT",
+    "description": "The original synthwave circuit.",
+    "difficulty": "normal"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": 0,
+    "y": 0.6,
+    "z": 1
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 7,
+        "d": 7,
+        "label": "START"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-002",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -7.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 8
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-003",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -1,
+          "y": 0,
+          "z": -5.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 2,
+        "d": 0.5,
+        "h": 1,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-004",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": -8.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 2,
+        "d": 0.5,
+        "h": 1,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "ramp-005",
+      "type": "ramp",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -14.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "len": 6,
+        "w": 3,
+        "y1": 3,
+        "dir": "-z"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-006",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 3,
+          "z": -22
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 9,
+        "d": 9
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-007",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -4.75,
+          "y": 3,
+          "z": -22
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 9,
+        "h": 1.2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-008",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 3,
+          "z": -26.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 9,
+        "d": 0.5,
+        "h": 1.2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "laser-009",
+      "type": "laser",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 3,
+          "z": -22
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "axis": "x",
+        "length": 9,
+        "sweep": 2.4,
+        "speed": 0.16,
+        "dwell": 2.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-010",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 7.25,
+          "y": 3,
+          "z": -22
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 5.5,
+        "d": 3,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-011",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 11.5,
+          "y": 3,
+          "z": -20.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-012",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 16,
+          "y": 3,
+          "z": -19
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 3,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-013",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 8.75,
+          "y": 3,
+          "z": -23.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8.5,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-014",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 7.25,
+          "y": 3,
+          "z": -20.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 5.5,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-015",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 13.25,
+          "y": 3,
+          "z": -22
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 3,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-016",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 9.75,
+          "y": 3,
+          "z": -19
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 3,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-017",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 14.5,
+          "y": 3,
+          "z": -17.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 9,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-018",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 16,
+          "y": 3,
+          "z": -20.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-019",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 21,
+          "y": 3,
+          "z": -19
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 4,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-020",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 21,
+          "y": 3,
+          "z": -19
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-021",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 21,
+          "y": 3,
+          "z": -16.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4.5,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-022",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 21,
+          "y": 3,
+          "z": -23
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 4,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-023",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 18.75,
+          "y": 3,
+          "z": -23
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 4,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-024",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 23.25,
+          "y": 3,
+          "z": -21
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 8,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "jumppad-025",
+      "type": "jumppad",
+      "transform": {
+        "position": {
+          "x": 21,
+          "y": 3,
+          "z": -24.6
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "targetX": 0,
+        "targetZ": -7.899999999999999,
+        "targetY": 1.5999999999999996
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-026",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 21,
+          "y": 4,
+          "z": -34
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 7
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-027",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 21,
+          "y": 4,
+          "z": -37.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 0.5,
+        "h": 1.2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-028",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 18.25,
+          "y": 4,
+          "z": -34
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 7,
+        "h": 1.2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-029",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 27,
+          "y": 4,
+          "z": -34
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 7
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-030",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 30.25,
+          "y": 4,
+          "z": -36.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 2.5,
+        "h": 1.2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-031",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 30.25,
+          "y": 4,
+          "z": -31.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 1.5,
+        "h": 1.2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-032",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 27,
+          "y": 4,
+          "z": -37.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-033",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 24,
+          "y": 4,
+          "z": -30.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 12,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "elevator-034",
+      "type": "elevator",
+      "transform": {
+        "position": {
+          "x": 31.5,
+          "y": 4,
+          "z": -33.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3,
+        "y1": 6,
+        "period": 9
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-035",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 31.5,
+          "y": 10,
+          "z": -38
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 5,
+        "d": 6
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-036",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 31.5,
+          "y": 10,
+          "z": -38
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-037",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 33.75,
+          "y": 10,
+          "z": -38
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 6,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-038",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 31.5,
+          "y": 10,
+          "z": -40.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 5,
+        "d": 0.5,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-039",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 29.25,
+          "y": 10,
+          "z": -36
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 2,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-040",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 29.25,
+          "y": 10,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 1,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "ramp-041",
+      "type": "ramp",
+      "transform": {
+        "position": {
+          "x": 19,
+          "y": 10,
+          "z": -38.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "len": 20,
+        "w": 3,
+        "y1": -6,
+        "dir": "-x"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-042",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": 4,
+          "z": -41.625
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 14,
+        "d": 0.75,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -7,
+          "z": -0.375
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-043",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -1.5,
+          "y": 4,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4.5,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -3.5,
+          "z": -1.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-044",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 3,
+          "y": 4,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -8,
+          "z": -1.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-045",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 6,
+          "y": 4,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -11,
+          "z": -1.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-046",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 8.625,
+          "y": 4,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.75,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -13.625,
+          "z": -1.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-047",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": 4,
+          "z": -38
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 14,
+        "d": 3.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -7,
+          "z": -4
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-048",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -4.625,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.75,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -0.375,
+          "z": -6.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-049",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -2,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -3,
+          "z": -6.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-050",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 1,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -6,
+          "z": -6.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-051",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 4,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -9,
+          "z": -6.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-052",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 7,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -12,
+          "z": -6.5
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-053",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": 4,
+          "z": -34.375
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 14,
+        "d": 0.75,
+        "tone": "blue",
+        "gridOrigin": {
+          "x": -7,
+          "z": -7.625
+        }
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-054",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": -4.375,
+          "y": 4,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.25,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-055",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": 1.5,
+          "y": 4,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-056",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": 4.5,
+          "y": 4,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-057",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": 7.5,
+          "y": 4,
+          "z": -40.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-058",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": -3.5,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-059",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": -0.5,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-060",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": 2.5,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-061",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": 5.5,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "void-062",
+      "type": "void",
+      "transform": {
+        "position": {
+          "x": 8.375,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.25,
+        "d": 1.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-063",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -5.25,
+          "y": 4,
+          "z": -38
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 8,
+        "h": 1.2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-064",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": 4,
+          "z": -33.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 14,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-065",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -4.25,
+          "y": 4,
+          "z": -42.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 1.5,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-066",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 4.25,
+          "y": 4,
+          "z": -42.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 9.5,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-067",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 9.25,
+          "y": 4,
+          "z": -41
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 2,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-068",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 9.25,
+          "y": 4,
+          "z": -35.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 3,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-069",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -2,
+          "y": 4,
+          "z": -46
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 8,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-070",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -3.75,
+          "y": 4,
+          "z": -46
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 8,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-071",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -0.25,
+          "y": 4,
+          "z": -46
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 8,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-072",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -2,
+          "y": 4,
+          "z": -52
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 4,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-073",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": -2,
+          "y": 4,
+          "z": -52
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-074",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 0.25,
+          "y": 4,
+          "z": -52
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 4,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-075",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -2,
+          "y": 4,
+          "z": -54.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-076",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 4,
+          "z": -52
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-077",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 4,
+          "z": -50.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-078",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 4,
+          "z": -53.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "laser-079",
+      "type": "laser",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 4,
+          "z": -52
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "axis": "z",
+        "length": 3,
+        "sweep": 0,
+        "speed": 0,
+        "gatePeriod": 4,
+        "gateDuty": 0.3
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "elevator-080",
+      "type": "elevator",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 4,
+          "z": -52
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3,
+        "y1": 5,
+        "period": 8,
+        "phase": 0.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-081",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 9,
+          "z": -47.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 5,
+        "d": 6
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-082",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 9,
+          "z": -47.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 4
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-083",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -15.75,
+          "y": 9,
+          "z": -47.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 6,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-084",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 9,
+          "z": -35
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 19
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-085",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -15.75,
+          "y": 9,
+          "z": -35
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 19,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-086",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -11.25,
+          "y": 9,
+          "z": -38
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 25,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "laser-087",
+      "type": "laser",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 9,
+          "z": -42
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "axis": "x",
+        "length": 4,
+        "sweep": 0,
+        "speed": 0,
+        "gatePeriod": 4,
+        "gateDuty": 0.3,
+        "phase": 0
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "laser-088",
+      "type": "laser",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 9,
+          "z": -37
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "axis": "x",
+        "length": 4,
+        "sweep": 0,
+        "speed": 0,
+        "gatePeriod": 4,
+        "gateDuty": 0.3,
+        "phase": 0.85
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "laser-089",
+      "type": "laser",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 9,
+          "z": -32
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "axis": "x",
+        "length": 4,
+        "sweep": 0,
+        "speed": 0,
+        "gatePeriod": 4,
+        "gateDuty": 0.3,
+        "phase": 0.7
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-090",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 9,
+          "z": -24
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 5,
+        "d": 3,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-091",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -16.25,
+          "y": 9,
+          "z": -24
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 3,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-092",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -10.75,
+          "y": 9,
+          "z": -24
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 3,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "jumppad-093",
+      "type": "jumppad",
+      "transform": {
+        "position": {
+          "x": -13.5,
+          "y": 9,
+          "z": -23.2
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "targetX": -6,
+        "targetZ": 6.699999999999999,
+        "targetY": -1.4000000000000004
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-094",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -20,
+          "y": 7,
+          "z": -15.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 7,
+        "d": 7
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-095",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": -20,
+          "y": 7,
+          "z": -15.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-096",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -23.25,
+          "y": 7,
+          "z": -15.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 7,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-097",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -20,
+          "y": 7,
+          "z": -18.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 7,
+        "d": 0.5,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-098",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -22.5,
+          "y": 7,
+          "z": -12.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 2,
+        "d": 0.5,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-099",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -17.5,
+          "y": 7,
+          "z": -12.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 2,
+        "d": 0.5,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-100",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -16.25,
+          "y": 7,
+          "z": -15.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 7,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "ramp-101",
+      "type": "ramp",
+      "transform": {
+        "position": {
+          "x": -20,
+          "y": 7,
+          "z": -8.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "len": 7,
+        "w": 3,
+        "y1": -4,
+        "dir": "+z"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-102",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -20,
+          "y": 3,
+          "z": -4.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 4
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-103",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -18.65,
+          "y": 3,
+          "z": -2.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6.7,
+        "d": 0.5,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-104",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -22.25,
+          "y": 3,
+          "z": -4.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 4,
+        "h": 1.2,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-105",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -16.65,
+          "y": 3,
+          "z": -4.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 2.7,
+        "d": 4,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-106",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -13.8,
+          "y": 3,
+          "z": -3.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 6.5,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-107",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -14.15,
+          "y": 3,
+          "z": 0.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 2.3,
+        "d": 1.5,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-108",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -10.6,
+          "y": 3,
+          "z": -0.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3.4,
+        "d": 1.5,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-109",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -15.4,
+          "y": 3,
+          "z": -6.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6.2,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-110",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -15.55,
+          "y": 3,
+          "z": -0.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 4,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-111",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -14.2,
+          "y": 3,
+          "z": 1.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 2.2,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-112",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -12.05,
+          "y": 3,
+          "z": -4
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-113",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -10.6,
+          "y": 3,
+          "z": -1.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3.4,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-114",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -7.45,
+          "y": 3,
+          "z": -0.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 2.9,
+        "d": 0.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-115",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -9.5,
+          "y": 3,
+          "z": 3.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 7,
+        "d": 7
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "laser-116",
+      "type": "laser",
+      "transform": {
+        "position": {
+          "x": -9.5,
+          "y": 3,
+          "z": 4
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "axis": "x",
+        "length": 7,
+        "sweep": 1.6,
+        "speed": 0.18,
+        "dwell": 2.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-117",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -9.5,
+          "y": 3,
+          "z": 9.5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 7,
+        "d": 5,
+        "label": "GOAL"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-118",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -13.25,
+          "y": 3,
+          "z": 6.75
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 10.5,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-119",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -5.75,
+          "y": 3,
+          "z": 6
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 12,
+        "h": 0.6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-120",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -9.5,
+          "y": 3,
+          "z": 12.25
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 7,
+        "d": 0.5,
+        "h": 1.4,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-121",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": -9.5,
+          "y": 3,
+          "z": 10
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 2.4
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "course"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-020",
+      "spawn": {
+        "x": 21,
+        "y": 3.6,
+        "z": -19
+      },
+      "resetGroups": []
+    },
+    {
+      "id": "checkpoint-2",
+      "instanceId": "checkpoint-036",
+      "spawn": {
+        "x": 31.5,
+        "y": 10.6,
+        "z": -38
+      },
+      "resetGroups": []
+    },
+    {
+      "id": "checkpoint-3",
+      "instanceId": "checkpoint-073",
+      "spawn": {
+        "x": -2,
+        "y": 4.6,
+        "z": -52
+      },
+      "resetGroups": []
+    },
+    {
+      "id": "checkpoint-4",
+      "instanceId": "checkpoint-082",
+      "spawn": {
+        "x": -13.5,
+        "y": 9.6,
+        "z": -47.5
+      },
+      "resetGroups": []
+    },
+    {
+      "id": "checkpoint-5",
+      "instanceId": "checkpoint-095",
+      "spawn": {
+        "x": -20,
+        "y": 7.6,
+        "z": -15.5
+      },
+      "resetGroups": []
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-121",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [],
+  "validation": {
+    "intendedRoute": [],
+    "notes": []
+  }
+}

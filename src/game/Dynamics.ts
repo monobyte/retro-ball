@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import type { RuntimeComponent, LogicalValue, VisualFrame } from '../runtime/Component';
+import type { LevelDocument, LevelInstance } from '../content/LevelDocument';
+import { disposeObjects } from '../runtime/disposeObjects';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
@@ -176,6 +179,8 @@ class JumpPad {
       this.ringMats[i]!.opacity = (1 - phase) * 0.7;
     }
   }
+
+  reset(): void { this.cooldownUntil = 0; }
 
   test(p: THREE.Vector3, time: number): boolean {
     if (time < this.cooldownUntil) return false;
@@ -634,8 +639,42 @@ function makeLabel(spec: LabelSpec): THREE.Object3D {
 /* ------------------------------------------------------------------------ */
 
 /** All animated / interactive pieces of the level. */
+type DynamicKind = 'jumppad' | 'elevator' | 'laser' | 'void' | 'checkpoint' | 'goal';
+interface DynamicContext { physics: Physics; gravity: number; damping: number }
+interface NativeParts { jumppad: JumpPad; elevator: Elevator; laser: Laser; void: VoidMarker; checkpoint: Checkpoint; goal: Goal }
+/** Typed factories retain the existing mechanic implementations and tuning. */
+export const DYNAMIC_REGISTRY = {
+  jumppad: { create: (p: JumpPadPiece, c: DynamicContext) => new JumpPad(p, c.gravity, c.damping) },
+  elevator: { create: (p: ElevatorPiece, c: DynamicContext) => new Elevator(p, c.physics) },
+  laser: { create: (p: LaserPiece, _c: DynamicContext) => new Laser(p) },
+  void: { create: (p: VoidPiece, _c: DynamicContext) => new VoidMarker(p) },
+  checkpoint: { create: (p: CheckpointPiece, _c: DynamicContext) => new Checkpoint(p) },
+  goal: { create: (p: GoalPiece, _c: DynamicContext) => new Goal(p) },
+} satisfies { [K in DynamicKind]: { create: (p: NativeParts[K]['def'], c: DynamicContext) => NativeParts[K] } };
+
+function component(native: NativeParts[DynamicKind], instance: LevelInstance): RuntimeComponent {
+  return {
+    id: instance.id, resetGroup: instance.resetGroup,
+    fixedUpdate(time: number) { if (native instanceof Elevator) native.stepKinematic(time); },
+    visualUpdate(frame: VisualFrame) {
+      if (native instanceof Laser) native.update(frame.simulationTime, frame.beat, frame.dt);
+      else if (native instanceof Elevator) native.update(frame.simulationTime, frame.beat);
+      else if (native instanceof VoidMarker) native.update(frame.presentationTime);
+      else native.update(frame.presentationTime, frame.beat);
+      if (native instanceof Elevator) native.material.setFrame(frame.presentationTime, frame.beat, frame.marblePosition);
+    },
+    capture(): LogicalValue { return native instanceof Checkpoint ? { active: native.active } : null; },
+    reset(state: LogicalValue) {
+      if (native instanceof Checkpoint) native.active = state !== null && typeof state === 'object' && 'active' in state && state.active === true;
+      if (native instanceof JumpPad) native.reset();
+    },
+    dispose() { disposeObjects(native.group); },
+  };
+}
+
 export class LevelDynamics {
   readonly group = new THREE.Group();
+  readonly components: RuntimeComponent[] = [];
   readonly jumpPads: JumpPad[] = [];
   readonly elevators: Elevator[] = [];
   readonly lasers: Laser[] = [];
@@ -643,41 +682,49 @@ export class LevelDynamics {
   readonly checkpoints: Checkpoint[] = [];
   goal: Goal | null = null;
 
-  constructor(def: LevelDefinition, physics: Physics, labels: LabelSpec[], gravity: number, damping: number) {
-    for (const p of def.pieces) {
+  constructor(def: LevelDefinition, physics: Physics, labels: LabelSpec[], gravity: number, damping: number, document: LevelDocument) {
+    const context = { physics, gravity, damping };
+    for (const [index, p] of def.pieces.entries()) {
+      const instance = document.instances[index]!;
       switch (p.kind) {
         case 'jumppad': {
-          const j = new JumpPad(p, gravity, damping);
+          const j = DYNAMIC_REGISTRY.jumppad.create(p, context);
+          this.components.push(component(j, instance));
           this.jumpPads.push(j);
           this.group.add(j.group);
           break;
         }
         case 'elevator': {
-          const e = new Elevator(p, physics);
+          const e = DYNAMIC_REGISTRY.elevator.create(p, context);
+          this.components.push(component(e, instance));
           this.elevators.push(e);
           this.group.add(e.group);
           break;
         }
         case 'laser': {
-          const l = new Laser(p);
+          const l = DYNAMIC_REGISTRY.laser.create(p, context);
+          this.components.push(component(l, instance));
           this.lasers.push(l);
           this.group.add(l.group);
           break;
         }
         case 'void': {
-          const v = new VoidMarker(p);
+          const v = DYNAMIC_REGISTRY.void.create(p, context);
+          this.components.push(component(v, instance));
           this.voids.push(v);
           this.group.add(v.group);
           break;
         }
         case 'checkpoint': {
-          const c = new Checkpoint(p);
+          const c = DYNAMIC_REGISTRY.checkpoint.create(p, context);
+          this.components.push(component(c, instance));
           this.checkpoints.push(c);
           this.group.add(c.group);
           break;
         }
         case 'goal': {
-          this.goal = new Goal(p);
+          this.goal = DYNAMIC_REGISTRY.goal.create(p, context);
+          this.components.push(component(this.goal, instance));
           this.group.add(this.goal.group);
           break;
         }
@@ -696,20 +743,12 @@ export class LevelDynamics {
 
   /** Per physics sub-step: move kinematic bodies. */
   stepKinematics(time: number): void {
-    for (const e of this.elevators) e.stepKinematic(time);
+    for (const component of this.components) component.fixedUpdate(time, 1 / 120);
   }
 
   /** Per render frame: animate visuals. */
-  update(time: number, dt: number, beat: number, marblePos: THREE.Vector3): void {
-    for (const j of this.jumpPads) j.update(time, beat);
-    for (const e of this.elevators) {
-      e.update(time, beat);
-      e.material.setFrame(time, beat, marblePos);
-    }
-    for (const l of this.lasers) l.update(time, beat, dt);
-    for (const v of this.voids) v.update(time);
-    for (const c of this.checkpoints) c.update(time, beat);
-    this.goal?.update(time, beat);
+  update(time: number, dt: number, beat: number, marblePos: THREE.Vector3, presentationTime = time): void {
+    for (const component of this.components) component.visualUpdate({ simulationTime: time, presentationTime, dt, beat, marblePosition: marblePos });
   }
 
   checkTriggers(p: THREE.Vector3, radius: number, time: number): TriggerEvent[] {
@@ -725,6 +764,12 @@ export class LevelDynamics {
     }
     if (this.goal && this.goal.test(p)) out.push({ type: 'goal', position: this.goal.position.clone() });
     return out;
+  }
+
+  dispose(): void {
+    for (const component of this.components) component.dispose();
+    disposeObjects(this.group);
+    this.components.length = 0;
   }
 
   resetCheckpoints(): void {

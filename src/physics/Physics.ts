@@ -34,6 +34,16 @@ export interface BallHandles {
 export class Physics {
   readonly world: RAPIER.World;
   private accumulator = 0;
+  simulationTime = 0;
+  private disposed = false;
+
+  dispose(): void {
+    if (this.disposed) return;
+    this.disposed = true;
+    this.world.free();
+  }
+
+  clearAccumulator(): void { this.accumulator = 0; }
 
   static async create(): Promise<Physics> {
     await RAPIER.init();
@@ -91,6 +101,7 @@ export class Physics {
   update(dt: number, onStep: (stepDt: number) => void): void {
     this.accumulator += Math.min(dt, 0.1);
     while (this.accumulator >= TUNING.timestep) {
+      this.simulationTime += TUNING.timestep;
       onStep(TUNING.timestep);
       this.world.step();
       this.accumulator -= TUNING.timestep;
