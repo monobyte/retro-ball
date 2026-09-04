@@ -321,3 +321,14 @@ canvas#game {
 .runtime-toolbar { position: fixed; left: 18px; bottom: 18px; z-index: 20; display: flex; gap: 8px; font: 12px var(--font-mono); }
 .runtime-toolbar button { padding: 10px 14px; background: rgba(10, 3, 28, .85); }
 @media(max-width: 600px) { .runtime-menu { padding: 30px 24px; } .runtime-toolbar { left: 8px; bottom: 8px; gap: 4px; } }
+.control-settings { margin-top: 20px; color: #d9c8f3; font-size: 13px; }
+.control-settings summary { color: var(--cyan); cursor: pointer; padding: 10px 0; }
+.control-settings p { line-height: 1.6; }
+.control-settings button { display: block; width: 100%; margin: 6px 0; padding: 9px; text-align: left; color: inherit; background: #120827; border: 1px solid #65468c; font: inherit; cursor: pointer; }
+.control-settings button:focus-visible { outline: 2px solid var(--cyan); }
+.control-settings label { display: block; margin-top: 12px; }
+.control-settings select { margin: 6px 0; padding: 6px; width: 100%; background: #120827; color: white; }
+.runtime-toolbar button:disabled { opacity: .45; cursor: default; }
+.traction-status { margin-top: 12px; font: 12px var(--font-mono); letter-spacing: .1em; color: var(--cyan); }
+/* Settings must remain above the pause menu and course toolbar. */
+#settings { position: relative; z-index: 30; }

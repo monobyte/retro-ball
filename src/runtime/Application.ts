@@ -1,3 +1,5 @@
+import { Input } from '../input/Input';
+import { loadControls } from '../input/Actions';
 import { Renderer } from '../render/Renderer';
 import { PostFX } from '../render/PostFX';
 import { loadSettings, saveSettings, type QualitySettings } from '../settings/Settings';
@@ -21,9 +23,11 @@ export class Application {
   private readonly menu = document.createElement('section');
   private readonly toolbar = document.createElement('nav');
   private readonly listeners = new AbortController();
+  private readonly menuInput = new Input();
   private pending: Promise<void> = Promise.resolve();
   private disposed = false;
   private masterMuted = false;
+  private settingsPaused = false;
   private frameId = 0;
   private last = performance.now();
   private pausedState: ApplicationState = 'playing';
@@ -35,6 +39,12 @@ export class Application {
     this.postfx = new PostFX(this.renderer, this.settings);
     this.panel = new SettingsPanel(this.settings);
     this.panel.onChange = next => this.applySettings(next);
+    this.panel.onToggle = open => {
+      if (open && ['playing', 'resetting', 'results'].includes(this.state)) { this.settingsPaused = true; this.togglePause(); }
+      else if (!open && this.settingsPaused) { this.settingsPaused = false; if (this.state === 'paused') this.togglePause(); }
+    };
+    this.panel.onControlsChange = controls => { this.menuInput.configure(controls); this.session?.input.configure(controls); };
+    this.menuInput.onControllerDisconnected = () => { if (this.session && ['playing', 'resetting'].includes(this.state)) this.togglePause(); };
     this.menu.className = 'runtime-menu';
     this.menu.setAttribute('aria-label', 'Course selection');
     this.toolbar.className = 'runtime-toolbar';
@@ -44,9 +54,6 @@ export class Application {
     this.toolbar.append(this.pauseButton, retryButton, this.button('Return to relay', () => void this.returnToHub()));
     document.body.append(this.menu, this.toolbar);
     window.addEventListener('resize', () => this.resize(), { signal: this.listeners.signal });
-    window.addEventListener('keydown', event => {
-      if (event.code === 'KeyP' && !event.repeat) this.togglePause();
-    }, { signal: this.listeners.signal });
     window.addEventListener('blur', () => { if (this.session && ['playing', 'resetting'].includes(this.state)) this.togglePause(); }, { signal: this.listeners.signal });
     const errors = validateCatalogue(CATALOGUE);
     if (errors.length) this.showError(new Error(errors.join('\n')));
@@ -91,7 +98,7 @@ export class Application {
     this.pending = this.pending.then(async () => {
       if (this.disposed) return;
       this.state = 'transition';
-      this.session?.input.clear();
+      this.session?.input.clear(); this.menuInput.clear();
       const previous = this.session;
       if (previous) this.masterMuted = previous.audio.isMuted;
       this.session = null;
@@ -113,6 +120,8 @@ export class Application {
       const document = parseLevel(typeof source === 'function' ? source() : source);
       this.session = await LevelSession.create(document, this.renderer, this.settings);
       this.session.audio.setMuted(this.masterMuted);
+      this.session.input.configure(loadControls());
+      this.session.input.onControllerDisconnected = this.menuInput.onControllerDisconnected;
       this.state = 'intro'; this.menu.hidden = true; this.toolbar.hidden = false;
       this.pauseButton.textContent = 'Pause';
       this.debug.fixedDt = null; this.debug.stepsPerFrame = 1;
@@ -156,12 +165,32 @@ export class Application {
     this.postfx.setSize(innerWidth, innerHeight); this.session?.resize();
   }
 
+  private processMenuInput(): void {
+    const input = this.menuInput;
+    if (this.panel.isOpen) return;
+    if (input.actionPressed('pause')) { this.togglePause(); return; }
+    if (this.menu.hidden) return;
+    const buttons = Array.from(this.menu.querySelectorAll<HTMLButtonElement>('button:not(:disabled)'));
+    const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
+    if (input.actionPressed('menuDown')) buttons[(index + 1) % buttons.length]?.focus();
+    if (input.actionPressed('menuUp')) buttons[(index - 1 + buttons.length) % buttons.length]?.focus();
+    if (input.actionPressed('confirm')) buttons[Math.max(0, index)]?.click();
+    if (input.actionPressed('back')) {
+      if (this.state === 'paused') this.togglePause();
+      else if (this.state === 'error') void this.returnToHub();
+    }
+  }
+
   private frame(now: number): void {
     if (this.disposed) return;
     this.frameId = requestAnimationFrame(time => this.frame(time));
     const elapsed = now - this.last;
     if (this.settings.frameCap > 0 && elapsed < 1000 / this.settings.frameCap * .85) return;
     this.last = now;
+    this.menuInput.poll();
+    this.session?.input.poll();
+    this.processMenuInput();
+    this.menuInput.endFrame();
     this.pauseButton.disabled = !['playing', 'paused', 'resetting', 'results'].includes(this.state);
     this.toolbar.querySelector<HTMLButtonElement>('[data-action=retry]')!.disabled = this.pauseButton.disabled;
     const session = this.session;
@@ -182,6 +211,6 @@ export class Application {
     if (this.disposed) return;
     await this.returnToHub(); this.disposed = true; this.state = 'disposed';
     cancelAnimationFrame(this.frameId); this.listeners.abort(); this.panel.dispose();
-    this.menu.remove(); this.toolbar.remove(); this.postfx.dispose(); this.renderer.dispose();
+    this.menuInput.dispose(); this.menu.remove(); this.toolbar.remove(); this.postfx.dispose(); this.renderer.dispose();
   }
 }

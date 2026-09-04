@@ -23,6 +23,9 @@ export class Hud {
   private readonly overlay = document.getElementById('overlay')!;
   private readonly flashEl = document.getElementById('flash')!;
   private readonly hudEl = document.getElementById('hud')!;
+  private readonly traction = document.createElement('div');
+  constructor() { this.traction.className = 'traction-status'; this.hudEl.append(this.traction); }
+  setTraction(text: string): void { if (this.traction.textContent !== text) this.traction.textContent = text; }
   private readonly toasts = new Map<number, HTMLElement>();
   private lastClock = '';
   private lastVel = '';
@@ -98,6 +101,7 @@ export class Hud {
   }
 
   dispose(): void {
+    this.traction.remove();
     for (const [timer, element] of this.toasts) { clearTimeout(timer); element.remove(); }
     this.toasts.clear();
     this.clearOverlay();

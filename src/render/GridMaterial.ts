@@ -53,6 +53,9 @@ const FRAG = /* glsl */ `
   uniform vec3 uFillTop;
   uniform vec3 uFillSide;
   uniform float uOpacity;
+  uniform float uSurface;
+  uniform float uOccluded;
+  uniform vec3 uSightDirection;
   varying vec2 vGrid;
   varying vec3 vWorld;
   varying vec3 vNormalW;
@@ -65,6 +68,11 @@ const FRAG = /* glsl */ `
   }
 
   void main() {
+    // A small view through solid scenery reveals the marble without hiding hazards.
+    vec3 sightOffset = vWorld - uMarblePos;
+    float towardCamera = dot(sightOffset, uSightDirection);
+    float sightDistance = length(sightOffset - towardCamera * uSightDirection);
+    if (uOccluded > 0.5 && towardCamera > 0.65 && sightDistance < 1.05) discard;
     float top = smoothstep(0.35, 0.75, vNormalW.y);
     float line = gridLine(vGrid, 0.35);
     float subLine = gridLine(vGrid * 2.0, 0.0) * 0.18;
@@ -79,6 +87,20 @@ const FRAG = /* glsl */ `
 
     vec3 col = fill;
     col += lineCol * (line * (0.85 + 0.35 * top) + subLine * top);
+
+    // Surface signatures use shape as well as palette, so grip remains readable.
+    if (uSurface > 0.5 && top > 0.5) {
+      if (uSurface < 1.5) {
+        float streak = gridLine(vec2(vGrid.x + vGrid.y, vGrid.y * 0.15), 0.0);
+        col += vec3(0.18, 0.38, 0.45) * streak * 0.55;
+      } else if (uSurface < 2.5) {
+        float dotMark = 1.0 - smoothstep(0.09, 0.16, length(fract(vGrid) - 0.5));
+        col += vec3(0.45, 0.24, 0.04) * dotMark;
+      } else {
+        float hatch = gridLine(vec2(vGrid.x + vGrid.y, vGrid.x - vGrid.y) * 3.0, 0.0);
+        col += vec3(0.24, 0.15, 0.12) * hatch * 0.7;
+      }
+    }
 
     // Neon glow from the marble reflecting off the surface.
     float dist = length(vWorld - uMarblePos);
@@ -96,7 +118,7 @@ const FRAG = /* glsl */ `
 `;
 
 export class GridMaterial extends THREE.ShaderMaterial {
-  constructor(tone: ToneColors, opacity = 0.82) {
+  constructor(tone: ToneColors, opacity = 0.82, surfacePattern = 0) {
     super({
       uniforms: {
         uTime: { value: 0 },
@@ -107,6 +129,9 @@ export class GridMaterial extends THREE.ShaderMaterial {
         uFillTop: { value: tone.fillTop.clone() },
         uFillSide: { value: tone.fillSide.clone() },
         uOpacity: { value: opacity },
+        uSurface: { value: surfacePattern },
+        uOccluded: { value: 0 },
+        uSightDirection: { value: new THREE.Vector3(1, 1.12, 1).normalize() },
       },
       vertexShader: VERT,
       fragmentShader: FRAG,
@@ -119,6 +144,11 @@ export class GridMaterial extends THREE.ShaderMaterial {
       polygonOffsetUnits: 1,
       side: THREE.FrontSide,
     });
+  }
+
+  setOcclusion(enabled: boolean, direction: THREE.Vector3): void {
+    this.uniforms['uOccluded']!.value = enabled ? 1 : 0;
+    (this.uniforms['uSightDirection']!.value as THREE.Vector3).copy(direction);
   }
 
   setFrame(time: number, beat: number, marblePos: THREE.Vector3): void {

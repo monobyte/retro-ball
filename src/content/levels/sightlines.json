@@ -1,0 +1,341 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "sightlines",
+  "metadata": {
+    "name": "SIGHTLINES",
+    "description": "Peek behind tall walls, climb above the grid and leap into an open arena.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": 0,
+    "y": 0.6,
+    "z": 4
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 12,
+        "d": 12,
+        "label": "LOOK",
+        "tone": "blue"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-002",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.7,
+        "d": 6,
+        "h": 6,
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-003",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -5.8,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.4,
+        "d": 12,
+        "h": 2,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "ramp-004",
+      "type": "ramp",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -12
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "len": 12,
+        "y1": 4,
+        "dir": "-z",
+        "tone": "pink"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-005",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 4,
+          "z": -21
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 12,
+        "d": 6,
+        "label": "LEAP",
+        "tone": "blue"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-006",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 4,
+          "z": -21
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "jumppad-007",
+      "type": "jumppad",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 4,
+          "z": -23
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "targetX": 0,
+        "targetZ": -11,
+        "targetY": 4.6,
+        "arc": 3.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-008",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": -36
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 16,
+        "d": 8,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-009",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": -44
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 28,
+        "d": 8,
+        "label": "EXPLORE",
+        "tone": "blue"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-010",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": -48.2
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 28,
+        "d": 0.4,
+        "h": 0.7,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-011",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": -46
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 4
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "course"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-006",
+      "spawn": {
+        "x": 0,
+        "y": 4.6,
+        "z": -21
+      },
+      "resetGroups": []
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-011",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "puzzle",
+      "mode": "puzzle",
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 14,
+        "y": 8,
+        "z": 12
+      },
+      "viewHeight": 18
+    },
+    {
+      "id": "vertical",
+      "mode": "vertical",
+      "center": {
+        "x": 0,
+        "y": 4,
+        "z": -16
+      },
+      "size": {
+        "x": 14,
+        "y": 14,
+        "z": 20
+      },
+      "viewHeight": 30
+    },
+    {
+      "id": "speed",
+      "mode": "speed",
+      "center": {
+        "x": 0,
+        "y": 9,
+        "z": -34
+      },
+      "size": {
+        "x": 18,
+        "y": 12,
+        "z": 12
+      },
+      "viewHeight": 24,
+      "priority": 1
+    },
+    {
+      "id": "arena",
+      "mode": "arena",
+      "center": {
+        "x": 0,
+        "y": 9,
+        "z": -44
+      },
+      "size": {
+        "x": 30,
+        "y": 8,
+        "z": 12
+      },
+      "viewHeight": 36,
+      "priority": 2
+    }
+  ],
+  "validation": {
+    "intendedRoute": [
+      "slab-001",
+      "ramp-004",
+      "slab-005",
+      "jumppad-007",
+      "slab-008",
+      "slab-009",
+      "goal-011"
+    ],
+    "notes": []
+  }
+}

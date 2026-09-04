@@ -1,3 +1,5 @@
+import sightlineData from './levels/sightlines.json' with { type: 'json' };
+import gripData from './levels/grip-lab.json' with { type: 'json' };
 import legacyData from './levels/legacy.json' with { type: 'json' };
 import relayData from './levels/relay.json' with { type: 'json' };
 import { parseLevel } from './validateLevel.ts';
@@ -21,13 +23,15 @@ export interface WorldCatalogue {
 
 export const CATALOGUE: WorldCatalogue = {
   schemaVersion: 1, contentVersion: 1, id: 'retro-ball',
-  regions: [{ id: 'prototype', name: 'The Relay', themeId: 'neon-grid', musicId: 'retro-main', levelIds: ['legacy', 'relay'], unlockAfter: [], guideLocations: [] }],
+  regions: [{ id: 'prototype', name: 'The Relay', themeId: 'neon-grid', musicId: 'retro-main', levelIds: ['legacy', 'relay', 'grip-lab', 'sightlines'], unlockAfter: [], guideLocations: [] }],
   levels: [
     { id: 'legacy', name: 'The Original Circuit', description: 'The full neon obstacle course. Lasers, leaps and light elevators.', regionId: 'prototype' },
     { id: 'relay', name: 'Relay / 01', description: 'A short warm-up: bank a checkpoint, climb the ramp and reach the signal.', regionId: 'prototype' },
+    { id: 'grip-lab', name: 'Grip Lab', description: 'Learn braking on grid, ice, rubber and rough ground.', regionId: 'prototype' },
+    { id: 'sightlines', name: 'Sightlines', description: 'Climb, leap and keep your bearings behind tall scenery.', regionId: 'prototype' },
   ],
 };
-const documents: Record<string, unknown> = { legacy: legacyData, relay: relayData };
+const documents: Record<string, unknown> = { legacy: legacyData, relay: relayData, 'grip-lab': gripData, sightlines: sightlineData };
 
 /** Catalogue resolution returns a fresh, validated document owned by the caller. */
 export function loadLevelDocument(id: string): LevelDocument {

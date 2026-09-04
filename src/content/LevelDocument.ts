@@ -1,3 +1,4 @@
+import type { CameraZone } from '../render/CameraZones';
 import type { Piece, LevelDefinition, Dir } from '../game/LevelData';
 
 export const LEVEL_SCHEMA_VERSION = 1;
@@ -45,7 +46,7 @@ export interface LevelDocument {
     nodes: Array<{ id: string; instanceId: InstanceId; position: Vec3 }>;
     links: Array<{ from: string; to: string; traversal: 'roll' | 'jump' | 'elevator'; bidirectional: boolean }>;
   };
-  cameraZones: Array<{ id: string; center: Vec3; size: Vec3; viewHeight: number }>;
+  cameraZones: CameraZone[];
   validation: { intendedRoute: InstanceId[]; notes: string[] };
 }
 

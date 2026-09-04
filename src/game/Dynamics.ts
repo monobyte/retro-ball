@@ -22,7 +22,7 @@ import type { LabelSpec } from './Level';
 export type DeathCause = 'laser' | 'void' | 'fall';
 
 export type TriggerEvent =
-  | { type: 'jump'; velocity: THREE.Vector3 }
+  | { type: 'jump'; velocity: THREE.Vector3; target: THREE.Vector3 }
   | { type: 'death'; cause: DeathCause }
   | { type: 'checkpoint'; id: number; position: THREE.Vector3 }
   | { type: 'goal'; position: THREE.Vector3 };
@@ -755,7 +755,7 @@ export class LevelDynamics {
     const out: TriggerEvent[] = [];
     for (const l of this.lasers) if (l.test(p, radius, time)) out.push({ type: 'death', cause: 'laser' });
     for (const v of this.voids) if (v.test(p)) out.push({ type: 'death', cause: 'void' });
-    for (const j of this.jumpPads) if (j.test(p, time)) out.push({ type: 'jump', velocity: j.launchVelocity.clone() });
+    for (const j of this.jumpPads) if (j.test(p, time)) out.push({ type: 'jump', velocity: j.launchVelocity.clone(), target: new THREE.Vector3(j.def.targetX, j.def.targetY, j.def.targetZ) });
     for (const c of this.checkpoints) {
       if (c.test(p)) {
         c.active = true;

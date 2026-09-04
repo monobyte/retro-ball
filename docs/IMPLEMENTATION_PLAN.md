@@ -2,7 +2,7 @@
 
 Specification: [Game and engine specification](GAME_SPEC.md).  
 Baseline: `9f93950`, reviewed 4 September 2026.  
-Current delivery state: phases 0–1 complete; phase 2 is next.
+Current delivery state: phases 0–1 complete; phase 2 in progress.
 
 ## How to track progress
 
@@ -38,7 +38,7 @@ existing features; they do not claim campaign, editor or opponent functionality.
 | --- | --- | --- | --- |
 | 0 | Baseline, budgets, audio toggles and development safety | Existing prototype | Done |
 | 1 | Multiple levels and owned runtime lifecycle | 0 | Done |
-| 2 | Movement, camera and player controls | 1 | Not started |
+| 2 | Movement, camera and player controls | 1 | In progress |
 | 3 | Internal editor foundation | 1; 2 for final play-test UX | Not started |
 | 4 | Obstacles, signals and puzzles | 2, 3 | Not started |
 | 5 | Enemies, rival and guide NPC | 2, 3; 4 for encounter signals | Not started |
@@ -114,11 +114,11 @@ Acceptance gate:
 
 Requirements: MOV-01–06, UX-05. Outcome: dependable controls across course types.
 
-- [ ] **P2-01** Introduce an action map for roll, brake, interact, pause, retry
+- [x] **P2-01** Introduce an action map for roll, brake, interact, pause, retry
   and menus; support keyboard rebinding and controller analogue/dead-zone settings.
-- [ ] **P2-02** Implement and tune braking without losing the marble's weight;
+- [x] **P2-02** Implement and tune braking without losing the marble's weight;
   record stopping distance at several approach speeds.
-- [ ] **P2-03** Implement standard, ice, rubber and rough surface profiles with
+- [x] **P2-03** Implement standard, ice, rubber and rough surface profiles with
   shared physics/audio metadata and readable visual differences.
 - [ ] **P2-04** Add camera zones and smooth transitions for speed, vertical,
   puzzle and wide-arena fixtures.
@@ -420,8 +420,10 @@ the specific commit, PR, build or play-test report.
 
 | 2026-09-04 | P1-01–08, G1 | Done | [Runtime contracts and gate evidence](PHASE_1_RUNTIME.md); eleven Node tests; legacy WIN; relay WIN; twenty rendered transition cycles; checkpoint reset, pause, invalid-document and audio/input/GPU teardown checks | Phase 2 action map, braking, surfaces and camera fixtures |
 
+| 2026-09-04 | P2-01–03 | Done | [Movement progress and measured stopping distances](PHASE_2_MOVEMENT.md); 36 braking samples; Grip Lab and keyboard/controller API relay completion | P2-04–07 and G2 remain open; current work committed at user request with 15 Node tests/build passing and a pending 30 Hz landing-check failure |
+
 ## Next action
 
-Begin **P2-01** through **P2-03**: the action map, keyboard/controller controls,
-braking measurements and surface profiles. Then build camera/occlusion fixtures
-and validate display-rate independence before closing phase 2.
+Continue **P2-04** through **P2-07**: diagnose the missed landing at 30 Hz,
+validate camera zones and occlusion, and re-run the full regression suite.
+Finish the phase-2 acceptance evidence before marking the phase complete.

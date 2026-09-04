@@ -1,5 +1,6 @@
 import RAPIER from '@dimforge/rapier3d-compat';
 import * as THREE from 'three';
+import { SURFACES, type SurfaceId } from './Surfaces.ts';
 import type { BoxSpec } from '../game/Level';
 
 /** Physics tuning for the marble: the "heavy chrome" arcade feel. */
@@ -33,6 +34,8 @@ export interface BallHandles {
  */
 export class Physics {
   readonly world: RAPIER.World;
+  private readonly colliderSurfaces = new Map<number, SurfaceId>();
+  groundSurface: SurfaceId = 'standard';
   private accumulator = 0;
   simulationTime = 0;
   private disposed = false;
@@ -40,6 +43,7 @@ export class Physics {
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
+    this.colliderSurfaces.clear();
     this.world.free();
   }
 
@@ -56,13 +60,17 @@ export class Physics {
   }
 
   addStaticBox(box: BoxSpec): RAPIER.Collider {
+    const surface = SURFACES[box.surface];
     const desc = RAPIER.ColliderDesc.cuboid(box.size.x / 2, box.size.y / 2, box.size.z / 2)
       .setTranslation(box.center.x, box.center.y, box.center.z)
       .setRotation({ x: box.quat.x, y: box.quat.y, z: box.quat.z, w: box.quat.w })
-      .setFriction(TUNING.trackFriction)
-      .setRestitution(box.kind === 'wall' ? TUNING.wallRestitution : TUNING.trackRestitution)
+      .setFriction(surface.friction)
+      .setRestitution(box.kind === 'wall' ? TUNING.wallRestitution : surface.restitution)
       .setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Max);
-    return this.world.createCollider(desc);
+    if (box.surface !== 'standard') desc.setFrictionCombineRule(RAPIER.CoefficientCombineRule.Min);
+    const collider = this.world.createCollider(desc);
+    this.colliderSurfaces.set(collider.handle, box.surface);
+    return collider;
   }
 
   createKinematicBox(center: THREE.Vector3, size: THREE.Vector3): RAPIER.RigidBody {
@@ -98,23 +106,32 @@ export class Physics {
    * Advances the world with a fixed timestep. `onStep` runs before each
    * sub-step so forces and kinematic targets are applied consistently.
    */
-  update(dt: number, onStep: (stepDt: number) => void): void {
+  update(dt: number, onStep: (stepDt: number) => void, afterStep?: (stepDt: number) => void): void {
     this.accumulator += Math.min(dt, 0.1);
     while (this.accumulator >= TUNING.timestep) {
       this.simulationTime += TUNING.timestep;
       onStep(TUNING.timestep);
       this.world.step();
+      afterStep?.(TUNING.timestep);
       this.accumulator -= TUNING.timestep;
     }
   }
 
   /** Returns the surface normal under the ball, or null when airborne. */
-  groundNormal(ball: BallHandles, out: THREE.Vector3): THREE.Vector3 | null {
+  groundNormal(ball: BallHandles, out: THREE.Vector3, clearance = 0.12): THREE.Vector3 | null {
     const p = ball.body.translation();
     const ray = new RAPIER.Ray({ x: p.x, y: p.y, z: p.z }, { x: 0, y: -1, z: 0 });
-    const hit = this.world.castRayAndGetNormal(ray, TUNING.radius + 0.12, true, undefined, undefined, ball.collider);
-    if (!hit) return null;
+    const hit = this.world.castRayAndGetNormal(ray, TUNING.radius + clearance, true, undefined, undefined, ball.collider);
+    if (!hit) { this.groundSurface = 'standard'; return null; }
+    this.groundSurface = this.colliderSurfaces.get(hit.collider.handle) ?? 'standard';
     return out.set(hit.normal.x, hit.normal.y, hit.normal.z);
+  }
+
+  sightlineBlocked(ball: BallHandles, direction: THREE.Vector3): boolean {
+    const p = ball.body.translation();
+    const ray = new RAPIER.Ray({ x: p.x, y: p.y, z: p.z }, direction);
+    const hit = this.world.castRay(ray, 160, true, undefined, undefined, ball.collider);
+    return hit !== null;
   }
 
   resetBall(ball: BallHandles, pos: THREE.Vector3): void {

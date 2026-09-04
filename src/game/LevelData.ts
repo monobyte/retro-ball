@@ -1,3 +1,5 @@
+import type { SurfaceId } from '../physics/Surfaces';
+
 /**
  * Level data for "The Retro Ball".
  *
@@ -23,6 +25,7 @@ export type Tone = 'blue' | 'pink' | 'cyan';
 
 export type SlabPiece = {
   kind: 'slab';
+  surface?: SurfaceId;
   x: number;
   z: number;
   w: number;
@@ -37,6 +40,7 @@ export type SlabPiece = {
 
 export type RampPiece = {
   kind: 'ramp';
+  surface?: SurfaceId;
   /** Centre of the ramp footprint (horizontal). */
   x: number;
   z: number;

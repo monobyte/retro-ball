@@ -2,6 +2,7 @@ import { Soundtrack, createAudioGraph, type AudioGraph } from './Soundtrack';
 import { Sfx } from './Sfx';
 import type { GameAudio } from '../game/Game';
 import type { DeathCause } from '../game/Dynamics';
+import type { SurfaceId } from '../physics/Surfaces';
 import type { QualitySettings } from '../settings/Settings';
 
 const BPM_FALLBACK = 112;
@@ -81,14 +82,14 @@ export class AudioSystem implements GameAudio {
     return Math.exp(-(beats % 1) * 4);
   }
 
-  roll(speed: number, grounded: boolean): void {
-    this.sfx?.roll(speed, grounded);
+  roll(speed: number, grounded: boolean, surface: SurfaceId = 'standard', braking = 0, sliding = 0): void {
+    this.sfx?.roll(speed, grounded, surface, braking, sliding);
   }
   impact(strength: number): void {
     this.sfx?.impact(strength);
   }
-  land(): void {
-    this.sfx?.land();
+  land(strength = .5): void {
+    this.sfx?.land(strength);
   }
   jump(): void {
     this.sfx?.jump();

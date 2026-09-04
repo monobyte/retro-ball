@@ -1,3 +1,4 @@
+import { SURFACES, type SurfaceId } from '../physics/Surfaces';
 import type { AudioChannel } from './Soundtrack';
 import type { DeathCause } from '../game/Dynamics';
 
@@ -41,12 +42,13 @@ export class Sfx {
     this.out.gain.setTargetAtTime(v, this.ctx.currentTime, 0.05);
   }
 
-  roll(speed: number, grounded: boolean): void {
+  roll(speed: number, grounded: boolean, surface: SurfaceId = 'standard', braking = 0, sliding = 0): void {
+    const profile = SURFACES[surface];
     const t = this.ctx.currentTime;
     const k = Math.min(1, speed / 22);
-    const target = grounded ? 0.16 * k : 0;
+    const target = grounded ? Math.min(.35, .16 * k * profile.soundGain + braking * k * .15 + sliding * k * .08) : 0;
     this.rollGain.gain.setTargetAtTime(target, t, 0.08);
-    this.rollFilter.frequency.setTargetAtTime(180 + 1400 * k, t, 0.1);
+    this.rollFilter.frequency.setTargetAtTime((180 + 1400 * k) * profile.soundPitch + braking * k * 900 + sliding * k * 650, t, 0.1);
     this.humGain.gain.setTargetAtTime(grounded ? 0.05 * k : 0.01 * k, t, 0.1);
     this.humOsc.frequency.setTargetAtTime(48 + 90 * k, t, 0.1);
   }
@@ -77,8 +79,8 @@ export class Sfx {
     osc.stop(t + 0.2);
   }
 
-  land(): void {
-    this.impact(0.5);
+  land(strength = .5): void {
+    this.impact(Math.max(.15, strength));
   }
 
   jump(): void {

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { SURFACES, type SurfaceId } from '../physics/Surfaces';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
@@ -14,6 +15,7 @@ export interface BoxSpec {
   quat: THREE.Quaternion;
   tone: Tone;
   kind: 'slab' | 'ramp' | 'wall';
+  surface: SurfaceId;
 }
 
 export interface LabelSpec {
@@ -34,7 +36,7 @@ export function pieceToBox(p: Piece): BoxSpec | null {
         size: new THREE.Vector3(p.w, t, p.d),
         quat: new THREE.Quaternion(),
         tone: p.tone ?? 'blue',
-        kind: 'slab',
+        kind: 'slab', surface: p.surface ?? 'standard',
       };
     }
     case 'wall': {
@@ -43,7 +45,7 @@ export function pieceToBox(p: Piece): BoxSpec | null {
         size: new THREE.Vector3(p.w, p.h, p.d),
         quat: new THREE.Quaternion(),
         tone: p.tone ?? 'blue',
-        kind: 'wall',
+        kind: 'wall', surface: 'standard',
       };
     }
     case 'ramp': {
@@ -74,7 +76,7 @@ export function pieceToBox(p: Piece): BoxSpec | null {
       const normal = new THREE.Vector3(0, 1, 0).applyQuaternion(quat);
       const topCenter = new THREE.Vector3(p.x, (p.y0 + p.y1) / 2, p.z);
       const center = topCenter.addScaledVector(normal, -t / 2);
-      return { center, size, quat, tone: p.tone ?? 'blue', kind: 'ramp' };
+      return { center, size, quat, tone: p.tone ?? 'blue', kind: 'ramp', surface: p.surface ?? 'standard' };
     }
     default:
       return null;
@@ -144,15 +146,16 @@ export class LevelGeometry {
   readonly bounds = new THREE.Box3();
 
   constructor(def: LevelDefinition) {
-    const byTone = new Map<Tone, { geos: THREE.BufferGeometry[]; edges: number[] }>();
+    const byTone = new Map<string, { geos: THREE.BufferGeometry[]; edges: number[]; tone: Tone; surface: SurfaceId }>();
     for (const piece of def.pieces) {
       const box = pieceToBox(piece);
       if (box) {
         this.boxes.push(box);
-        let bucket = byTone.get(box.tone);
+        const key = `${box.tone}:${box.surface}`;
+        let bucket = byTone.get(key);
         if (!bucket) {
-          bucket = { geos: [], edges: [] };
-          byTone.set(box.tone, bucket);
+          bucket = { geos: [], edges: [], tone: box.tone, surface: box.surface };
+          byTone.set(key, bucket);
         }
         const geo = gridBoxGeometry(box.size);
         const m = new THREE.Matrix4().compose(box.center, box.quat, new THREE.Vector3(1, 1, 1));
@@ -181,11 +184,12 @@ export class LevelGeometry {
       }
     }
 
-    for (const [tone, bucket] of byTone) {
+    for (const bucket of byTone.values()) {
+      const { tone } = bucket;
       const merged = mergeGeometries(bucket.geos, false);
       for (const geometry of bucket.geos) geometry.dispose();
       if (!merged) continue;
-      const mat = new GridMaterial(TONES[tone]);
+      const mat = new GridMaterial(TONES[tone], .82, SURFACES[bucket.surface].pattern);
       this.materials.push(mat);
       const mesh = new THREE.Mesh(merged, mat);
       mesh.renderOrder = 1;
@@ -211,6 +215,10 @@ export class LevelGeometry {
 
   setResolution(w: number, h: number): void {
     for (const m of this.edgeMaterials) m.resolution.set(w, h);
+  }
+
+  setOcclusion(enabled: boolean, direction: THREE.Vector3): void {
+    for (const material of this.materials) material.setOcclusion(enabled, direction);
   }
 
   setFrame(time: number, beat: number, marblePos: THREE.Vector3): void {

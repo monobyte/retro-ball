@@ -8,8 +8,10 @@ import { LevelGeometry } from './Level';
 import { LevelDynamics, type DeathCause } from './Dynamics';
 import { Marble, MARBLE_COLOR, buildNeonEnvironment } from './Marble';
 import { Burst } from './Burst';
+import { cameraTuning } from '../render/CameraZones';
 import { disposeObjects } from '../runtime/disposeObjects';
 import type { LevelDocument } from '../content/LevelDocument';
+import { SURFACES, type SurfaceId } from '../physics/Surfaces';
 import type { CheckpointSnapshot } from '../runtime/Component';
 import type { LevelDefinition } from './LevelData';
 
@@ -29,13 +31,13 @@ export interface FxState {
 export interface GameAudio {
   start(): void;
   beatEnergy(): number;
-  roll(speed: number, grounded: boolean): void;
+  roll(speed: number, grounded: boolean, surface?: SurfaceId, braking?: number, sliding?: number): void;
   impact(strength: number): void;
   jump(): void;
   death(cause: DeathCause): void;
   checkpoint(): void;
   win(): void;
-  land(): void;
+  land(strength?: number): void;
   toggleMute(): boolean;
 }
 
@@ -55,6 +57,9 @@ export class Game {
   readonly marble: Marble;
   private readonly ball: BallHandles;
   private readonly burst = new Burst();
+  private readonly landingRing = new THREE.Mesh(new THREE.RingGeometry(.7, .82, 40), new THREE.MeshBasicMaterial({ color: 0x38f5ff, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide }));
+  private landingPulse = 0;
+  readonly contactStats = { landings: 0, impacts: 0 };
   private spawn: THREE.Vector3;
   private runTime = 0;
   private resets = 0;
@@ -65,11 +70,16 @@ export class Game {
   private readonly ballVel = new THREE.Vector3();
   private readonly prevVel = new THREE.Vector3();
   private readonly groundN = new THREE.Vector3();
+  private surface: SurfaceId = 'standard';
   private grounded = false;
   private wasGrounded = false;
   private impactCooldown = 0;
   private readonly camTarget = new THREE.Vector3();
   private viewHeight = INTRO_VIEW_HEIGHT;
+  private cameraZoneId: string | null = null;
+  private landingTarget: THREE.Vector3 | null = null;
+  private launchedAt = 0;
+  private readonly sightDirection = new THREE.Vector3();
   private readonly levelCenter = new THREE.Vector3();
   private readonly lowestY: number;
   private readonly winOrigin = new THREE.Vector3();
@@ -124,6 +134,8 @@ export class Game {
     this.root.add(this.marble.group);
     for (const o of this.marble.sceneExtras) this.root.add(o);
     this.root.add(this.burst.points);
+    this.landingRing.visible = false; this.landingRing.material.toneMapped = false;
+    this.root.add(this.landingRing);
 
     this.root.add(new THREE.HemisphereLight(0x6a3cff, 0x120428, 0.9));
     const key = new THREE.DirectionalLight(0x38f5ff, 1.2);
@@ -196,10 +208,10 @@ export class Game {
     this.fx.glitch = Math.max(0, this.fx.glitch - dt * 1.6);
     this.fx.bloomBoost = Math.max(0, this.fx.bloomBoost - dt * 1.2);
 
-    if (this.input.wasPressed('KeyM') && this.audio) {
+    if (this.input.actionPressed('mute') && this.audio) {
       this.hud.showToast(this.audio.toggleMute() ? 'AUDIO MUTED' : 'AUDIO ONLINE');
     }
-    if (this.input.wasPressed('KeyR')) {
+    if (this.input.actionPressed('retry')) {
       if (this.state === 'play') this.die('fall', true);
       else if (this.state === 'win') this.restart();
     }
@@ -226,6 +238,10 @@ export class Game {
     this.level.setFrame(this.time, beat, glowPos);
     this.dynamics.update(this.physics.simulationTime, dt, beat, glowPos, this.time);
     this.burst.update(dt, TUNING.gravity);
+    this.landingPulse = Math.max(0, this.landingPulse - dt * 2.8);
+    this.landingRing.visible = this.landingPulse > 0;
+    this.landingRing.material.opacity = this.landingPulse * .8;
+    this.landingRing.scale.setScalar(1 + (1 - this.landingPulse) * 2.5);
     this.updateCamera(dt, speed);
 
     this.hud.setClock(this.runTime);
@@ -246,7 +262,6 @@ export class Game {
 
   private updatePlay(dt: number): void {
     this.runTime += dt;
-    this.impactCooldown = Math.max(0, this.impactCooldown - dt);
     const axis = this.input.axis();
     const basis = this.renderer.groundBasis();
 
@@ -255,12 +270,22 @@ export class Game {
       this.readBall();
       this.prevVel.copy(this.ballVel);
       this.grounded = this.physics.groundNormal(this.ball, this.groundN) !== null;
+      this.surface = this.physics.groundSurface;
+      this.ball.collider.setRestitution(SURFACES[this.surface].ballRestitution);
       this.applyControls(axis, basis, stepDt);
+    }, stepDt => {
+      this.impactCooldown = Math.max(0, this.impactCooldown - stepDt);
+      this.readBall();
+      this.grounded = this.physics.groundNormal(this.ball, this.groundN, .04) !== null;
+      this.detectImpacts();
     });
 
     this.readBall();
-    this.detectImpacts();
-    this.audio?.roll(this.ballVel.length(), this.grounded);
+    const spin = this.ball.body.angvel();
+    const contactVelocity = new THREE.Vector3(spin.x, spin.y, spin.z).cross(this.groundN.clone().multiplyScalar(-TUNING.radius)).add(this.ballVel);
+    const sliding = this.grounded && Math.hypot(this.ballVel.x, this.ballVel.z) > 1 && contactVelocity.length() > 1.8;
+    this.audio?.roll(this.ballVel.length(), this.grounded, this.surface, this.input.brake(), sliding ? 1 : 0);
+    this.hud.setTraction(this.grounded ? `${SURFACES[this.surface].label}${this.input.brake() > 0 ? ' · BRAKING' : sliding ? ' · SKIDDING' : ''}` : 'AIRBORNE');
 
     if (this.ballPos.y < this.lowestY - 10) {
       this.die('fall');
@@ -274,6 +299,7 @@ export class Game {
           this.die(ev.cause);
           return;
         case 'jump':
+          this.landingTarget = ev.target.clone(); this.launchedAt = this.physics.simulationTime;
           this.ball.body.setLinvel({ x: ev.velocity.x, y: ev.velocity.y, z: ev.velocity.z }, true);
           this.ball.body.setAngvel({ x: 0, y: 0, z: 0 }, true);
           this.audio?.jump();
@@ -298,6 +324,21 @@ export class Game {
   }
 
   private applyControls(axis: { x: number; y: number }, basis: { up: THREE.Vector3; right: THREE.Vector3 }, stepDt: number): void {
+    const profile = SURFACES[this.surface];
+    if (this.grounded) {
+      const tangent = this.ballVel.clone().addScaledVector(this.groundN, -this.ballVel.dot(this.groundN));
+      const speed = tangent.length();
+      const brake = Math.max(0, Math.min(1, this.input.brake()));
+      const loss = Math.min(speed, profile.braking * brake * stepDt + speed * (1 - Math.exp(-profile.drag * stepDt)));
+      if (speed > 1e-5 && loss > 0) {
+        tangent.multiplyScalar(-loss / speed * this.ball.body.mass());
+        this.ball.body.applyImpulse(tangent, true);
+      }
+      if (brake > 0) {
+        const spin = this.ball.body.angvel(), factor = Math.exp(-12 * brake * stepDt);
+        this.ball.body.setAngvel({ x: spin.x * factor, y: spin.y * factor, z: spin.z * factor }, true);
+      }
+    }
     if (axis.x === 0 && axis.y === 0) return;
     const dir = this.tmp.set(0, 0, 0).addScaledVector(basis.right, axis.x).addScaledVector(basis.up, axis.y);
     if (this.grounded) {
@@ -308,7 +349,7 @@ export class Game {
     const len = dir.length();
     if (len < 1e-4) return;
     dir.divideScalar(len);
-    const accel = this.grounded ? TUNING.groundAccel : TUNING.airAccel;
+    const accel = (this.grounded ? TUNING.groundAccel * profile.acceleration : TUNING.airAccel) * Math.min(1, Math.hypot(axis.x, axis.y));
 
     // Soft speed cap: only resist the component that would exceed max speed.
     const horizSpeed = Math.hypot(this.ballVel.x, this.ballVel.z);
@@ -330,13 +371,20 @@ export class Game {
     const dv = this.tmp.copy(this.ballVel).sub(this.prevVel);
     dv.y -= TUNING.gravity * TUNING.timestep; // ignore the gravity step
     const mag = dv.length();
-    if (mag > 5 && this.impactCooldown <= 0) {
+    const landing = this.grounded && !this.wasGrounded && this.prevVel.y < -2 && dv.dot(this.groundN) > 2;
+    if (landing) {
+      this.contactStats.landings++;
+      this.audio?.land(Math.min(1, Math.abs(this.prevVel.y) / 20));
+      this.landingPulse = 1;
+      this.landingRing.position.copy(this.ballPos).addScaledVector(this.groundN, -TUNING.radius + .04);
+      this.landingRing.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), this.groundN);
+      this.fx.bloomBoost = Math.max(this.fx.bloomBoost, .18);
+      this.impactCooldown = .12;
+    } else if (mag > 5 && this.impactCooldown <= 0) {
+      this.contactStats.impacts++;
       this.impactCooldown = 0.12;
       this.audio?.impact(Math.min(1, mag / 20));
       this.fx.bloomBoost = Math.max(this.fx.bloomBoost, Math.min(0.5, mag / 40));
-    }
-    if (this.grounded && !this.wasGrounded && this.prevVel.y < -8) {
-      this.audio?.land();
     }
     this.wasGrounded = this.grounded;
   }
@@ -372,13 +420,17 @@ export class Game {
     const inPlay = this.state === 'play' || this.state === 'reset' || this.state === 'win';
     if (inPlay) {
       // Look ahead along the velocity so fast sections read on screen.
-      const lead = this.tmp.copy(this.ballVel).multiplyScalar(0.28);
+      const tuning = cameraTuning(this.document.cameraZones, this.ballPos, speed, this.cameraZoneId);
+      this.cameraZoneId = tuning.zoneId;
+      const lead = this.tmp.copy(this.ballVel).multiplyScalar(tuning.lookAhead);
       lead.y = 0;
       const desired = this.state === 'win' ? this.winOrigin : this.state === 'reset' ? this.resetFocus : this.ballPos;
       const goal = desired.clone().add(this.state === 'play' ? lead : new THREE.Vector3());
-      const k = 1 - Math.exp(-dt * (this.state === 'reset' ? 2.5 : 6));
+      if (this.landingTarget && this.grounded && this.physics.simulationTime > this.launchedAt + .25) this.landingTarget = null;
+      if (this.state === 'play' && this.landingTarget) goal.lerp(this.landingTarget, .35);
+      const k = 1 - Math.exp(-dt * (this.state === 'reset' ? 2.5 : tuning.response));
       this.camTarget.lerp(goal, k);
-      const targetView = this.state === 'win' ? PLAY_VIEW_HEIGHT + 6 : PLAY_VIEW_HEIGHT + Math.min(5, speed * 0.2);
+      const targetView = this.state === 'win' ? PLAY_VIEW_HEIGHT + 6 : tuning.viewHeight;
       this.viewHeight += (targetView - this.viewHeight) * (1 - Math.exp(-dt * 2.2));
     } else {
       this.viewHeight += (INTRO_VIEW_HEIGHT - this.viewHeight) * (1 - Math.exp(-dt * 1.5));
@@ -389,12 +441,28 @@ export class Game {
       this.burst.setPixelScale(window.innerHeight / this.viewHeight);
     }
     this.renderer.lookAt(this.camTarget);
+    this.renderer.camera.updateMatrixWorld();
+    if (this.state === 'play') {
+      // Expand immediately only when visibility requires it; contract smoothly.
+      const points = this.landingTarget ? [this.ballPos, this.landingTarget] : [this.ballPos];
+      let expansion = 1;
+      for (const point of points) {
+        const projected = point.clone().project(this.renderer.camera);
+        expansion = Math.max(expansion, Math.abs(projected.x) / .82, Math.abs(projected.y) / .82);
+      }
+      if (expansion > 1) { this.viewHeight *= expansion; this.renderer.viewHeight = this.viewHeight; this.renderer.updateFrustum(); }
+    }
+    this.renderer.camera.getWorldDirection(this.sightDirection).negate();
+    const obscured = this.state === 'play' && this.physics.sightlineBlocked(this.ball, this.sightDirection);
+    this.level.setOcclusion(obscured, this.sightDirection);
+    for (const elevator of this.dynamics.elevators) elevator.material.setOcclusion(obscured, this.sightDirection);
   }
 
   /* -------------------------------------------------------- transitions */
 
   private die(cause: DeathCause, manual = false): void {
     if (this.state !== 'play') return;
+    this.landingTarget = null;
     this.lastDeath = cause;
     this.resets += 1;
     this.setState('reset');
@@ -479,6 +547,8 @@ export class Game {
   }
 
   restart(): void {
+    this.landingTarget = null; this.cameraZoneId = null; this.landingPulse = 0;
+    this.contactStats.landings = 0; this.contactStats.impacts = 0;
     this.spawn.set(this.def.start.x, this.def.start.y, this.def.start.z);
     this.dynamics.resetCheckpoints();
     for (const component of this.dynamics.components) component.reset(null);

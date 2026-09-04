@@ -153,6 +153,8 @@ export function validateLevel(value: unknown): ValidationResult {
     });
   }
   unique(list('cameraZones'), 'cameraZones', (zone, path) => {
+    if (zone['mode'] !== undefined && !['speed', 'puzzle', 'vertical', 'arena'].includes(String(zone['mode']))) error(`${path}.mode`, 'Expected speed, puzzle, vertical or arena.');
+    if (zone['priority'] !== undefined && (!Number.isSafeInteger(zone['priority']) || Math.abs(Number(zone['priority'])) > 100)) error(`${path}.priority`, 'Expected an integer priority from -100 to 100.');
     if (!vector(zone['center']) || !vector(zone['size']) || Object.values(zone['size']).some(n => n <= 0) || !finite(zone['viewHeight']) || zone['viewHeight'] < 5 || zone['viewHeight'] > 200) error(path, 'Expected center, positive size and view height from 5 to 200.');
   });
   const validation = value['validation'];

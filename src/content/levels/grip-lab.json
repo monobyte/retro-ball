@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "grip-lab",
+  "metadata": {
+    "name": "GRIP LAB",
+    "description": "Four surfaces. Four kinds of momentum. Try braking before the ice.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": -17,
+    "y": 0.6,
+    "z": 0
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -15,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 10,
+        "d": 18,
+        "surface": "standard",
+        "tone": "pink",
+        "label": "STANDARD"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-002",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -5,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 10,
+        "d": 18,
+        "surface": "ice",
+        "tone": "cyan",
+        "label": "ICE"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-003",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 10,
+        "d": 18,
+        "surface": "rubber",
+        "tone": "pink",
+        "label": "RUBBER"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-004",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 15,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 10,
+        "d": 18,
+        "surface": "rough",
+        "tone": "cyan",
+        "label": "ROUGH"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-005",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -9.2
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 40.8,
+        "d": 0.4,
+        "h": 0.7,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-006",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 9.2
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 40.8,
+        "d": 0.4,
+        "h": 0.7,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-007",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -20.2,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.4,
+        "d": 18,
+        "h": 0.7,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-008",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 20.2,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.4,
+        "d": 18,
+        "h": 0.7,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-009",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-010",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 18,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 4
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "course"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-009",
+      "spawn": {
+        "x": 5,
+        "y": 0.6,
+        "z": 0
+      },
+      "resetGroups": []
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-010",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [],
+  "validation": {
+    "intendedRoute": [
+      "slab-001",
+      "slab-002",
+      "slab-003",
+      "slab-004",
+      "goal-010"
+    ],
+    "notes": []
+  }
+}

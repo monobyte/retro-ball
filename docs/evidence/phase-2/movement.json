@@ -1,0 +1,262 @@
+{
+  "brakingSamples": [
+    {
+      "distance": 0.2870680093765259,
+      "hz": 30,
+      "speed": 4,
+      "surface": "standard",
+      "time": 0.16666666666666666
+    },
+    {
+      "distance": 0.88421231508255,
+      "hz": 30,
+      "speed": 8,
+      "surface": "standard",
+      "time": 0.26666666666666666
+    },
+    {
+      "distance": 2.4761221408843994,
+      "hz": 30,
+      "speed": 16,
+      "surface": "standard",
+      "time": 0.43333333333333335
+    },
+    {
+      "distance": 0.2870680093765259,
+      "hz": 60,
+      "speed": 4,
+      "surface": "standard",
+      "time": 0.16666666666666666
+    },
+    {
+      "distance": 0.88421231508255,
+      "hz": 60,
+      "speed": 8,
+      "surface": "standard",
+      "time": 0.26666666666666666
+    },
+    {
+      "distance": 2.4760935306549072,
+      "hz": 60,
+      "speed": 16,
+      "surface": "standard",
+      "time": 0.4166666666666667
+    },
+    {
+      "distance": 0.2870680093765259,
+      "hz": 120,
+      "speed": 4,
+      "surface": "standard",
+      "time": 0.16666666666666666
+    },
+    {
+      "distance": 0.88421231508255,
+      "hz": 120,
+      "speed": 8,
+      "surface": "standard",
+      "time": 0.26666666666666666
+    },
+    {
+      "distance": 2.4760050773620605,
+      "hz": 120,
+      "speed": 16,
+      "surface": "standard",
+      "time": 0.4083333333333333
+    },
+    {
+      "distance": 1.2099602222442627,
+      "hz": 30,
+      "speed": 4,
+      "surface": "ice",
+      "time": 0.6333333333333333
+    },
+    {
+      "distance": 4.428451061248779,
+      "hz": 30,
+      "speed": 8,
+      "surface": "ice",
+      "time": 1.1666666666666667
+    },
+    {
+      "distance": 15.127570152282717,
+      "hz": 30,
+      "speed": 16,
+      "surface": "ice",
+      "time": 2.066666666666667
+    },
+    {
+      "distance": 1.2099602222442627,
+      "hz": 60,
+      "speed": 4,
+      "surface": "ice",
+      "time": 0.6333333333333333
+    },
+    {
+      "distance": 4.428451061248779,
+      "hz": 60,
+      "speed": 8,
+      "surface": "ice",
+      "time": 1.1666666666666667
+    },
+    {
+      "distance": 15.127570152282717,
+      "hz": 60,
+      "speed": 16,
+      "surface": "ice",
+      "time": 2.066666666666667
+    },
+    {
+      "distance": 1.2097208499908447,
+      "hz": 120,
+      "speed": 4,
+      "surface": "ice",
+      "time": 0.625
+    },
+    {
+      "distance": 4.428451061248779,
+      "hz": 120,
+      "speed": 8,
+      "surface": "ice",
+      "time": 1.1666666666666667
+    },
+    {
+      "distance": 15.127570152282717,
+      "hz": 120,
+      "speed": 16,
+      "surface": "ice",
+      "time": 2.066666666666667
+    },
+    {
+      "distance": 0.22783423960208893,
+      "hz": 30,
+      "speed": 4,
+      "surface": "rubber",
+      "time": 0.13333333333333333
+    },
+    {
+      "distance": 0.7296280264854431,
+      "hz": 30,
+      "speed": 8,
+      "surface": "rubber",
+      "time": 0.23333333333333336
+    },
+    {
+      "distance": 2.0977861881256104,
+      "hz": 30,
+      "speed": 16,
+      "surface": "rubber",
+      "time": 0.36666666666666664
+    },
+    {
+      "distance": 0.22783423960208893,
+      "hz": 60,
+      "speed": 4,
+      "surface": "rubber",
+      "time": 0.13333333333333333
+    },
+    {
+      "distance": 0.7293840646743774,
+      "hz": 60,
+      "speed": 8,
+      "surface": "rubber",
+      "time": 0.21666666666666667
+    },
+    {
+      "distance": 2.097761392593384,
+      "hz": 60,
+      "speed": 16,
+      "surface": "rubber",
+      "time": 0.35
+    },
+    {
+      "distance": 0.22783423960208893,
+      "hz": 120,
+      "speed": 4,
+      "surface": "rubber",
+      "time": 0.13333333333333333
+    },
+    {
+      "distance": 0.7293840646743774,
+      "hz": 120,
+      "speed": 8,
+      "surface": "rubber",
+      "time": 0.21666666666666667
+    },
+    {
+      "distance": 2.0976850986480713,
+      "hz": 120,
+      "speed": 16,
+      "surface": "rubber",
+      "time": 0.3416666666666667
+    },
+    {
+      "distance": 0.2302047312259674,
+      "hz": 30,
+      "speed": 4,
+      "surface": "rough",
+      "time": 0.13333333333333333
+    },
+    {
+      "distance": 0.7186525464057922,
+      "hz": 30,
+      "speed": 8,
+      "surface": "rough",
+      "time": 0.23333333333333336
+    },
+    {
+      "distance": 2.0084383487701416,
+      "hz": 30,
+      "speed": 16,
+      "surface": "rough",
+      "time": 0.3333333333333333
+    },
+    {
+      "distance": 0.2302047312259674,
+      "hz": 60,
+      "speed": 4,
+      "surface": "rough",
+      "time": 0.13333333333333333
+    },
+    {
+      "distance": 0.7186525464057922,
+      "hz": 60,
+      "speed": 8,
+      "surface": "rough",
+      "time": 0.23333333333333336
+    },
+    {
+      "distance": 2.0084383487701416,
+      "hz": 60,
+      "speed": 16,
+      "surface": "rough",
+      "time": 0.3333333333333333
+    },
+    {
+      "distance": 0.2302047312259674,
+      "hz": 120,
+      "speed": 4,
+      "surface": "rough",
+      "time": 0.13333333333333333
+    },
+    {
+      "distance": 0.7185931205749512,
+      "hz": 120,
+      "speed": 8,
+      "surface": "rough",
+      "time": 0.225
+    },
+    {
+      "distance": 2.0084383487701416,
+      "hz": 120,
+      "speed": 16,
+      "surface": "rough",
+      "time": 0.3333333333333333
+    }
+  ],
+  "controller": "standard API fixture relay WIN",
+  "disconnectRecovery": "passed",
+  "gripLab": "WIN through four surfaces",
+  "keyboard": "relay WIN",
+  "physicalController": "not tested",
+  "rateComparison": "30/60/120 Hz simulation cadence within 0.04 units"
+}
