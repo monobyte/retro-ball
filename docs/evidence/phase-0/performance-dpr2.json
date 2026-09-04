@@ -1,0 +1,215 @@
+{
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+  "devicePixelRatio": 2,
+  "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Pro, Unspecified Version)",
+  "navigation": {
+    "activationStart": 0,
+    "confidence": {},
+    "connectEnd": 0.6000000014901161,
+    "connectStart": 0.6000000014901161,
+    "contentEncoding": "",
+    "contentType": "text/html",
+    "criticalCHRestart": 0,
+    "decodedBodySize": 1300,
+    "deliveryType": "cache",
+    "domComplete": 60.69999999925494,
+    "domContentLoadedEventEnd": 60.69999999925494,
+    "domContentLoadedEventStart": 60.69999999925494,
+    "domInteractive": 37.39999999850989,
+    "domainLookupEnd": 0.6000000014901161,
+    "domainLookupStart": 0.6000000014901161,
+    "duration": 60.69999999925494,
+    "encodedBodySize": 1300,
+    "entryType": "navigation",
+    "fetchStart": 0.6000000014901161,
+    "finalResponseHeadersStart": 2.399999998509884,
+    "firstInterimResponseStart": 0,
+    "initiatorType": "navigation",
+    "loadEventEnd": 60.69999999925494,
+    "loadEventStart": 60.69999999925494,
+    "name": "http://127.0.0.1:5173/retro-ball/",
+    "navigationId": 9692,
+    "nextHopProtocol": "",
+    "notRestoredReasons": null,
+    "redirectCount": 0,
+    "redirectEnd": 0,
+    "redirectStart": 0,
+    "renderBlockingStatus": "non-blocking",
+    "requestStart": 1.100000001490116,
+    "responseEnd": 2.600000001490116,
+    "responseStart": 2.399999998509884,
+    "responseStatus": 200,
+    "secureConnectionStart": 0,
+    "serverTiming": [],
+    "startTime": 0,
+    "transferSize": 300,
+    "type": "reload",
+    "unloadEventEnd": 29.800000000745055,
+    "unloadEventStart": 29.800000000745055,
+    "workerCacheLookupStart": 0,
+    "workerFinalSourceType": "",
+    "workerMatchedSourceType": "",
+    "workerRouterEvaluationStart": 0,
+    "workerStart": 0
+  },
+  "readyAtMs": 89.39999999850988,
+  "results": [
+    {
+      "buffer": [
+        1511,
+        862
+      ],
+      "drawCalls": {
+        "max": 52,
+        "median": 45,
+        "p95": 48
+      },
+      "frameIntervalMs": {
+        "max": 16.800000000000182,
+        "median": 16.699999999999818,
+        "p95": 16.700000000000728
+      },
+      "gameUpdateMs": {
+        "max": 0.5,
+        "median": 0.30000000074505806,
+        "p95": 0.4000000022351742
+      },
+      "name": "low",
+      "physicsStepMs": {
+        "max": 0.20000000298023224,
+        "median": 0.09999999776482582,
+        "p95": 0.1999999992549419
+      },
+      "pixelRatio": 1,
+      "renderSubmissionMs": {
+        "max": 1.399999998509884,
+        "median": 0.8000000007450581,
+        "p95": 1.100000001490116
+      },
+      "resources": {
+        "bodies": 3,
+        "colliders": 99,
+        "geometries": 168,
+        "programs": 22,
+        "textures": 8
+      },
+      "settings": {
+        "antialias": false,
+        "bloom": false,
+        "nebulaScale": 0.25,
+        "pixelRatioCap": 1
+      },
+      "triangles": {
+        "max": 17198,
+        "median": 17142,
+        "p95": 17170
+      }
+    },
+    {
+      "buffer": [
+        3022,
+        1724
+      ],
+      "drawCalls": {
+        "max": 58,
+        "median": 55,
+        "p95": 57
+      },
+      "frameIntervalMs": {
+        "max": 16.80000000000109,
+        "median": 16.699999999999818,
+        "p95": 16.700000000000728
+      },
+      "gameUpdateMs": {
+        "max": 0.8999999985098839,
+        "median": 0.20000000298023224,
+        "p95": 0.30000000074505806
+      },
+      "name": "standard",
+      "physicsStepMs": {
+        "max": 0.5,
+        "median": 0.09999999776482582,
+        "p95": 0.1999999992549419
+      },
+      "pixelRatio": 2,
+      "renderSubmissionMs": {
+        "max": 1.5,
+        "median": 0.7999999970197678,
+        "p95": 1
+      },
+      "resources": {
+        "bodies": 3,
+        "colliders": 99,
+        "geometries": 168,
+        "programs": 29,
+        "textures": 19
+      },
+      "settings": {
+        "antialias": false,
+        "bloom": true,
+        "nebulaScale": 0.25,
+        "pixelRatioCap": 2
+      },
+      "triangles": {
+        "max": 17155,
+        "median": 16975,
+        "p95": 16987
+      }
+    },
+    {
+      "buffer": [
+        3022,
+        1724
+      ],
+      "drawCalls": {
+        "max": 57,
+        "median": 54,
+        "p95": 57
+      },
+      "frameIntervalMs": {
+        "max": 25.100000000000364,
+        "median": 16.69999999999891,
+        "p95": 25
+      },
+      "gameUpdateMs": {
+        "max": 1.399999998509884,
+        "median": 0.5,
+        "p95": 0.6000000014901161
+      },
+      "name": "high",
+      "physicsStepMs": {
+        "max": 0.30000000074505806,
+        "median": 0.10000000149011612,
+        "p95": 0.20000000298023224
+      },
+      "pixelRatio": 2,
+      "renderSubmissionMs": {
+        "max": 1.600000001490116,
+        "median": 0.8999999985098839,
+        "p95": 1.300000000745058
+      },
+      "resources": {
+        "bodies": 3,
+        "colliders": 99,
+        "geometries": 168,
+        "programs": 29,
+        "textures": 18
+      },
+      "settings": {
+        "antialias": true,
+        "bloom": true,
+        "nebulaScale": 1,
+        "pixelRatioCap": 2
+      },
+      "triangles": {
+        "max": 17153,
+        "median": 16973,
+        "p95": 17153
+      }
+    }
+  ],
+  "viewport": [
+    1511,
+    862
+  ]
+}

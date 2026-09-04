@@ -55,5 +55,5 @@
     r.lookAt(savedTarget);
     r.renderer.setRenderTarget(savedRenderTarget);
   }
-  return { passed: results.length, checks: results };
+  return { passed: results.length, viewport: [innerWidth, innerHeight], devicePixelRatio, drawingBuffer: [r.canvas.width, r.canvas.height], checks: results };
 })()

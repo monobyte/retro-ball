@@ -36,6 +36,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Typecheck and regression tests
+        run: |
+          pnpm typecheck
+          pnpm test
+
       - name: Build game
         run: pnpm build
 

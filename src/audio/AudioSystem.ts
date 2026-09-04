@@ -2,6 +2,7 @@ import { Soundtrack, createAudioGraph, type AudioGraph } from './Soundtrack';
 import { Sfx } from './Sfx';
 import type { GameAudio } from '../game/Game';
 import type { DeathCause } from '../game/Dynamics';
+import type { QualitySettings } from '../settings/Settings';
 
 const BPM_FALLBACK = 112;
 
@@ -14,6 +15,14 @@ export class AudioSystem implements GameAudio {
   private music: Soundtrack | null = null;
   private sfx: Sfx | null = null;
   private muted = false;
+  private musicEnabled = true;
+  private soundFxEnabled = true;
+
+  applySettings(settings: Pick<QualitySettings, 'musicEnabled' | 'soundFxEnabled'>): void {
+    this.musicEnabled = settings.musicEnabled;
+    this.soundFxEnabled = settings.soundFxEnabled;
+    this.applyMute();
+  }
 
   start(): void {
     if (this.graph) {
@@ -22,10 +31,10 @@ export class AudioSystem implements GameAudio {
     }
     try {
       this.graph = createAudioGraph();
-      this.music = new Soundtrack(this.graph);
-      this.sfx = new Sfx(this.graph);
+      this.music = new Soundtrack(this.graph.music);
+      this.sfx = new Sfx(this.graph.sfx);
+      this.applyMute(true);
       this.music.start();
-      this.applyMute();
     } catch (err) {
       console.warn('Audio unavailable:', err);
     }
@@ -37,9 +46,19 @@ export class AudioSystem implements GameAudio {
     return this.muted;
   }
 
-  private applyMute(): void {
-    this.music?.setVolume(this.muted ? 0 : 0.9);
-    this.sfx?.setVolume(this.muted ? 0 : 0.9);
+  private applyMute(immediate = false): void {
+    if (!this.graph) return;
+    const { ctx, master, music, sfx } = this.graph;
+    // Gates sit after dry and wet paths; source volume preferences stay intact.
+    for (const [gain, value] of [
+      [master.gain, this.muted ? 0 : 0.8],
+      [music.master.gain, this.musicEnabled ? 1 : 0],
+      [sfx.master.gain, this.soundFxEnabled ? 1 : 0],
+    ] as const) {
+      gain.cancelScheduledValues(ctx.currentTime);
+      if (immediate) gain.setValueAtTime(value, ctx.currentTime);
+      else gain.setTargetAtTime(value, ctx.currentTime, 0.01);
+    }
   }
 
   beatEnergy(): number {

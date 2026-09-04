@@ -2,7 +2,7 @@
 
 Specification: [Game and engine specification](GAME_SPEC.md).  
 Baseline: `9f93950`, reviewed 4 September 2026.  
-Current delivery state: prototype complete; expansion implementation not started.
+Current delivery state: phase 0 complete; phase 1 is next.
 
 ## How to track progress
 
@@ -36,7 +36,7 @@ existing features; they do not claim campaign, editor or opponent functionality.
 
 | Phase | Outcome | Depends on | Status |
 | --- | --- | --- | --- |
-| 0 | Baseline, budgets, audio toggles and development safety | Existing prototype | Not started |
+| 0 | Baseline, budgets, audio toggles and development safety | Existing prototype | Done |
 | 1 | Multiple levels and owned runtime lifecycle | 0 | Not started |
 | 2 | Movement, camera and player controls | 1 | Not started |
 | 3 | Internal editor foundation | 1; 2 for final play-test UX | Not started |
@@ -58,19 +58,19 @@ ideas early, but complete prerequisite gates before depending on them for conten
 Requirements: FND-06, AUD-06, quality policy. Outcome: preserve the working game,
 add independent audio toggles and make future regressions visible.
 
-- [ ] **P0-01** Capture a reproducible baseline build, course completion, current
+- [x] **P0-01** Capture a reproducible baseline build, course completion, current
   rendering checks and representative screenshots/settings.
-- [ ] **P0-02** Select reference hardware/browser versions and representative
+- [x] **P0-02** Select reference hardware/browser versions and representative
   normal/Retina, low/standard/high-quality scenarios.
-- [ ] **P0-03** Measure current frame time, physics cost, draw calls, load time
+- [x] **P0-03** Measure current frame time, physics cost, draw calls, load time
   and resource counts; establish practical budgets from those measurements.
-- [ ] **P0-04** Run typecheck/build and layout tests in CI; make the browser
+- [x] **P0-04** Run typecheck/build and layout tests in CI; make the browser
   checks repeatable and record any runner-specific GPU limitations explicitly.
-- [ ] **P0-05** Add an issue/play-test template with level ID, version, input,
+- [x] **P0-05** Add an issue/play-test template with level ID, version, input,
   settings, reproduction steps and expected/actual behaviour.
-- [ ] **P0-06** Confirm first-region goals, release scope and provisional defaults
+- [x] **P0-06** Confirm first-region goals, release scope and provisional defaults
   in the spec; record only decisions that materially affect implementation.
-- [ ] **P0-07** Add independent **Music** and **Sound FX** on/off options to
+- [x] **P0-07** Add independent **Music** and **Sound FX** on/off options to
   Settings. Apply changes immediately, persist them across reloads, preserve
   volume preferences and make master mute respect both choices. Verify all four
   combinations, reload behaviour and compatibility with existing saved settings.
@@ -78,7 +78,7 @@ add independent audio toggles and make future regressions visible.
 
 Acceptance gate:
 
-- [ ] **G0** A fresh checkout builds and runs the documented checks. A baseline
+- [x] **G0** A fresh checkout builds and runs the documented checks. A baseline
   course can be completed, independent audio toggles work and persist, and
   hardware/settings accompany performance evidence.
 
@@ -416,8 +416,10 @@ the specific commit, PR, build or play-test report.
 | --- | --- | --- | --- | --- |
 | 2026-09-04 | Baseline | Done | `9f93950` | Begin P0-01; expansion phases remain unstarted |
 
+| 2026-09-04 | P0-01–07, G0 | Done | [Baseline, measurements and test evidence](PHASE_0_BASELINE.md); six Node tests, clean install/build, 64 HDR scenarios, 45 void drops, four audio combinations and full course WIN | Phase 1 runtime/schema; high Retina preset remains below 60 FPS target |
+
 ## Next action
 
-Start **P0-01 through P0-03**: capture the existing game, select test hardware,
-and record measurable baselines. Then implement **P1-01** and **P1-02** so the
-current course can be loaded by ID before adding new world content.
+Implement **P1-01** and **P1-02**: versioned validated documents and catalogue,
+retaining the current course as the legacy fixture. Then extract the session
+lifecycle and prove transitions and disposal before building new world content.

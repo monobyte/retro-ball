@@ -16,7 +16,7 @@ jump pads, VCR scanlines and a synth soundtrack whose kick drum drives the glow.
 
 ```
 npm install
-npm run dev        # http://localhost:5173
+npm run dev        # http://localhost:5173/retro-ball/
 npm run build      # type-checks, then bundles to dist/
 ```
 
@@ -26,7 +26,7 @@ npm run build      # type-checks, then bundles to dist/
 | R                  | Reboot at the last checkpoint / re-run  |
 | M                  | Mute                                    |
 | F (or ⛶)          | Enter / exit browser fullscreen         |
-| Esc (or ⚙)         | Open / close the quality settings panel |
+| Esc (or ⚙)         | Open / close the settings panel |
 | Space              | Boot from the intro screen              |
 
 Screen-up pushes the marble "into" the screen (world `-x, -z`), so following a
@@ -176,7 +176,11 @@ and decays exponentially, and it drives:
 Sound effects (`src/audio/Sfx.ts`) are synthesised on the same graph:
 speed-driven rolling noise and hum, impacts scaled by the velocity change,
 jump-pad sweeps, per-hazard death sounds, a checkpoint chime and a win
-arpeggio. Audio unlocks on the first key press (browser autoplay policy).
+arpeggio. Audio unlocks when Space starts the game (browser autoplay policy).
+
+Settings has independent **Music** and **Sound FX** switches, saved across reloads.
+**M** temporarily mutes both without changing those choices; unmuting restores
+only enabled categories. Music can be off while the visual beat continues.
 
 ## Project layout
 
@@ -232,3 +236,8 @@ It fails on non-finite pixel values or WebGL errors. Inspect both bends while
 moving the camera as well: pixel validity alone does not detect depth flicker.
 The void check drops the marble into each opening from five positions and
 verifies a void death followed by a respawn at checkpoint B.
+
+For the full rendering/audio/void/course suite, run `npm run test:browser`.
+For recorded frame/physics/resource measurements, run `npm run benchmark:browser`.
+Both require the dev server and installed agent-browser. See the
+[phase-0 baseline](docs/PHASE_0_BASELINE.md) for configuration, budgets and evidence.

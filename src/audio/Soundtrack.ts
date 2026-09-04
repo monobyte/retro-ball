@@ -54,11 +54,18 @@ function chordTones(c: Chord): number[] {
 }
 
 /** Shared audio graph pieces that the SFX layer reuses. */
-export interface AudioGraph {
+export interface AudioChannel {
   ctx: AudioContext;
   master: GainNode;
   reverb: ConvolverNode;
   noise: AudioBuffer;
+}
+
+export interface AudioGraph {
+  ctx: AudioContext;
+  master: GainNode;
+  music: AudioChannel;
+  sfx: AudioChannel;
 }
 
 export function createAudioGraph(): AudioGraph {
@@ -73,8 +80,7 @@ export function createAudioGraph(): AudioGraph {
   comp.release.value = 0.18;
   master.connect(comp).connect(ctx.destination);
 
-  // Impulse response: 2.4 s of exponentially decaying stereo noise.
-  const reverb = ctx.createConvolver();
+  // Shared impulse data, separate reverbs: wet tails must obey category mute.
   const len = Math.floor(ctx.sampleRate * 2.4);
   const ir = ctx.createBuffer(2, len, ctx.sampleRate);
   for (let ch = 0; ch < 2; ch++) {
@@ -84,17 +90,23 @@ export function createAudioGraph(): AudioGraph {
       d[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, 2.6) * (ch === 0 ? 1 : 0.9);
     }
   }
-  reverb.buffer = ir;
-  const reverbGain = ctx.createGain();
-  reverbGain.gain.value = 0.55;
-  reverb.connect(reverbGain).connect(master);
 
   const noiseLen = ctx.sampleRate * 2;
   const noise = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
   const nd = noise.getChannelData(0);
   for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
 
-  return { ctx, master, reverb, noise };
+  const channel = (): AudioChannel => {
+    const output = ctx.createGain();
+    output.connect(master);
+    const reverb = ctx.createConvolver();
+    reverb.buffer = ir;
+    const wet = ctx.createGain();
+    wet.gain.value = 0.55;
+    reverb.connect(wet).connect(output);
+    return { ctx, master: output, reverb, noise };
+  };
+  return { ctx, master, music: channel(), sfx: channel() };
 }
 
 export class Soundtrack {
@@ -109,7 +121,7 @@ export class Soundtrack {
   private readonly kickTimes: number[] = [];
   private startedAt = 0;
 
-  constructor(private readonly g: AudioGraph) {
+  constructor(private readonly g: AudioChannel) {
     this.ctx = g.ctx;
     this.out = this.ctx.createGain();
     this.out.gain.value = 0.9;

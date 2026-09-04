@@ -1,0 +1,29 @@
+name: Game bug or play-test finding
+description: Report a reproducible problem or confusing moment.
+body:
+  - type: textarea
+    id: environment
+    attributes:
+      label: Build and environment
+      description: Commit/version, level ID, checkpoint, browser/version, OS/GPU, viewport/pixel ratio, keyboard/controller, quality/audio/assist settings.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Starting state, controls/actions, frequency, and seed if applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual behaviour
+      description: Include screenshots/video, console errors and recovery steps if available.
+    validations:
+      required: true
+  - type: textarea
+    id: playtest
+    attributes:
+      label: Play-test observations
+      description: What was confusing, unfair, memorable or fun? First-time player? Time to finish and reset count?

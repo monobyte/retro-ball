@@ -1,7 +1,7 @@
 import { DEFAULT_SETTINGS, SETTING_OPTIONS, type QualitySettings } from '../settings/Settings';
 
 type NumericKey = 'frameCap' | 'pixelRatioCap' | 'nebulaScale';
-type BoolKey = 'antialias' | 'bloom';
+type BoolKey = 'antialias' | 'bloom' | 'musicEnabled' | 'soundFxEnabled';
 
 interface NumericRow {
   key: NumericKey;
@@ -42,6 +42,8 @@ const NUMERIC_ROWS: NumericRow[] = [
 ];
 
 const BOOL_ROWS: BoolRow[] = [
+  { key: 'musicEnabled', label: 'MUSIC', hint: 'Soundtrack. Visual rhythm continues when off.' },
+  { key: 'soundFxEnabled', label: 'SOUND FX', hint: 'Rolling, impacts and game cues.' },
   { key: 'antialias', label: 'ANTIALIAS', hint: '4× multisampling on the scene pass.' },
   { key: 'bloom', label: 'BLOOM', hint: 'Neon glow post-processing pass.' },
 ];
@@ -84,7 +86,7 @@ export class SettingsPanel {
 
     const head = document.createElement('div');
     head.className = 'settings-head';
-    head.innerHTML = '<span class="eyebrow">// QUALITY</span><span class="settings-close">ESC TO CLOSE</span>';
+    head.innerHTML = '<span class="eyebrow">// SETTINGS</span><span class="settings-close">ESC TO CLOSE</span>';
     this.panel.appendChild(head);
 
     for (const row of NUMERIC_ROWS) {
@@ -160,6 +162,7 @@ export class SettingsPanel {
   ): void {
     const row = document.createElement('div');
     row.className = 'settings-row';
+    row.dataset['setting'] = key;
     const lab = document.createElement('div');
     lab.className = 'settings-label';
     lab.textContent = label;
@@ -172,6 +175,7 @@ export class SettingsPanel {
       const b = document.createElement('button');
       b.type = 'button';
       b.textContent = opt.text;
+      b.setAttribute('aria-label', `${label} ${opt.text}`);
       b.dataset['value'] = String(opt.value);
       b.addEventListener('click', () => {
         apply(opt.value);
@@ -195,7 +199,11 @@ export class SettingsPanel {
     for (const [key, list] of this.buttons) {
       const raw = this.settings[key as keyof QualitySettings];
       const current = typeof raw === 'boolean' ? (raw ? 1 : 0) : raw;
-      for (const b of list) b.classList.toggle('active', Number(b.dataset['value']) === current);
+      for (const b of list) {
+        const active = Number(b.dataset['value']) === current;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+      }
     }
   }
 }

@@ -21,6 +21,7 @@ async function main(): Promise<void> {
   const input = new Input();
   const hud = new Hud();
   const audio = new AudioSystem();
+  audio.applySettings(settings);
 
   const game = new Game(LEVEL, renderer, physics, input, hud);
   game.audio = audio;
@@ -45,6 +46,7 @@ async function main(): Promise<void> {
     const prev = settings;
     settings = next;
     saveSettings(next);
+    audio.applySettings(next);
     if (next.pixelRatioCap !== prev.pixelRatioCap) {
       renderer.setPixelRatioCap(next.pixelRatioCap);
       background.setPixelRatio(renderer.renderer.getPixelRatio());
@@ -72,7 +74,7 @@ async function main(): Promise<void> {
   const debug = { stepsPerFrame: 1, fixedDt: null as number | null };
   const autopilot = new Autopilot(game, input);
   if (import.meta.env.DEV) {
-    (window as unknown as { __retro: unknown }).__retro = { game, input, autopilot, debug, applySettings };
+    (window as unknown as { __retro: unknown }).__retro = { game, input, autopilot, debug, applySettings, readyAtMs: performance.now() };
   }
 
   let last = performance.now();

@@ -1,6 +1,6 @@
 # Retro Ball: game and engine specification
 
-Status: proposed implementation baseline, 4 September 2026.  
+Status: implementation baseline confirmed in phase 0, 4 September 2026.
 Existing prototype baseline: commit `9f93950`.  
 Progress tracker: [Implementation plan](IMPLEMENTATION_PLAN.md).
 
@@ -8,6 +8,11 @@ This document defines the intended game. The implementation plan owns task
 status and release gates. New features described here are requirements, not
 claims about the current build. Names, content counts and tuning values below
 are planning defaults that can be revised after the first region is play-tested.
+
+Reference hardware, presets, measurements and initial engineering budgets are
+recorded in [the phase-0 baseline](PHASE_0_BASELINE.md). First-region goals and
+campaign counts below are the adopted production scope, with creative themes
+remaining open to play-test findings.
 
 ## 1. Product vision
 

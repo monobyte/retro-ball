@@ -1,4 +1,4 @@
-import type { AudioGraph } from './Soundtrack';
+import type { AudioChannel } from './Soundtrack';
 import type { DeathCause } from '../game/Dynamics';
 
 /** Synthesised sound effects sharing the soundtrack's audio graph. */
@@ -10,7 +10,7 @@ export class Sfx {
   private readonly humOsc: OscillatorNode;
   private readonly humGain: GainNode;
 
-  constructor(private readonly g: AudioGraph) {
+  constructor(private readonly g: AudioChannel) {
     this.ctx = g.ctx;
     this.out = this.ctx.createGain();
     this.out.gain.value = 0.9;

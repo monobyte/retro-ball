@@ -3,6 +3,8 @@
  * Persisted in localStorage so a choice survives a reload.
  */
 export interface QualitySettings {
+  musicEnabled: boolean;
+  soundFxEnabled: boolean;
   /** Upper bound on frames per second. 0 = no cap (render every display refresh). */
   frameCap: number;
   /** Upper bound on the device pixel ratio used for rendering. */
@@ -23,6 +25,8 @@ export const SETTING_OPTIONS = {
 } as const;
 
 export const DEFAULT_SETTINGS: QualitySettings = {
+  musicEnabled: true,
+  soundFxEnabled: true,
   frameCap: 60,
   pixelRatioCap: 2,
   antialias: false,
@@ -48,6 +52,8 @@ export function loadSettings(): QualitySettings {
     if (!raw) return { ...d };
     const s = JSON.parse(raw) as Partial<Record<keyof QualitySettings, unknown>>;
     return {
+      musicEnabled: pickBool(s.musicEnabled, d.musicEnabled),
+      soundFxEnabled: pickBool(s.soundFxEnabled, d.soundFxEnabled),
       frameCap: pick(s.frameCap, SETTING_OPTIONS.frameCap, d.frameCap),
       pixelRatioCap: pick(s.pixelRatioCap, SETTING_OPTIONS.pixelRatioCap, d.pixelRatioCap),
       antialias: pickBool(s.antialias, d.antialias),
