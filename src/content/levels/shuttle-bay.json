@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "shuttle-bay",
+  "metadata": {
+    "name": "SHUTTLE BAY",
+    "description": "Wait at the dock. Board the shuttle, hold brake to ride, then roll off at the far dock.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": -10,
+    "y": 0.6,
+    "z": 0
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 12,
+        "d": 10,
+        "label": "WAIT / BOARD"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "bridge-002",
+      "type": "bridge",
+      "transform": {
+        "position": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 8,
+        "dir": "+x",
+        "distance": 8,
+        "period": 12,
+        "dwell": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-003",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 18,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 12,
+        "d": 10,
+        "label": "DISEMBARK"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-004",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-005",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 20,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "attempt"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-004",
+      "spawn": {
+        "x": -8,
+        "y": 0.6,
+        "z": 0
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-005",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "training",
+      "mode": "arena",
+      "center": {
+        "x": 5.0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 54,
+        "y": 10,
+        "z": 30
+      },
+      "viewHeight": 27
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": [
+      "Hold brake to ride moving platforms."
+    ]
+  }
+}

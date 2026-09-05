@@ -7,7 +7,7 @@ export type QuarterTurn = 0 | 90 | 180 | 270;
 export type PieceKind = Piece['kind'];
 export type InstanceId = string;
 export type ResetGroupId = string;
-export type Port = 'activated' | 'completed' | 'enable' | 'reset';
+export type Port = import('../signals/SignalTypes').SignalPort;
 export interface InstanceLink {
   output: Port;
   target: { instanceId: InstanceId; input: Port };
@@ -68,10 +68,11 @@ export function resolveInstance(instance: LevelInstance): Piece {
     p.y1 += position.y;
   } else p.y = position.y;
   if ('w' in p && 'd' in p && (yaw === 90 || yaw === 270)) [p.w, p.d] = [p.d, p.w];
-  if (p.kind === 'ramp') {
+  if (p.kind === 'ramp' || p.kind === 'conveyor' || p.kind === 'bridge' || p.kind === 'fragile') {
     const dirs: Dir[] = ['+x', '-z', '-x', '+z'];
     p.dir = dirs[(dirs.indexOf(p.dir) + yaw / 90) % 4]!;
   }
+  if (p.kind === 'seesaw' && (yaw === 90 || yaw === 270)) p.axis = p.axis === 'x' ? 'z' : 'x';
   if (p.kind === 'laser') {
     const [x, z] = rotate(p.axis === 'z' ? 1 : 0, p.axis === 'x' ? 1 : 0, yaw);
     if (yaw === 90 || yaw === 270) p.axis = p.axis === 'x' ? 'z' : 'x';

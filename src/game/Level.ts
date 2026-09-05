@@ -84,7 +84,7 @@ export function pieceToBox(p: Piece): BoxSpec | null {
 }
 
 /** Box geometry with a per-vertex `aGrid` attribute measured in world tiles. */
-function gridBoxGeometry(size: THREE.Vector3): THREE.BufferGeometry {
+export function gridBoxGeometry(size: THREE.Vector3): THREE.BufferGeometry {
   const geo = new THREE.BoxGeometry(size.x, size.y, size.z);
   const uv = geo.getAttribute('uv') as THREE.BufferAttribute;
   const normal = geo.getAttribute('normal') as THREE.BufferAttribute;

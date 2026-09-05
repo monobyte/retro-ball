@@ -1,3 +1,4 @@
+import { PARTS } from '../src/content/PartRegistry.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EditorModel, starterDocument } from '../src/editor/EditorModel.ts';
@@ -31,10 +32,10 @@ test('all registry parts can be authored and incomplete drafts never become play
   assert.equal(model.document.instances.length,0);
   assert.ok(validateLevel(model.document,{draft:true}).document);
   assert.equal(validateLevel(model.document).document,null);
-  for (const type of ['slab','wall','ramp','jumppad','elevator','laser','void','checkpoint','goal']) model.place(type,{x:0,y:0,z:0});
-  assert.equal(model.document.instances.length,9);
+  for (const type of Object.keys(PARTS)) model.place(type,{x:0,y:0,z:0});
+  assert.equal(model.document.instances.length,Object.keys(PARTS).length);
   model.select(model.document.instances.map(i=>i.id)); model.remove(); model.undo();
-  assert.equal(model.document.instances.length,9);
+  assert.equal(model.document.instances.length,Object.keys(PARTS).length);
   assert.equal(model.document.checkpoints.length,1); assert.equal(model.document.objectives.length,1);
 });
 
@@ -100,4 +101,48 @@ test('authoring validation identifies both overlapping floors and blocked void o
   assert.ok(issue);assert.ok(issue.instanceIds.includes('slab-001'));
   assert.throws(()=>model.playDocument(),/Partition/);
   model.undo();assert.ok(validateLevel(model.document).document);
+});
+
+test('signal authoring validates atomically, renames inline wires and restores them with undo',()=>{
+  const model=new EditorModel();
+  model.place('switch',{x:-3,y:0,z:2});const a=model.selection[0];
+  model.place('logic',{x:3,y:0,z:2});const b=model.selection[0];
+  model.place('logic',{x:3,y:0,z:-2});const c=model.selection[0];
+  model.connectSignal({instanceId:a,port:'active'},{instanceId:b,port:'inputA'},'power');
+  model.connectSignal({instanceId:b,port:'active'},{instanceId:c,port:'inputA'});
+  const good=model.document;
+  assert.throws(()=>model.connectSignal({instanceId:c,port:'active'},{instanceId:b,port:'inputB'}),/feedback/);
+  assert.throws(()=>model.connectSignal({instanceId:a,port:'activated'},{instanceId:b,port:'inputB'}),/mismatch/);
+  assert.throws(()=>model.renameSignal('power',good.signals[1].id),/Duplicate/);
+  assert.deepEqual(model.document,good);
+  model.disconnectSignal('power');assert.equal(model.document.signals.length,1);model.undo();assert.deepEqual(model.document,good);
+  model.edit('Local wire',d=>{d.instances.find(i=>i.id===a).links.push({output:'active',target:{instanceId:c,input:'inputB'}})});
+  const local=model.document,inline=`inline/${a}/0`;
+  model.renameSignal(inline,'reset-pulse');assert.equal(model.document.instances.find(i=>i.id===a).links.length,0);
+  assert.equal(model.document.signals.find(s=>s.id==='reset-pulse').target.port,'inputB');
+  model.undo();assert.deepEqual(model.document,local);model.disconnectSignal(inline);
+  assert.equal(model.document.instances.find(i=>i.id===a).links.length,0);model.undo();assert.deepEqual(model.document,local);
+});
+
+test('reset group edits preserve references, checkpoints, prefab remapping and undo',()=>{
+  const model=new EditorModel();model.place('checkpoint',{x:0,y:0,z:1});const checkpoint=model.document.checkpoints[0];
+  model.addResetGroup('puzzle');model.place('switch',{x:3,y:0,z:1});const control=model.selection[0];
+  model.assignResetGroup('puzzle');model.setCheckpointGroup(checkpoint.id,'puzzle',true);
+  const before=model.document;model.renameResetGroup('puzzle','circuit');
+  assert.equal(model.document.instances.find(i=>i.id===control).resetGroup,'circuit');
+  assert.deepEqual(model.document.checkpoints[0].resetGroups,['circuit']);
+  const renamed=model.document;
+  assert.throws(()=>model.renameResetGroup('circuit','course'),/Duplicate/);assert.deepEqual(model.document,renamed);
+  assert.throws(()=>model.assignResetGroup('missing'),/reset group/i);assert.deepEqual(model.document,renamed);
+  model.undo();assert.deepEqual(model.document,before);model.redo();
+  model.select([checkpoint.instanceId,control]);const prefab=model.createPrefab('Puzzle',{});
+  model.insertPrefab(prefab,{x:20,y:0,z:0});
+  const pasted=model.document.instances.find(i=>model.selection.includes(i.id)&&i.type==='switch');
+  assert.notEqual(pasted.resetGroup,'circuit');
+  assert.ok(model.document.checkpoints.some(cp=>cp.resetGroups.includes(pasted.resetGroup)));
+  model.undo();model.mergeResetGroup('circuit','course');
+  assert.equal(model.document.instances.find(i=>i.id===control).resetGroup,'course');
+  assert.deepEqual(model.document.checkpoints[0].resetGroups,['course']);
+  assert.equal(model.document.resetGroups.length,1);model.undo();assert.deepEqual(model.document,renamed);
+  model.setCheckpointGroup(checkpoint.id,'circuit',false);assert.deepEqual(model.document.checkpoints[0].resetGroups,[]);
 });

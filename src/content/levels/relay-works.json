@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "relay-works",
+  "metadata": {
+    "name": "RELAY WORKS",
+    "description": "Ride the belt into a shuttle. Transfer to a turning deck. Leave before the last floor withdraws.",
+    "difficulty": "normal"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": -17,
+    "y": 0.6,
+    "z": 0
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -16,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 10,
+        "label": "BOARD / BRAKE"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "conveyor-002",
+      "type": "conveyor",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 8,
+        "dir": "+x",
+        "speed": 3,
+        "acceleration": 8
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "bridge-003",
+      "type": "bridge",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 8,
+        "dir": "+x",
+        "distance": 8,
+        "period": 20,
+        "dwell": 6
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "rotator-004",
+      "type": "rotator",
+      "transform": {
+        "position": {
+          "x": 16,
+          "y": 0.06,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 4,
+        "angularSpeed": 15
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "fragile-005",
+      "type": "fragile",
+      "transform": {
+        "position": {
+          "x": 22,
+          "y": 0.06,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 8,
+        "mode": "retract",
+        "dir": "+z",
+        "warning": 1.5,
+        "recovery": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-006",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 30,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 12,
+        "d": 10,
+        "label": "KEEP MOVING"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-007",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": -15,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-008",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 29,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-009",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 33,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "checkpoint"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-007",
+      "spawn": {
+        "x": -15,
+        "y": 0.6,
+        "z": 0
+      },
+      "resetGroups": [
+        "course"
+      ]
+    },
+    {
+      "id": "checkpoint-2",
+      "instanceId": "checkpoint-008",
+      "spawn": {
+        "x": 29,
+        "y": 0.6,
+        "z": 0
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-009",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [],
+  "validation": {
+    "intendedRoute": [],
+    "notes": [
+      "A combined transport room: belt to shuttle to rotating deck to retracting floor. The rotating and retracting decks are raised 0.06m above their neighbours to avoid coplanar flicker.",
+      "Brake to ride; wait for a deck to line up before rolling across."
+    ]
+  }
+}

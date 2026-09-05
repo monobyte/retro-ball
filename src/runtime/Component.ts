@@ -1,3 +1,4 @@
+import type { SignalPort, SignalValue } from '../signals/SignalTypes';
 import type * as THREE from 'three';
 import type { InstanceId, ResetGroupId, Vec3 } from '../content/LevelDocument';
 
@@ -10,6 +11,9 @@ export interface RuntimeComponent {
   readonly resetGroup: ResetGroupId;
   fixedUpdate(time: number, dt: number): void;
   visualUpdate(frame: VisualFrame): void;
+  receiveSignal?(port: SignalPort, value: SignalValue): void;
+  stateOutputs?(): Partial<Record<SignalPort, boolean>>;
+  takePulses?(): SignalPort[];
   capture(): LogicalValue;
   reset(state: LogicalValue): void;
   dispose(): void;

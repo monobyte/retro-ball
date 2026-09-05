@@ -1,0 +1,199 @@
+{
+  "description": "Nine complete reactive routes; deliberate floor falls and checkpoint restores; occupied/clear returns and seesaw weight/settling probes",
+  "probes": [
+    {
+      "blockedReturn": true,
+      "checkpointRecovered": true,
+      "clearReturn": true,
+      "fellThrough": true,
+      "hz": 30,
+      "mode": "drop",
+      "phases": [
+        "warning",
+        "absent",
+        "solid"
+      ]
+    },
+    {
+      "blockedReturn": true,
+      "checkpointRecovered": true,
+      "clearReturn": true,
+      "fellThrough": true,
+      "hz": 60,
+      "mode": "drop",
+      "phases": [
+        "warning",
+        "absent",
+        "solid"
+      ]
+    },
+    {
+      "blockedReturn": true,
+      "checkpointRecovered": true,
+      "clearReturn": true,
+      "fellThrough": true,
+      "hz": 120,
+      "mode": "drop",
+      "phases": [
+        "warning",
+        "absent",
+        "solid"
+      ]
+    },
+    {
+      "blockedReturn": true,
+      "checkpointRecovered": true,
+      "clearReturn": true,
+      "fellThrough": true,
+      "hz": 30,
+      "mode": "retract",
+      "phases": [
+        "warning",
+        "absent",
+        "solid"
+      ]
+    },
+    {
+      "blockedReturn": true,
+      "checkpointRecovered": true,
+      "clearReturn": true,
+      "fellThrough": true,
+      "hz": 60,
+      "mode": "retract",
+      "phases": [
+        "warning",
+        "absent",
+        "solid"
+      ]
+    },
+    {
+      "blockedReturn": true,
+      "checkpointRecovered": true,
+      "clearReturn": true,
+      "fellThrough": true,
+      "hz": 120,
+      "mode": "retract",
+      "phases": [
+        "warning",
+        "absent",
+        "solid"
+      ]
+    },
+    {
+      "checkpointRecovered": true,
+      "hz": 30,
+      "kind": "seesaw",
+      "loadedAngle": -0.10951318781799518,
+      "settledAngle": 0
+    },
+    {
+      "checkpointRecovered": true,
+      "hz": 60,
+      "kind": "seesaw",
+      "loadedAngle": -0.10951318781799518,
+      "settledAngle": 0
+    },
+    {
+      "checkpointRecovered": true,
+      "hz": 120,
+      "kind": "seesaw",
+      "loadedAngle": -0.10951318781799518,
+      "settledAngle": 0
+    },
+    {
+      "charged": true,
+      "checkpointRecovered": true,
+      "hz": 30,
+      "kicks": 1,
+      "kind": "bumper"
+    },
+    {
+      "charged": true,
+      "checkpointRecovered": true,
+      "hz": 60,
+      "kicks": 1,
+      "kind": "bumper"
+    },
+    {
+      "charged": true,
+      "checkpointRecovered": true,
+      "hz": 120,
+      "kicks": 1,
+      "kind": "bumper"
+    }
+  ],
+  "routes": [
+    {
+      "completionSeconds": 3.1,
+      "hits": 0,
+      "hz": 30,
+      "id": "balance-act",
+      "maxTiltRadians": 0.04102298954350592,
+      "warnedFloors": 0
+    },
+    {
+      "completionSeconds": 3.0833333333333335,
+      "hits": 0,
+      "hz": 60,
+      "id": "balance-act",
+      "maxTiltRadians": 0.04141549203984039,
+      "warnedFloors": 0
+    },
+    {
+      "completionSeconds": 3.0833333333333335,
+      "hits": 0,
+      "hz": 120,
+      "id": "balance-act",
+      "maxTiltRadians": 0.04139224283163952,
+      "warnedFloors": 0
+    },
+    {
+      "completionSeconds": 3.8666666666666663,
+      "hits": 0,
+      "hz": 30,
+      "id": "borrowed-time",
+      "maxTiltRadians": 0,
+      "warnedFloors": 2
+    },
+    {
+      "completionSeconds": 3.8833333333333337,
+      "hits": 0,
+      "hz": 60,
+      "id": "borrowed-time",
+      "maxTiltRadians": 0,
+      "warnedFloors": 2
+    },
+    {
+      "completionSeconds": 3.875,
+      "hits": 0,
+      "hz": 120,
+      "id": "borrowed-time",
+      "maxTiltRadians": 0,
+      "warnedFloors": 2
+    },
+    {
+      "completionSeconds": 3.3666666666666667,
+      "hits": 1,
+      "hz": 30,
+      "id": "spring-yard",
+      "maxTiltRadians": 0,
+      "warnedFloors": 0
+    },
+    {
+      "completionSeconds": 3.3333333333333335,
+      "hits": 1,
+      "hz": 60,
+      "id": "spring-yard",
+      "maxTiltRadians": 0,
+      "warnedFloors": 0
+    },
+    {
+      "completionSeconds": 3.3333333333333335,
+      "hits": 1,
+      "hz": 120,
+      "id": "spring-yard",
+      "maxTiltRadians": 0,
+      "warnedFloors": 0
+    }
+  ]
+}

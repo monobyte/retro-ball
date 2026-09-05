@@ -1,0 +1,106 @@
+{
+  "contacts": [
+    {
+      "hz": 30,
+      "impacts": 4,
+      "landings": 12
+    },
+    {
+      "hz": 60,
+      "impacts": 4,
+      "landings": 12
+    },
+    {
+      "hz": 120,
+      "impacts": 4,
+      "landings": 12
+    }
+  ],
+  "flightFrames": 488,
+  "maxNdc": 0.5799420305901254,
+  "modes": [
+    {
+      "ballNdc": [
+        -0.002314807798259551,
+        -0.002952384979627046,
+        -0.4691951297310969
+      ],
+      "mode": "puzzle",
+      "viewHeight": 20.06545737446945
+    },
+    {
+      "ballNdc": [
+        0.0003263674147615223,
+        0.0004392532017468872,
+        -0.4690993176140603
+      ],
+      "mode": "vertical",
+      "viewHeight": 29.879065103203494
+    },
+    {
+      "ballNdc": [
+        0.00028281186425032674,
+        0.00042325408786181735,
+        -0.4691054066617195
+      ],
+      "mode": "speed",
+      "viewHeight": 24.219151315006535
+    },
+    {
+      "ballNdc": [
+        0.0010477224108799749,
+        0.00005961055738069966,
+        -0.46911047196383937
+      ],
+      "mode": "arena",
+      "viewHeight": 35.565484985822714
+    }
+  ],
+  "occlusion": "solid scenery only; verify accompanying screenshot",
+  "physicalDisplays": "simulation cadence only",
+  "routes": [
+    {
+      "control": "keyboard",
+      "hz": 30,
+      "resets": 0,
+      "state": "win",
+      "time": 3.6666666666666634
+    },
+    {
+      "control": "controller",
+      "hz": 30,
+      "resets": 0,
+      "state": "win",
+      "time": 3.6666666666666634
+    },
+    {
+      "control": "keyboard",
+      "hz": 60,
+      "resets": 0,
+      "state": "win",
+      "time": 3.649999999999992
+    },
+    {
+      "control": "controller",
+      "hz": 60,
+      "resets": 0,
+      "state": "win",
+      "time": 3.649999999999992
+    },
+    {
+      "control": "keyboard",
+      "hz": 120,
+      "resets": 0,
+      "state": "win",
+      "time": 3.6499999999999897
+    },
+    {
+      "control": "controller",
+      "hz": 120,
+      "resets": 0,
+      "state": "win",
+      "time": 3.6499999999999897
+    }
+  ],
+  "sightlines": "WIN without resets"
+}

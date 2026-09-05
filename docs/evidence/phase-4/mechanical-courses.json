@@ -1,0 +1,104 @@
+{
+  "description": "Nine complete routes with actual moving-surface contacts, followed by checkpoint revisit, fall, motion-state restoration and disposal",
+  "samples": [
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 6.6,
+      "contactSeconds": 2.8333333333333335,
+      "hz": 30,
+      "id": "conveyor-run",
+      "lowest": 0.4982515871524811,
+      "restored": {
+        "elapsed": 0.6666666666666667
+      }
+    },
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 6.583333333333333,
+      "contactSeconds": 2.85,
+      "hz": 60,
+      "id": "conveyor-run",
+      "lowest": 0.4982515275478363,
+      "restored": {
+        "elapsed": 0.6666666666666667
+      }
+    },
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 6.583333333333333,
+      "contactSeconds": 2.8583333333333334,
+      "hz": 120,
+      "id": "conveyor-run",
+      "lowest": 0.49825161695480347,
+      "restored": {
+        "elapsed": 0.6583333333333334
+      }
+    },
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 8.233333333333333,
+      "contactSeconds": 5.133333333333334,
+      "hz": 30,
+      "id": "shuttle-bay",
+      "lowest": 0.4984455108642578,
+      "restored": {
+        "elapsed": 0.26666666666666666
+      }
+    },
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 8.216666666666667,
+      "contactSeconds": 5.1,
+      "hz": 60,
+      "id": "shuttle-bay",
+      "lowest": 0.49844545125961304,
+      "restored": {
+        "elapsed": 0.24999999999999997
+      }
+    },
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 8.2,
+      "contactSeconds": 5.066666666666666,
+      "hz": 120,
+      "id": "shuttle-bay",
+      "lowest": 0.4984455704689026,
+      "restored": {
+        "elapsed": 0.24999999999999997
+      }
+    },
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 13.233333333333333,
+      "contactSeconds": 11.1,
+      "hz": 30,
+      "id": "spin-crossing",
+      "lowest": 0.4990648627281189,
+      "restored": {
+        "elapsed": 0.03333333333333333
+      }
+    },
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 13.183333333333334,
+      "contactSeconds": 11.066666666666666,
+      "hz": 60,
+      "id": "spin-crossing",
+      "lowest": 0.4990642070770264,
+      "restored": {
+        "elapsed": 0.016666666666666666
+      }
+    },
+    {
+      "checkpoint": "checkpoint-1",
+      "completionSeconds": 13.158333333333331,
+      "contactSeconds": 11.058333333333334,
+      "hz": 120,
+      "id": "spin-crossing",
+      "lowest": 0.49895042181015015,
+      "restored": {
+        "elapsed": 0.008333333333333333
+      }
+    }
+  ]
+}

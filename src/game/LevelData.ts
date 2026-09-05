@@ -82,6 +82,7 @@ export type JumpPadPiece = {
 
 export type ElevatorPiece = {
   kind: 'elevator';
+  clock?: 'continuous' | 'resettable';
   x: number;
   z: number;
   w: number;
@@ -95,6 +96,7 @@ export type ElevatorPiece = {
 
 export type LaserPiece = {
   kind: 'laser';
+  clock?: 'continuous' | 'resettable';
   x: number;
   z: number;
   /** Floor height. The beam hovers slightly above it. */
@@ -143,7 +145,70 @@ export type GoalPiece = {
   y: number;
 };
 
+export type ConveyorPiece = {
+  kind: 'conveyor'; x: number; y: number; z: number; w: number; d: number;
+  dir: Dir; speed: number; acceleration?: number;
+};
+export type SlidingBridgePiece = {
+  kind: 'bridge'; x: number; y: number; z: number; w: number; d: number;
+  dir: Dir; distance: number; period: number; dwell: number;
+};
+export type RotatingPlatformPiece = {
+  kind: 'rotator'; x: number; y: number; z: number; w: number; d: number;
+  angularSpeed: number;
+};
+export type SeesawPiece = {
+  kind: 'seesaw'; x: number; y: number; z: number; w: number; d: number;
+  axis: 'x' | 'z'; maxTilt: number; response: number;
+};
+export type RecoveringFloorPiece = {
+  kind: 'fragile'; x: number; y: number; z: number; w: number; d: number;
+  mode: 'drop' | 'retract'; dir: Dir; warning: number; recovery: number;
+};
+export type BumperPiece = {
+  kind: 'bumper'; x: number; y: number; z: number;
+  radius: number; kickSpeed: number; cooldown: number;
+};
+export type ReactivePlatePiece = SeesawPiece | RecoveringFloorPiece;
+
+export type MechanicalPiece = ConveyorPiece | SlidingBridgePiece | RotatingPlatformPiece;
+
+export type SwitchPiece = {
+  kind: 'switch'; x: number; y: number; z: number;
+  mode: 'toggle' | 'timed'; duration: number; initial: 'on' | 'off'; label?: string;
+};
+
+export type PuzzleToken = 'triangle' | 'circle' | 'square';
+export type PushObjectPiece = {
+  kind: 'pushable'; x: number; y: number; z: number; shape: 'cube' | 'orb';
+  token: PuzzleToken; size: number; mass: number; recoveryDelay: number;
+};
+export type MomentumPiece = {
+  kind: 'momentum'; x: number; y: number; z: number; radius: number;
+  threshold: number; match?: 'any' | PuzzleToken; label?: string;
+};
+export type PressurePlatePiece = {
+  kind: 'pressure'; x: number; y: number; z: number; w: number; d: number;
+  mode: 'hold' | 'toggle' | 'timed'; duration: number; match?: 'any' | PuzzleToken; label?: string;
+};
+export type DoorPiece = {
+  kind: 'door'; x: number; y: number; z: number; w: number; d: number; h: number;
+  travelTime: number; initial: 'open' | 'closed'; label?: string;
+};
+export type LogicPiece = {
+  kind: 'logic'; x: number; y: number; z: number; operation: 'and' | 'or'; label?: string;
+};
+export type SequencePiece = {
+  kind: 'sequence'; x: number; y: number; z: number; timeout: number; label?: string;
+};
+
 export type Piece =
+  | PushObjectPiece | MomentumPiece
+  | PressurePlatePiece | DoorPiece | LogicPiece | SequencePiece
+  | SwitchPiece
+  | ReactivePlatePiece
+  | BumperPiece
+  | MechanicalPiece
   | SlabPiece
   | RampPiece
   | WallPiece

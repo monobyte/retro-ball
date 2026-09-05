@@ -1,0 +1,650 @@
+{
+  "checks": [
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "idle",
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "charging",
+        "remaining": 0.06
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "cooldown",
+        "remaining": 0.5
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "idle",
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "charging",
+        "remaining": 0.06
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "cooldown",
+        "remaining": 0.5
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "idle",
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "charging",
+        "remaining": 0.06
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "cooldown",
+        "remaining": 0.5
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "idle",
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "charging",
+        "remaining": 0.06
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "cooldown",
+        "remaining": 0.5
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "idle",
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "charging",
+        "remaining": 0.06
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "cooldown",
+        "remaining": 0.5
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "idle",
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "charging",
+        "remaining": 0.06
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "cooldown",
+        "remaining": 0.5
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "idle",
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "charging",
+        "remaining": 0.06
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-002",
+      "state": {
+        "phase": "cooldown",
+        "remaining": 0.5
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "idle",
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "charging",
+        "remaining": 0.06
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "spring-yard",
+      "part": "bumper-003",
+      "state": {
+        "phase": "cooldown",
+        "remaining": 0.5
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "balance-act",
+      "part": "seesaw-002",
+      "state": {
+        "angle": -0.1,
+        "angularVelocity": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "balance-act",
+      "part": "seesaw-002",
+      "state": {
+        "angle": 0.1,
+        "angularVelocity": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "balance-act",
+      "part": "seesaw-002",
+      "state": {
+        "angle": -0.1,
+        "angularVelocity": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "balance-act",
+      "part": "seesaw-002",
+      "state": {
+        "angle": 0.1,
+        "angularVelocity": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "balance-act",
+      "part": "seesaw-002",
+      "state": {
+        "angle": -0.1,
+        "angularVelocity": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "balance-act",
+      "part": "seesaw-002",
+      "state": {
+        "angle": 0.1,
+        "angularVelocity": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "balance-act",
+      "part": "seesaw-002",
+      "state": {
+        "angle": -0.1,
+        "angularVelocity": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "balance-act",
+      "part": "seesaw-002",
+      "state": {
+        "angle": 0.1,
+        "angularVelocity": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0,
+        "phase": "solid"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "warning"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "absent"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.4,
+        "phase": "returning"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0,
+        "phase": "solid"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "warning"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "absent"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.4,
+        "phase": "returning"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0,
+        "phase": "solid"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "warning"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "absent"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.4,
+        "phase": "returning"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0,
+        "phase": "solid"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "warning"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "absent"
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.4,
+        "phase": "returning"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0,
+        "phase": "solid"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "warning"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "absent"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.4,
+        "phase": "returning"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0,
+        "phase": "solid"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "warning"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "absent"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.4,
+        "phase": "returning"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0,
+        "phase": "solid"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "warning"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "absent"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-002",
+      "state": {
+        "elapsed": 0.4,
+        "phase": "returning"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0,
+        "phase": "solid"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "warning"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.6,
+        "phase": "absent"
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "borrowed-time",
+      "part": "fragile-004",
+      "state": {
+        "elapsed": 0.4,
+        "phase": "returning"
+      }
+    }
+  ],
+  "devicePixelRatio": 1,
+  "passed": 64,
+  "viewport": [
+    1280,
+    800
+  ]
+}

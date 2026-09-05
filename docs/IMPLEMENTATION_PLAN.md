@@ -2,7 +2,7 @@
 
 Specification: [Game and engine specification](GAME_SPEC.md).  
 Baseline: `9f93950`, reviewed 4 September 2026.  
-Current delivery state: phases 0–3 accepted; phase 4 is next. Physical input/display checks remain tracked under P2-07 and P9-01.
+Current delivery state: phases 0–3 accepted; phase 4 is in progress. Physical input/display checks remain tracked under P2-07 and P9-01.
 
 ## How to track progress
 
@@ -40,7 +40,7 @@ existing features; they do not claim campaign, editor or opponent functionality.
 | 1 | Multiple levels and owned runtime lifecycle | 0 | Done |
 | 2 | Movement, camera and player controls | 1 | Done; hardware matrix deferred to P9-01 |
 | 3 | Internal editor foundation | 1; 2 for final play-test UX | Done |
-| 4 | Obstacles, signals and puzzles | 2, 3 | Not started |
+| 4 | Obstacles, signals and puzzles | 2, 3 | In progress |
 | 5 | Enemies, rival and guide NPC | 2, 3; 4 for encounter signals | Not started |
 | 6 | Playable first region and soundtrack | 4, 5 | Not started |
 | 7 | Progression, saves and finished player flows | 6 | Not started |
@@ -169,26 +169,26 @@ Acceptance gate:
 Requirements: OBS, PZL-01–06, EDT-05–06. Outcome: reusable mechanics that compose
 and reset predictably.
 
-- [ ] **P4-01** Finish migrating existing obstacle families to registry parameters,
+- [x] **P4-01** Finish migrating existing obstacle families to registry parameters,
   shared reset rules, debug visuals and validation fixtures.
-- [ ] **P4-02** Add conveyors, sliding bridges and rotating platforms, including
+- [x] **P4-02** Add conveyors, sliding bridges and rotating platforms, including
   carrying/contact behaviour and boarding/exit clearance.
-- [ ] **P4-03** Add spring bumpers, seesaws and collapsing/retracting floors with
+- [x] **P4-03** Add spring bumpers, seesaws and collapsing/retracting floors with
   telegraphing, recovery timing and swept-volume validation.
-- [ ] **P4-04** Implement typed signal channels, queued event processing and
+- [x] **P4-04** Implement typed signal channels, queued event processing and
   invalid-link/unbounded-feedback detection.
-- [ ] **P4-05** Add switches, pressure plates, doors, timed/toggle actions,
+- [x] **P4-05** Add switches, pressure plates, doors, timed/toggle actions,
   ordered sequences and simple AND/OR conditions.
-- [ ] **P4-06** Add pushable puzzle objects, object recovery and momentum-triggered
+- [x] **P4-06** Add pushable puzzle objects, object recovery and momentum-triggered
   mechanisms; make matching puzzles readable without colour alone.
-- [ ] **P4-07** Add editor signal wiring, reset groups, obstacle danger bounds
+- [x] **P4-07** Add editor signal wiring, reset groups, obstacle danger bounds
   and a trace view for why a puzzle target is active.
-- [ ] **P4-08** Build test rooms covering each family and mixed interactions;
+- [x] **P4-08** Build test rooms covering each family and mixed interactions;
   test death midway through a puzzle, lost objects, reset and checkpoint revisit.
 
 Acceptance gate:
 
-- [ ] **G4** Assemble and solve three different puzzles using shared components.
+- [x] **G4** Assemble and solve three different puzzles using shared components.
   Every puzzle recovers after a lost object or death. Each new obstacle has a
   playable demonstration, collider test and working checkpoint reset behaviour.
 
@@ -435,10 +435,25 @@ the specific commit, PR, build or play-test report.
 
 | 2026-09-04 | P3-01–08, G3 | Done | [Workshop controls and acceptance evidence](PHASE_3_EDITOR.md); 21 Node tests; full game regressions; five-part course authored entirely through UI, completed with zero resets; prefab override, group transforms, overlap selection, failed import/play preservation, page recovery and three play starts | Phase 4 obstacles, carrying behaviour and signals; phase-2 acceptance was committed/pushed as `74324d3` |
 
+| 2026-09-04 | P4-02 | Done locally; Phase 4 in progress | [Moving-surface implementation and evidence](PHASE_4_MECHANICS.md); 24 Node tests/build; full game and Workshop regressions; nine zero-reset demo completions, carrying/braking, sweep clearance and actual checkpoint death recovery | Continue P4-01/P4-03 and shared signals; G4 remains open; commit/push at the end of Phase 4 |
+
+| 2026-09-04 | P4-03 | Done locally; Phase 4 in progress | [Reactive obstacle implementation and evidence](PHASE_4_MECHANICS.md); 28 Node tests/build, nine zero-reset reactive routes, twelve physical recovery probes, 64 new HDR states; full game and Workshop regressions | P4-01 legacy contracts and P4-04–08 signals/puzzles remain; G4 and phase-end commit/push are still open |
+
+| 2026-09-04 | P4-01 / P4-04 | Done locally; Phase 4 in progress | [Native contracts and typed signal evidence](PHASE_4_MECHANICS.md); 36 Node tests/build; full regressions; 25 native components restored on checkpoint death; three keyboard circuit completions; type/cycle/budget validation; legacy baseline preserved | Complete P4-05 logic/doors/plates, P4-06 objects and P4-07 wiring/trace UI, then P4-08/G4 mixed puzzles before phase commit/push |
+
+| 2026-09-05 | P4-05 | Done locally; Phase 4 in progress | [Puzzle components and evidence](PHASE_4_MECHANICS.md); 40 Node tests/build, six zero-reset puzzle routes, fifteen contact/door/partial-sequence recovery probes, 60 HDR states; full game and Workshop suites; original circuit baseline preserved | P4-06 physical objects and recovery, P4-07 editor wiring/trace, then P4-08/G4 mixed interactions before phase commit/push |
+
+| 2026-09-05 | P4-06 | Done locally; Phase 4 in progress | [Physical objects and momentum evidence](PHASE_4_MECHANICS.md); 42 Node tests/build; six physical object routes, nineteen recovery/matching/momentum/mixed-body probes and 52 HDR states; full game and Workshop suites; lower-floor travel and safe saved-pose recovery verified | P4-07 editor wiring/reset groups/trace, then P4-08/G4 final mixed-course audit before phase commit/push |
+
+| 2026-09-05 | P4-07 | Done locally; Phase 4 in progress | [Workshop circuits and trace evidence](PHASE_4_MECHANICS.md); 45 Node tests/build; full game and Workshop suites; UI-authored switch/AND/door solution, physical checkpoint recovery, invalid-cycle rejection, named/pulse wires and draft reload; detached causal trace survives session disposal | P4-08/G4 final mixed-course and recovery audit, then phase commit/push |
+
+| 2026-09-05 | P4-08 / G4 | Done | [Phase 4 requirement-to-evidence audit](PHASE_4_MECHANICS.md); 45 Node tests/build; full game and Workshop suites; Relay Works completes across four physical surfaces at 30/60/120 Hz, twelve cargo/carrier checks, earlier-checkpoint revisit preservation, both object puzzles solved after losing all required cargo | Phase 4 commit/push, then P5-01 actor lifecycle and physical opponent contracts |
+
 ## Next action
 
-Begin **P4-01–03**: complete obstacle component contracts and introduce
-conveyors, moving/rotating platforms, bumpers, seesaws and collapsing floors
-with real contact/carrying checks. Then add signals and puzzle composition.
-Preserve the legacy, movement and Workshop regression workflows. P2-07 physical
-hardware coverage remains tracked in the P9-01 support matrix.
+Phase 4 is complete. Commit and push its implementation and acceptance evidence,
+then begin **P5-01**: actor lifecycle/state machines, teams, physical contacts,
+bounded knockback, stun recovery and exactly-once defeat events. Build P5-02's
+navigation/capability foundation alongside the first opponent, then continue the
+remaining opponents, guide and encounter acceptance tasks. The physical controller
+and display matrix remains recorded at P2-07/P9-01.

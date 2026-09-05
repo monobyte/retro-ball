@@ -1,3 +1,4 @@
+import { SignalTraceView } from '../editor/SignalTraceView';
 import { Input } from '../input/Input';
 import { loadControls } from '../input/Actions';
 import { Renderer } from '../render/Renderer';
@@ -36,6 +37,7 @@ export class Application {
   private readonly returnButton: HTMLButtonElement;
   private editor: EditorView | null = null;
   private editorTesting = false;
+  private readonly circuitTrace = new SignalTraceView();
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new Renderer(canvas, this.settings.pixelRatioCap);
@@ -80,6 +82,7 @@ export class Application {
   }
 
   private showHub(): void {
+    this.circuitTrace.hide();
     this.state = 'hub'; this.toolbar.hidden = true; this.editor?.hide(); this.editorTesting = false;
     this.heading('THE RELAY', 'Choose a signal. Find your way through.');
     for (const entry of CATALOGUE.levels) {
@@ -106,7 +109,8 @@ export class Application {
       this.state = 'transition';
       this.session?.input.clear(); this.menuInput.clear();
       const previous = this.session;
-      if (previous) this.masterMuted = previous.audio.isMuted;
+      if (previous) { this.masterMuted = previous.audio.isMuted; if (this.editorTesting) this.circuitTrace.save(previous); }
+      this.circuitTrace.hide();
       this.session = null;
       try { await previous?.dispose(); await action(); }
       catch (error) { this.showError(error); }
@@ -128,6 +132,7 @@ export class Application {
       this.session.audio.setMuted(this.masterMuted);
       this.session.input.configure(loadControls());
       this.session.input.onControllerDisconnected = this.menuInput.onControllerDisconnected;
+      if (this.editorTesting) this.circuitTrace.start();
       this.state = 'intro'; this.menu.hidden = true; this.toolbar.hidden = false;
       this.pauseButton.textContent = 'Pause'; this.returnButton.textContent = this.editorTesting ? 'Return to editor' : 'Return to relay';
       this.debug.fixedDt = null; this.debug.stepsPerFrame = 1;
@@ -146,7 +151,7 @@ export class Application {
         this.editor.onPlay = async document => { this.editorTesting = true; await this.loadDocument(document); };
       }
       this.editorTesting = false; this.state = 'editor'; this.menu.hidden = true; this.toolbar.hidden = true;
-      this.editor.show();
+      this.editor.show(); this.circuitTrace.showSaved();
     });
   }
 
@@ -225,12 +230,13 @@ export class Application {
     session.background.update(session.game.elapsed, session.game.fx.beat, this.renderer.target, this.renderer.viewHeight, this.renderer.aspect);
     session.background.render(this.renderer.renderer);
     this.postfx.render(session.game.elapsed, session.game.fx);
+    if (this.editorTesting) this.circuitTrace.update(session, now);
   }
 
   async dispose(): Promise<void> {
     if (this.disposed) return;
     await this.returnToHub(); this.disposed = true; this.state = 'disposed';
     cancelAnimationFrame(this.frameId); this.listeners.abort(); this.panel.dispose();
-    this.menuInput.dispose(); this.editor?.dispose(); this.menu.remove(); this.toolbar.remove(); this.postfx.dispose(); this.renderer.dispose();
+    this.menuInput.dispose(); this.editor?.dispose(); this.circuitTrace.dispose(); this.menu.remove(); this.toolbar.remove(); this.postfx.dispose(); this.renderer.dispose();
   }
 }

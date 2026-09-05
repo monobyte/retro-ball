@@ -1,4 +1,5 @@
 import { EditorModel, starterDocument, type Prefab } from './EditorModel';
+import { EditorCircuits } from './EditorCircuits';
 import { EditorViewport } from './EditorViewport';
 import { PARTS, type PartDefinition, type ParameterField } from '../content/PartRegistry';
 import type { LevelDocument, PieceKind, Vec3 } from '../content/LevelDocument';
@@ -19,6 +20,7 @@ export class EditorView {
   private readonly palette = el('div');
   private readonly inspector = el('div');
   private readonly course = el('div');
+  private readonly circuits: EditorCircuits;
   private readonly validation = el('div');
   private readonly library = el('div');
   private readonly message = el('p');
@@ -39,6 +41,7 @@ export class EditorView {
     this.model = new EditorModel(starterDocument(), {
       getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value),
     });
+    this.circuits = new EditorCircuits(this.model, value => this.tell(value));
     this.root.className = 'editor'; this.root.hidden = true; this.root.setAttribute('aria-label', 'Workshop');
     const header = el('header'), brand = el('div'); brand.append(el('small', 'THE WORKSHOP'), this.title);
     const actions = el('div'); actions.className = 'editor-actions';
@@ -48,19 +51,20 @@ export class EditorView {
       try {
         const selected = file.files?.[0]; if (!selected) return;
         if (selected.size > 2_000_000) throw new Error('Course file exceeds 2 MB. Your draft has been kept.');
-        this.model.importFile(await selected.text()); this.viewport.fit(); this.tell('Course imported. Undo restores the previous draft.');
+        this.model.importFile(await selected.text()); this.fit(); this.tell('Course imported. Undo restores the previous draft.');
       } catch (error) { this.tell(error); } finally { file.value = ''; }
     });
-    actions.append(this.undo, this.redo, this.button('New', () => { this.model.edit('New course', d => { Object.assign(d, starterDocument()); return []; }); this.viewport.fit(); }),
+    actions.append(this.undo, this.redo, this.button('New', () => { this.model.edit('New course', d => { Object.assign(d, starterDocument()); return []; }); this.fit(); }),
       this.button('Import', () => file.click()), this.button('Export', () => this.download()),
-      this.button('Recover draft', () => { this.tell(this.model.recover() ? 'Recovered local draft.' : 'No local draft found.'); this.viewport.fit(); }),
+      this.button('Recover draft', () => { this.tell(this.model.recover() ? 'Recovered local draft.' : 'No local draft found.'); this.fit(); }),
       this.button('Return to relay', () => this.onExit()));
     header.append(brand, actions, file);
     const tools = el('nav'); tools.className = 'editor-tools'; tools.setAttribute('aria-label', 'Editor tools');
     const snap = this.select(['0.25', '0.5', '1', '2', '0'], '1', value => { this.model.snap = Number(value); }); snap.setAttribute('aria-label', 'Grid snap');
     const elevation = this.number('Placement elevation', 0, value => { this.viewport.elevation = value; this.render(); });
     const overlay = el('input'); overlay.type = 'checkbox'; overlay.checked = true; overlay.setAttribute('aria-label', 'Collider and clearance overlays'); overlay.onchange = () => { this.viewport.overlays = overlay.checked; this.render(); };
-    tools.append(this.button('Select', () => this.setPlacement(null)), this.mode, this.label('Grid', snap), this.label('Elevation', elevation), this.button('Fit course', () => this.viewport.fit()), this.button('Frame selection', () => this.viewport.fit(true)), this.label('Bounds / clearance', overlay));
+    tools.append(this.button('Select', () => this.setPlacement(null)), this.mode, this.label('Grid', snap), this.label('Elevation', elevation), this.button('Fit course', () => this.fit()), this.button('Frame selection', () => this.fit(true)), this.label('Bounds / clearance', overlay));
+    const wires = el('input'); wires.type = 'checkbox'; wires.checked = true; wires.setAttribute('aria-label', 'Signal wire overlay'); wires.onchange = () => { this.viewport.wires = wires.checked; this.render(); }; tools.append(this.label('Signals', wires));
     const layer = el('input'); layer.type = 'checkbox'; layer.setAttribute('aria-label', 'Current elevation only'); layer.onchange = () => { this.viewport.layerOnly = layer.checked; this.render(); }; tools.append(this.label('This layer', layer));
     this.playStart.setAttribute('aria-label', 'Play start');
     tools.append(this.playStart, this.button('Play test', () => { void this.play(); }));
@@ -75,7 +79,9 @@ export class EditorView {
     const right = el('aside'); right.setAttribute('aria-label', 'Inspector');
     const courseDetails = el('details'); courseDetails.append(el('summary', 'Course / cameras'), this.course);
     const errors = el('details'); errors.open = true; errors.append(el('summary', 'Validation'), this.validation);
-    right.append(el('h2', 'Inspector'), this.inspector, courseDetails, errors);
+    const signals = el('details'); signals.append(el('summary', 'Signals'), this.circuits.wiring);
+    const groups = el('details'); groups.append(el('summary', 'Reset groups'), this.circuits.groups);
+    right.append(el('h2', 'Inspector'), this.inspector, signals, groups, courseDetails, errors);
     layout.append(left, center, right);
     const footer = el('footer'); this.message.setAttribute('role', 'status'); footer.append(this.status, this.message);
     this.root.append(header, tools, layout, footer); document.body.append(this.root);
@@ -114,7 +120,13 @@ export class EditorView {
         this.prefabs = saved;
       }
     } catch { this.tell('The saved prefab library could not be loaded. Your course draft is intact.'); }
-    this.render(); this.viewport.fit();
+    this.render(); this.fit();
+  }
+  private fit(selectionOnly = false): void {
+    // Model edits render on the next animation frame. Fit the new document now,
+    // otherwise import/recovery frame the previous course's stale footprint.
+    this.viewport.setDocument(this.model.document, this.model.selection);
+    this.viewport.fit(selectionOnly);
   }
   private run(action: () => void): void { try { action(); } catch (error) { this.tell(error); } }
   private tell(value: unknown): void { this.message.textContent = value instanceof Error ? value.message : String(value); }
@@ -184,7 +196,7 @@ export class EditorView {
     const currentStart = this.playStart.value; this.playStart.replaceChildren();
     for (const [value, text] of [['spawn', 'Play from spawn'], ['selection', 'Play from selection'], ...d.checkpoints.map(c => [c.id, `Checkpoint: ${c.id}`])]) { const option = el('option', text); option.value = value!; this.playStart.append(option); }
     if (Array.from(this.playStart.options).some(o => o.value === currentStart)) this.playStart.value = currentStart;
-    this.renderInspector(d, selection); this.renderCourse(d); this.renderLibrary();
+    this.renderInspector(d, selection); this.circuits.render(d); this.renderCourse(d); this.renderLibrary();
     for (const detail of this.root.querySelectorAll<HTMLDetailsElement>('[data-editor-detail]')) if (expanded.has(detail.dataset['editorDetail'])) detail.open = expanded.get(detail.dataset['editorDetail'])!;
     this.validation.replaceChildren();
     if (!issues.length) this.validation.append(el('p', 'Ready to play.'));
@@ -193,7 +205,7 @@ export class EditorView {
         let ids = issue.instanceIds ?? (issue.instanceId ? [issue.instanceId] : []);
         const index = /^instances\[(\d+)\]/.exec(issue.path)?.[1]; if (index && d.instances[Number(index)]) ids = [d.instances[Number(index)]!.id];
         if (!ids.length && issue.path === 'instances') ids = d.instances.filter(i => i.type === 'slab' || i.type === 'goal').map(i => i.id);
-        if (ids.length) { this.model.select(ids); this.viewport.fit(true); }
+        if (ids.length) { this.model.select(ids); this.fit(true); }
       }); button.className = `editor-issue ${issue.severity}`; this.validation.append(button);
     }
     if (focused && !focused.isConnected && focusName) {
@@ -207,6 +219,7 @@ export class EditorView {
     if (!parts.length) { this.inspector.append(el('p', 'Select a part to edit it, or choose a part and click the canvas to place it.')); return; }
     this.inspector.append(el('p', parts.map(i => i.id).join(', ')));
     const actions = el('div'); actions.className = 'editor-actions'; actions.append(this.button('Rotate 90°', () => this.model.rotate()), this.button('Duplicate', () => this.model.duplicate()), this.button('Delete', () => this.model.remove())); this.inspector.append(actions);
+    this.inspector.append(this.circuits.selectionControls(d, selection));
     const first = parts[0]!;
     this.vector(this.inspector, 'Position', first.transform.position, value => { const old = first.transform.position; this.model.move({ x: value.x - old.x, y: value.y - old.y, z: value.z - old.z }); });
     for (const [key, field] of Object.entries((PARTS[first.type] as PartDefinition).parameters)) {

@@ -1,0 +1,701 @@
+{
+  "checks": [
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "pressure-006",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "pressure-006",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 4
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": false,
+        "b": false
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": true,
+        "b": false
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": true,
+        "b": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 0,
+        "open": false
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 0.5,
+        "open": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 1,
+        "open": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "pressure-006",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "pressure-006",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 4
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": false,
+        "b": false
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": true,
+        "b": false
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": true,
+        "b": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 0,
+        "open": false
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 0.5,
+        "open": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 1,
+        "open": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "pressure-006",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "pressure-006",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 4
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": false,
+        "b": false
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": true,
+        "b": false
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": true,
+        "b": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 0,
+        "open": false
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 0.5,
+        "open": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 1,
+        "open": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "pressure-006",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "pressure-006",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 4
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": false,
+        "b": false
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": true,
+        "b": false
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "logic-007",
+      "state": {
+        "a": true,
+        "b": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 0,
+        "open": false
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 0.5,
+        "open": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "two-factor",
+      "part": "door-008",
+      "state": {
+        "amount": 1,
+        "open": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 0,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 1,
+        "remaining": 10
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 2,
+        "remaining": 10
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 3,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 0,
+        "open": false
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 0.5,
+        "open": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 1,
+        "open": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 0,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 1,
+        "remaining": 10
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 2,
+        "remaining": 10
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 3,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 0,
+        "open": false
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 0.5,
+        "open": true
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 1,
+        "open": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 0,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 1,
+        "remaining": 10
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 2,
+        "remaining": 10
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 3,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 0,
+        "open": false
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 0.5,
+        "open": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 1,
+        "open": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 0,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 1,
+        "remaining": 10
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 2,
+        "remaining": 10
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "sequence-008",
+      "state": {
+        "progress": 3,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 0,
+        "open": false
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 0.5,
+        "open": true
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "ordered-garden",
+      "part": "door-009",
+      "state": {
+        "amount": 1,
+        "open": true
+      }
+    }
+  ],
+  "clues": [
+    {
+      "id": "two-factor",
+      "position": [
+        -3,
+        1.7,
+        6
+      ],
+      "visiblePixelRatio": 1
+    },
+    {
+      "id": "two-factor",
+      "position": [
+        0,
+        1.5,
+        3
+      ],
+      "visiblePixelRatio": 1
+    },
+    {
+      "id": "two-factor",
+      "position": [
+        4,
+        1.5,
+        1
+      ],
+      "visiblePixelRatio": 1
+    },
+    {
+      "id": "two-factor",
+      "position": [
+        0,
+        4.3,
+        -2
+      ],
+      "visiblePixelRatio": 1
+    },
+    {
+      "id": "ordered-garden",
+      "position": [
+        3,
+        1.7,
+        5
+      ],
+      "visiblePixelRatio": 1
+    },
+    {
+      "id": "ordered-garden",
+      "position": [
+        -3,
+        1.7,
+        5
+      ],
+      "visiblePixelRatio": 1
+    },
+    {
+      "id": "ordered-garden",
+      "position": [
+        0,
+        1.7,
+        0
+      ],
+      "visiblePixelRatio": 1
+    },
+    {
+      "id": "ordered-garden",
+      "position": [
+        4,
+        1.5,
+        0
+      ],
+      "visiblePixelRatio": 1
+    },
+    {
+      "id": "ordered-garden",
+      "position": [
+        0,
+        4.3,
+        -4
+      ],
+      "visiblePixelRatio": 1
+    }
+  ],
+  "devicePixelRatio": 1,
+  "passed": 60,
+  "viewport": [
+    1280,
+    800
+  ]
+}

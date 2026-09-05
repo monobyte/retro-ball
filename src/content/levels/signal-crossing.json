@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "signal-crossing",
+  "metadata": {
+    "name": "SIGNAL CROSSING",
+    "description": "Use Interact at the switch to cut laser power. Bank the circuit state at the next checkpoint.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": 0,
+    "y": 0.6,
+    "z": 8
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 10,
+        "d": 24,
+        "label": "CUT THE POWER"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-002",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -5,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 24,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-003",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 24,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "switch-004",
+      "type": "switch",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "mode": "toggle",
+        "duration": 4,
+        "initial": "on",
+        "label": "INTERACT / POWER"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "laser-005",
+      "type": "laser",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "axis": "x",
+        "length": 10,
+        "sweep": 0,
+        "speed": 0,
+        "clock": "resettable"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-006",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 7
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-007",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -4
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-008",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -9
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "checkpoint"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-006",
+      "spawn": {
+        "x": 0,
+        "y": 0.6,
+        "z": 7
+      },
+      "resetGroups": [
+        "course"
+      ]
+    },
+    {
+      "id": "checkpoint-2",
+      "instanceId": "checkpoint-007",
+      "spawn": {
+        "x": 0,
+        "y": 0.6,
+        "z": -4
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-008",
+      "required": true
+    }
+  ],
+  "signals": [
+    {
+      "id": "main-power",
+      "source": {
+        "instanceId": "switch-004",
+        "port": "active"
+      },
+      "target": {
+        "instanceId": "laser-005",
+        "port": "enable"
+      }
+    }
+  ],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "circuit",
+      "mode": "puzzle",
+      "priority": 1,
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 20,
+        "y": 10,
+        "z": 40
+      },
+      "viewHeight": 25
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": []
+  }
+}

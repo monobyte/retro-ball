@@ -1,4 +1,16 @@
+import { PushObject } from './mechanics/PushObject';
+import { MomentumReceiver } from './mechanics/MomentumReceiver';
+import { LogicRelay } from './mechanics/LogicRelay';
+import { PressurePlate } from './mechanics/PressurePlate';
+import { SignalDoor } from './mechanics/SignalDoor';
+import { SignalSwitch } from './mechanics/SignalSwitch';
+import { SignalNetwork } from '../signals/SignalNetwork';
+import { signalDocument } from '../content/SignalDocument';
+import type { SignalPort, SignalValue } from '../signals/SignalTypes';
+import { ReactivePlate } from './mechanics/ReactivePlate';
+import { SpringBumper } from './mechanics/SpringBumper';
 import * as THREE from 'three';
+import { MovingSurface } from './mechanics/MovingSurface';
 import type { RuntimeComponent, LogicalValue, VisualFrame } from '../runtime/Component';
 import type { LevelDocument, LevelInstance } from '../content/LevelDocument';
 import { disposeObjects } from '../runtime/disposeObjects';
@@ -180,7 +192,8 @@ class JumpPad {
     }
   }
 
-  reset(): void { this.cooldownUntil = 0; }
+  capture(): LogicalValue { return { cooldownUntil: this.cooldownUntil }; }
+  reset(state: LogicalValue = null): void { this.cooldownUntil = state && typeof state === 'object' && 'cooldownUntil' in state && typeof state.cooldownUntil === 'number' && Number.isFinite(state.cooldownUntil) ? Math.max(0, state.cooldownUntil) : 0; }
 
   test(p: THREE.Vector3, time: number): boolean {
     if (time < this.cooldownUntil) return false;
@@ -287,6 +300,8 @@ class Elevator {
 /* ------------------------------------------------------------------------ */
 
 class Laser {
+  enabled = true;
+  armingRemaining = 0;
   readonly group = new THREE.Group();
   private readonly beamGroup = new THREE.Group();
   private readonly coreMat: THREE.MeshBasicMaterial;
@@ -385,6 +400,8 @@ class Laser {
 
   update(time: number, beat: number, dt: number): void {
     const s = this.stateAt(time);
+    if (!this.enabled) { s.live = false; s.warn = 0; this.on = 0; }
+    else if (this.armingRemaining > 0) { s.live = false; s.warn = 1-this.armingRemaining/LASER_WARN; }
     if (this.def.axis === 'x') this.beamGroup.position.z = s.offset;
     else this.beamGroup.position.x = s.offset;
     // The beam is always visible. Live: hot red. Safe: cool blue, dimmer.
@@ -405,7 +422,7 @@ class Laser {
   /** Distance test of the marble against the live beam segment. */
   test(p: THREE.Vector3, radius: number, time: number): boolean {
     const s = this.stateAt(time);
-    if (!s.live) return false;
+    if (!this.enabled || this.armingRemaining > 0 || !s.live) return false;
     const d = this.def;
     const off = s.offset;
     const y = d.y + 0.5;
@@ -602,6 +619,22 @@ class Goal {
 
 /* ------------------------------------------------------------------------ */
 
+/** Camera-facing circuit clues retain readable glyph height at the puzzle zoom. */
+function makeCircuitLabel(text: string, position: THREE.Vector3): THREE.Sprite {
+  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=256;
+  const ctx=canvas.getContext('2d')!;
+  ctx.fillStyle='rgba(9,8,28,.94)';ctx.fillRect(0,0,1024,256);
+  ctx.strokeStyle='#75ffe0';ctx.lineWidth=5;ctx.strokeRect(3,3,1018,250);
+  const family='"Share Tech Mono", "Courier New", monospace';
+  ctx.font=`bold 170px ${family}`;
+  const fontSize=Math.min(170,Math.floor(170*920/Math.max(1,ctx.measureText(text).width)));
+  ctx.font=`bold ${fontSize}px ${family}`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#e6fff7';ctx.fillText(text,512,132);
+  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
+  const material=new THREE.SpriteMaterial({map:texture,transparent:true,depthWrite:false,depthTest:false,toneMapped:false});
+  const sprite=new THREE.Sprite(material),width=Math.min(5,Math.max(2.5,text.length*.3));
+  sprite.scale.set(width,width/4,1);sprite.position.copy(position);sprite.renderOrder=10;return sprite;
+}
+
 function makeLabel(spec: LabelSpec): THREE.Object3D {
   const c = document.createElement('canvas');
   c.width = 1024;
@@ -613,7 +646,10 @@ function makeLabel(spec: LabelSpec): THREE.Object3D {
   ctx.shadowColor = 'rgba(255,47,185,1)';
   ctx.shadowBlur = 24;
   ctx.strokeRect(24, 24, c.width - 48, c.height - 48);
-  ctx.font = 'bold 150px Orbitron, "Share Tech Mono", "Courier New", monospace';
+  const family = 'Orbitron, "Share Tech Mono", "Courier New", monospace';
+  ctx.font = `bold 150px ${family}`;
+  const fontSize = Math.min(150, Math.floor(150 * 900 / Math.max(1, ctx.measureText(spec.text).width)));
+  ctx.font = `bold ${fontSize}px ${family}`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = '#ffd9f5';
@@ -652,29 +688,82 @@ export const DYNAMIC_REGISTRY = {
   goal: { create: (p: GoalPiece, _c: DynamicContext) => new Goal(p) },
 } satisfies { [K in DynamicKind]: { create: (p: NativeParts[K]['def'], c: DynamicContext) => NativeParts[K] } };
 
-function component(native: NativeParts[DynamicKind], instance: LevelInstance): RuntimeComponent {
-  return {
-    id: instance.id, resetGroup: instance.resetGroup,
-    fixedUpdate(time: number) { if (native instanceof Elevator) native.stepKinematic(time); },
-    visualUpdate(frame: VisualFrame) {
-      if (native instanceof Laser) native.update(frame.simulationTime, frame.beat, frame.dt);
-      else if (native instanceof Elevator) native.update(frame.simulationTime, frame.beat);
-      else if (native instanceof VoidMarker) native.update(frame.presentationTime);
-      else native.update(frame.presentationTime, frame.beat);
-      if (native instanceof Elevator) native.material.setFrame(frame.presentationTime, frame.beat, frame.marblePosition);
-    },
-    capture(): LogicalValue { return native instanceof Checkpoint ? { active: native.active } : null; },
-    reset(state: LogicalValue) {
-      if (native instanceof Checkpoint) native.active = state !== null && typeof state === 'object' && 'active' in state && state.active === true;
-      if (native instanceof JumpPad) native.reset();
-    },
-    dispose() { disposeObjects(native.group); },
-  };
+/** Native mechanics now own a restorable clock, activation and transient state. */
+class NativeComponent implements RuntimeComponent {
+  readonly id: string;
+  readonly resetGroup: string;
+  elapsed = 0;
+  enabled = true;
+  private disposed = false;
+  constructor(private readonly native: NativeParts[DynamicKind], instance: LevelInstance, private readonly physics: Physics) {
+    this.id = instance.id; this.resetGroup = instance.resetGroup;
+  }
+  fixedUpdate(_time: number, dt: number): void {
+    if (this.enabled) this.elapsed += dt;
+    if (this.native instanceof Elevator) this.native.stepKinematic(this.elapsed);
+    if (this.native instanceof Laser) this.native.armingRemaining = Math.max(0, this.native.armingRemaining-dt);
+  }
+  visualUpdate(frame: VisualFrame): void {
+    const native = this.native;
+    if (native instanceof JumpPad) native.group.visible = this.enabled;
+    if (native instanceof Laser) native.update(this.elapsed, frame.beat, frame.dt);
+    else if (native instanceof Elevator) native.update(this.elapsed, frame.beat);
+    else if (native instanceof VoidMarker) native.update(frame.presentationTime);
+    else native.update(frame.presentationTime, frame.beat);
+    if (native instanceof Elevator) native.material.setFrame(frame.presentationTime, frame.beat, frame.marblePosition);
+  }
+  receiveSignal(port: SignalPort, value: SignalValue): void {
+    if (port === 'reset') this.reset({elapsed:0,enabled:true});
+    if (port === 'enable') {
+      if (this.native instanceof Laser) {
+        if (!this.enabled && value === true) this.native.armingRemaining = LASER_WARN;
+        this.native.enabled = value === true;
+      }
+      this.enabled = value === true;
+    }
+  }
+  capture(): LogicalValue {
+    return { elapsed: this.elapsed, enabled: this.enabled,
+      active: this.native instanceof Checkpoint ? this.native.active : false,
+      transient: this.native instanceof JumpPad ? this.native.capture() : null,
+      arming: this.native instanceof Laser ? this.native.armingRemaining : 0 };
+  }
+  reset(state: LogicalValue): void {
+    const s = state && typeof state === 'object' && !Array.isArray(state) ? state : {};
+    // Legacy free-running cycles keep their timeline across Retry. Newly authored
+    // mechanisms default to resettable clocks; explicit snapshots/signals win.
+    const continuous = (this.native instanceof Elevator || this.native instanceof Laser) && this.native.def.clock !== 'resettable';
+    this.elapsed = typeof s['elapsed'] === 'number' && Number.isFinite(s['elapsed']) ? Math.max(0,s['elapsed']) : continuous ? this.physics.simulationTime : 0;
+    this.enabled = s['enabled'] !== false;
+    if (this.native instanceof Checkpoint) this.native.active = s['active'] === true;
+    if (this.native instanceof JumpPad) this.native.reset(s['transient'] ?? null);
+    if (this.native instanceof Laser) {
+      this.native.enabled = this.enabled;
+      this.native.armingRemaining = typeof s['arming'] === 'number' && Number.isFinite(s['arming']) ? THREE.MathUtils.clamp(s['arming'],0,LASER_WARN) : 0;
+    }
+    if (this.native instanceof Elevator) {
+      this.native.stepKinematic(this.elapsed);
+      this.native.body.setTranslation(this.native.body.nextTranslation(),true);
+    }
+  }
+  dispose(): void {
+    if (this.disposed) return; this.disposed = true;
+    disposeObjects(this.native.group);
+    if (this.native instanceof Elevator) this.physics.removeBody(this.native.body);
+  }
 }
 
 export class LevelDynamics {
   readonly group = new THREE.Group();
   readonly components: RuntimeComponent[] = [];
+  readonly signals: SignalNetwork;
+  readonly switches: SignalSwitch[] = [];
+  readonly pushObjects: PushObject[] = [];
+  private readonly clocked = new Map<object, NativeComponent>();
+  private interaction: string | null = null;
+  readonly movingSurfaces: MovingSurface[] = [];
+  readonly reactivePlates: ReactivePlate[] = [];
+  readonly bumpers: SpringBumper[] = [];
   readonly jumpPads: JumpPad[] = [];
   readonly elevators: Elevator[] = [];
   readonly lasers: Laser[] = [];
@@ -682,49 +771,82 @@ export class LevelDynamics {
   readonly checkpoints: Checkpoint[] = [];
   goal: Goal | null = null;
 
-  constructor(def: LevelDefinition, physics: Physics, labels: LabelSpec[], gravity: number, damping: number, document: LevelDocument) {
+  constructor(def: LevelDefinition, physics: Physics, labels: LabelSpec[], gravity: number, damping: number, document: LevelDocument, fallY: number) {
     const context = { physics, gravity, damping };
+    const graph = signalDocument(document); this.signals = new SignalNetwork(graph.nodes, graph.links);
     for (const [index, p] of def.pieces.entries()) {
       const instance = document.instances[index]!;
       switch (p.kind) {
+        case 'pushable': {
+          const object=new PushObject(p,instance,physics,fallY);this.pushObjects.push(object);this.components.push(object);this.group.add(object.group);
+          this.group.add(makeCircuitLabel(`RECALL / ${p.token.toUpperCase()}`,new THREE.Vector3(p.x,p.y+1.9,p.z)));break;
+        }
+        case 'momentum': {
+          const receiver=new MomentumReceiver(p,instance,physics);this.components.push(receiver);this.group.add(receiver.group);
+          this.group.add(makeCircuitLabel(p.label??'HIT HARD',new THREE.Vector3(p.x,p.y+2,p.z)));break;
+        }
+        case 'pressure': case 'door': case 'logic': case 'sequence': {
+          const component = p.kind==='pressure'?new PressurePlate(p,instance,physics):p.kind==='door'?new SignalDoor(p,instance,physics):new LogicRelay(p,instance);
+          this.components.push(component);this.group.add(component.group);
+          const label=p.kind==='pressure' && p.match && p.match!=='any'?p.match.toUpperCase():p.label ?? (p.kind==='logic'?p.operation.toUpperCase():p.kind==='sequence'?'1 / 2 / 3':p.kind==='pressure'?p.mode.toUpperCase():'GATE');
+          this.group.add(makeCircuitLabel(label,new THREE.Vector3(p.x,p.y+(p.kind==='door'?p.h+1.9:1.5),p.z)));
+          break;
+        }
+        case 'switch': {
+          const control = new SignalSwitch(p, instance); this.switches.push(control); this.components.push(control); this.group.add(control.group);
+          if (p.label) this.group.add(makeCircuitLabel(p.label,new THREE.Vector3(p.x,p.y+1.7,p.z)));
+          break;
+        }
+        case 'seesaw': case 'fragile': {
+          const plate = new ReactivePlate(p, instance, physics);
+          this.reactivePlates.push(plate); this.components.push(plate); this.group.add(plate.group); break;
+        }
+        case 'bumper': {
+          const bumper = new SpringBumper(p, instance, physics);
+          this.bumpers.push(bumper); this.components.push(bumper); this.group.add(bumper.group); break;
+        }
+        case 'conveyor': case 'bridge': case 'rotator': {
+          const moving = new MovingSurface(p, instance, physics);
+          this.movingSurfaces.push(moving); this.components.push(moving); this.group.add(moving.group); break;
+        }
         case 'jumppad': {
           const j = DYNAMIC_REGISTRY.jumppad.create(p, context);
-          this.components.push(component(j, instance));
+          this.addNative(j, instance, physics);
           this.jumpPads.push(j);
           this.group.add(j.group);
           break;
         }
         case 'elevator': {
           const e = DYNAMIC_REGISTRY.elevator.create(p, context);
-          this.components.push(component(e, instance));
+          this.addNative(e, instance, physics);
           this.elevators.push(e);
           this.group.add(e.group);
           break;
         }
         case 'laser': {
           const l = DYNAMIC_REGISTRY.laser.create(p, context);
-          this.components.push(component(l, instance));
+          this.addNative(l, instance, physics);
           this.lasers.push(l);
           this.group.add(l.group);
           break;
         }
         case 'void': {
           const v = DYNAMIC_REGISTRY.void.create(p, context);
-          this.components.push(component(v, instance));
+          this.addNative(v, instance, physics);
           this.voids.push(v);
           this.group.add(v.group);
           break;
         }
         case 'checkpoint': {
           const c = DYNAMIC_REGISTRY.checkpoint.create(p, context);
-          this.components.push(component(c, instance));
+          this.addNative(c, instance, physics);
           this.checkpoints.push(c);
           this.group.add(c.group);
           break;
         }
         case 'goal': {
           this.goal = DYNAMIC_REGISTRY.goal.create(p, context);
-          this.components.push(component(this.goal, instance));
+          this.addNative(this.goal, instance, physics);
           this.group.add(this.goal.group);
           break;
         }
@@ -732,8 +854,34 @@ export class LevelDynamics {
           break;
       }
     }
+    for (const component of this.components) this.signals.register(component.id, (port, value) => {
+      component.receiveSignal?.(port,value); this.publish(component);
+    });
+    this.resetSignals();
     for (const l of labels) this.group.add(makeLabel(l));
   }
+
+  private addNative(native: NativeParts[DynamicKind], instance: LevelInstance, physics: Physics): void {
+    const component = new NativeComponent(native,instance,physics); this.clocked.set(native,component); this.components.push(component);
+  }
+  private publish(component: RuntimeComponent): void {
+    for (const [port,value] of Object.entries(component.stateOutputs?.() ?? {})) this.signals.emit(component.id,port as SignalPort,value);
+    for (const port of component.takePulses?.() ?? []) this.signals.emit(component.id,port,null);
+  }
+  resetSignals(): void {
+    this.interaction = null; this.signals.reset();
+    for (const component of this.components) this.publish(component);
+    this.signals.flush();
+  }
+  queueInteraction(position: THREE.Vector3): void {
+    const candidates=[
+      ...this.switches.map(control=>({id:control.id,position:new THREE.Vector3(control.def.x,control.def.y+.5,control.def.z)})),
+      ...this.pushObjects.filter(object=>object.canRecall()).map(object=>({id:object.id,position:object.home})),
+    ].filter(control=>Math.hypot(control.position.x-position.x,control.position.z-position.z)<1.8 && Math.abs(control.position.y-position.y)<1.2);
+    candidates.sort((a,b)=>a.position.distanceToSquared(position)-b.position.distanceToSquared(position)||a.id.localeCompare(b.id));
+    this.interaction=candidates[0]?.id??null;
+  }
+  protectSpawn(position: THREE.Vector3): void { for(const object of this.pushObjects)object.protectSpawn(position); }
 
   setResolution(w: number, h: number): void {
     this.group.traverse((o) => {
@@ -744,6 +892,14 @@ export class LevelDynamics {
   /** Per physics sub-step: move kinematic bodies. */
   stepKinematics(time: number): void {
     for (const component of this.components) component.fixedUpdate(time, 1 / 120);
+    if (this.interaction) {
+      const id=this.interaction;this.interaction=null;
+      const control=this.switches.find(control=>control.id===id);
+      if(control){control.interact();this.signals.emit(control.id,'activated',null)}
+      else this.pushObjects.find(object=>object.id===id)?.requestRecovery();
+    }
+    for (const component of this.components) this.publish(component);
+    this.signals.flush();
   }
 
   /** Per render frame: animate visuals. */
@@ -751,11 +907,11 @@ export class LevelDynamics {
     for (const component of this.components) component.visualUpdate({ simulationTime: time, presentationTime, dt, beat, marblePosition: marblePos });
   }
 
-  checkTriggers(p: THREE.Vector3, radius: number, time: number): TriggerEvent[] {
+  checkTriggers(p: THREE.Vector3, radius: number, _time: number): TriggerEvent[] {
     const out: TriggerEvent[] = [];
-    for (const l of this.lasers) if (l.test(p, radius, time)) out.push({ type: 'death', cause: 'laser' });
+    for (const l of this.lasers) if (l.test(p, radius, this.clocked.get(l)!.elapsed)) out.push({ type: 'death', cause: 'laser' });
     for (const v of this.voids) if (v.test(p)) out.push({ type: 'death', cause: 'void' });
-    for (const j of this.jumpPads) if (j.test(p, time)) out.push({ type: 'jump', velocity: j.launchVelocity.clone(), target: new THREE.Vector3(j.def.targetX, j.def.targetY, j.def.targetZ) });
+    for (const j of this.jumpPads) if (this.clocked.get(j)!.enabled && j.test(p, this.clocked.get(j)!.elapsed)) out.push({ type: 'jump', velocity: j.launchVelocity.clone(), target: new THREE.Vector3(j.def.targetX, j.def.targetY, j.def.targetZ) });
     for (const c of this.checkpoints) {
       if (c.test(p)) {
         c.active = true;
@@ -767,6 +923,7 @@ export class LevelDynamics {
   }
 
   dispose(): void {
+    this.signals.dispose(); this.clocked.clear(); this.interaction = null;
     for (const component of this.components) component.dispose();
     disposeObjects(this.group);
     this.components.length = 0;

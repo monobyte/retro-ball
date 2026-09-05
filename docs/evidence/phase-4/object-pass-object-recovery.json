@@ -1,0 +1,133 @@
+{
+  "probes": [
+    {
+      "doorSafe": true,
+      "hz": 30,
+      "keyboardRecall": true,
+      "kind": "recovery",
+      "kinematicClearance": true,
+      "lostFall": true,
+      "matching": true,
+      "occupiedHomeWaits": true,
+      "pendingSnapshot": true
+    },
+    {
+      "doorSafe": true,
+      "hz": 60,
+      "keyboardRecall": true,
+      "kind": "recovery",
+      "kinematicClearance": true,
+      "lostFall": true,
+      "matching": true,
+      "occupiedHomeWaits": true,
+      "pendingSnapshot": true
+    },
+    {
+      "doorSafe": true,
+      "hz": 120,
+      "keyboardRecall": true,
+      "kind": "recovery",
+      "kinematicClearance": true,
+      "lostFall": true,
+      "matching": true,
+      "occupiedHomeWaits": true,
+      "pendingSnapshot": true
+    },
+    {
+      "hz": 30,
+      "kind": "momentum",
+      "snapshotNoReplay": true,
+      "strong": 10.200351464945689,
+      "weak": 1.361562272967932,
+      "wrongActorIgnored": true
+    },
+    {
+      "hz": 60,
+      "kind": "momentum",
+      "snapshotNoReplay": true,
+      "strong": 10.200351464945689,
+      "weak": 1.361562272967932,
+      "wrongActorIgnored": true
+    },
+    {
+      "hz": 120,
+      "kind": "momentum",
+      "snapshotNoReplay": true,
+      "strong": 10.200351464945689,
+      "weak": 1.361562272967932,
+      "wrongActorIgnored": true
+    },
+    {
+      "clearReturn": true,
+      "hz": 30,
+      "kind": "returning-floor",
+      "objectBlocksReturn": true,
+      "objectTriggers": true
+    },
+    {
+      "hz": 30,
+      "kind": "seesaw",
+      "loadedAngle": -0.051243919059955186,
+      "settled": true
+    },
+    {
+      "carriedToX": 1.2982935905456543,
+      "hz": 30,
+      "kind": "conveyor"
+    },
+    {
+      "clearReturn": true,
+      "hz": 60,
+      "kind": "returning-floor",
+      "objectBlocksReturn": true,
+      "objectTriggers": true
+    },
+    {
+      "hz": 60,
+      "kind": "seesaw",
+      "loadedAngle": -0.051243919059955186,
+      "settled": true
+    },
+    {
+      "carriedToX": 1.2982935905456543,
+      "hz": 60,
+      "kind": "conveyor"
+    },
+    {
+      "clearReturn": true,
+      "hz": 120,
+      "kind": "returning-floor",
+      "objectBlocksReturn": true,
+      "objectTriggers": true
+    },
+    {
+      "hz": 120,
+      "kind": "seesaw",
+      "loadedAngle": -0.051243919059955186,
+      "settled": true
+    },
+    {
+      "carriedToX": 1.2982935905456543,
+      "hz": 120,
+      "kind": "conveyor"
+    },
+    {
+      "hz": 30,
+      "kind": "spawn-conflict",
+      "marbleSafe": true,
+      "objectRecovered": true
+    },
+    {
+      "hz": 60,
+      "kind": "spawn-conflict",
+      "marbleSafe": true,
+      "objectRecovered": true
+    },
+    {
+      "hz": 120,
+      "kind": "spawn-conflict",
+      "marbleSafe": true,
+      "objectRecovered": true
+    }
+  ]
+}

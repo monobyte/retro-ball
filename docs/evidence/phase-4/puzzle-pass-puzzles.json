@@ -1,0 +1,673 @@
+{
+  "or": "Each input independently opens and releases the physical door",
+  "probes": [
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 30,
+      "kind": "pressure",
+      "mode": "hold",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 60,
+      "kind": "pressure",
+      "mode": "hold",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 120,
+      "kind": "pressure",
+      "mode": "hold",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 30,
+      "kind": "pressure",
+      "mode": "toggle",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 60,
+      "kind": "pressure",
+      "mode": "toggle",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 120,
+      "kind": "pressure",
+      "mode": "toggle",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 30,
+      "kind": "pressure",
+      "mode": "timed",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 60,
+      "kind": "pressure",
+      "mode": "timed",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "airborneIgnored": true,
+      "heldNoRetrigger": true,
+      "hz": 120,
+      "kind": "pressure",
+      "mode": "timed",
+      "realContact": true,
+      "secondEntry": true,
+      "snapshot": true
+    },
+    {
+      "hz": 30,
+      "kind": "door",
+      "marbleSafe": true,
+      "resetSafe": true,
+      "resumed": true,
+      "sideContactOpening": true,
+      "snapshot": true,
+      "stoppedAt": 0.7812500000000008
+    },
+    {
+      "hz": 60,
+      "kind": "door",
+      "marbleSafe": true,
+      "resetSafe": true,
+      "resumed": true,
+      "sideContactOpening": true,
+      "snapshot": true,
+      "stoppedAt": 0.7812500000000008
+    },
+    {
+      "hz": 120,
+      "kind": "door",
+      "marbleSafe": true,
+      "resetSafe": true,
+      "resumed": true,
+      "sideContactOpening": true,
+      "snapshot": true,
+      "stoppedAt": 0.7812500000000008
+    },
+    {
+      "hz": 30,
+      "kind": "sequence",
+      "partialCheckpointRestored": true,
+      "restoredSolutionCompletes": true,
+      "timeout": true,
+      "wrongOrderCleared": true
+    },
+    {
+      "hz": 60,
+      "kind": "sequence",
+      "partialCheckpointRestored": true,
+      "restoredSolutionCompletes": true,
+      "timeout": true,
+      "wrongOrderCleared": true
+    },
+    {
+      "hz": 120,
+      "kind": "sequence",
+      "partialCheckpointRestored": true,
+      "restoredSolutionCompletes": true,
+      "timeout": true,
+      "wrongOrderCleared": true
+    }
+  ],
+  "routes": [
+    {
+      "checkpointRestored": true,
+      "completionSeconds": 4.2999999999999945,
+      "hz": 30,
+      "id": "two-factor",
+      "keyboardPresses": 1,
+      "retryCleared": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "armed",
+          "sequence": 1,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputA"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "permission",
+          "sequence": 2,
+          "source": {
+            "instanceId": "pressure-006",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputB"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "access",
+          "sequence": 3,
+          "source": {
+            "instanceId": "logic-007",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-008",
+            "port": "enable"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "armed",
+          "sequence": 4,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputA"
+          },
+          "value": true
+        },
+        {
+          "cause": null,
+          "channel": "permission",
+          "sequence": 5,
+          "source": {
+            "instanceId": "pressure-006",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputB"
+          },
+          "value": true
+        },
+        {
+          "cause": 5,
+          "channel": "access",
+          "sequence": 6,
+          "source": {
+            "instanceId": "logic-007",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-008",
+            "port": "enable"
+          },
+          "value": true
+        }
+      ]
+    },
+    {
+      "checkpointRestored": true,
+      "completionSeconds": 4.216666666666657,
+      "hz": 60,
+      "id": "two-factor",
+      "keyboardPresses": 1,
+      "retryCleared": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "armed",
+          "sequence": 1,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputA"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "permission",
+          "sequence": 2,
+          "source": {
+            "instanceId": "pressure-006",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputB"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "access",
+          "sequence": 3,
+          "source": {
+            "instanceId": "logic-007",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-008",
+            "port": "enable"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "armed",
+          "sequence": 4,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputA"
+          },
+          "value": true
+        },
+        {
+          "cause": null,
+          "channel": "permission",
+          "sequence": 5,
+          "source": {
+            "instanceId": "pressure-006",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputB"
+          },
+          "value": true
+        },
+        {
+          "cause": 5,
+          "channel": "access",
+          "sequence": 6,
+          "source": {
+            "instanceId": "logic-007",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-008",
+            "port": "enable"
+          },
+          "value": true
+        }
+      ]
+    },
+    {
+      "checkpointRestored": true,
+      "completionSeconds": 4.183333333333331,
+      "hz": 120,
+      "id": "two-factor",
+      "keyboardPresses": 1,
+      "retryCleared": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "armed",
+          "sequence": 1,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputA"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "permission",
+          "sequence": 2,
+          "source": {
+            "instanceId": "pressure-006",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputB"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "access",
+          "sequence": 3,
+          "source": {
+            "instanceId": "logic-007",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-008",
+            "port": "enable"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "armed",
+          "sequence": 4,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputA"
+          },
+          "value": true
+        },
+        {
+          "cause": null,
+          "channel": "permission",
+          "sequence": 5,
+          "source": {
+            "instanceId": "pressure-006",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "logic-007",
+            "port": "inputB"
+          },
+          "value": true
+        },
+        {
+          "cause": 5,
+          "channel": "access",
+          "sequence": 6,
+          "source": {
+            "instanceId": "logic-007",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-008",
+            "port": "enable"
+          },
+          "value": true
+        }
+      ]
+    },
+    {
+      "checkpointRestored": true,
+      "completionSeconds": 5.566666666666657,
+      "hz": 30,
+      "id": "ordered-garden",
+      "keyboardPresses": 3,
+      "retryCleared": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "sequence-release",
+          "sequence": 1,
+          "source": {
+            "instanceId": "sequence-008",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-009",
+            "port": "enable"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "answer-1",
+          "sequence": 2,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step1"
+          },
+          "value": null
+        },
+        {
+          "cause": null,
+          "channel": "answer-2",
+          "sequence": 3,
+          "source": {
+            "instanceId": "switch-006",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step2"
+          },
+          "value": null
+        },
+        {
+          "cause": null,
+          "channel": "answer-3",
+          "sequence": 4,
+          "source": {
+            "instanceId": "switch-007",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step3"
+          },
+          "value": null
+        },
+        {
+          "cause": 4,
+          "channel": "sequence-release",
+          "sequence": 5,
+          "source": {
+            "instanceId": "sequence-008",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-009",
+            "port": "enable"
+          },
+          "value": true
+        }
+      ]
+    },
+    {
+      "checkpointRestored": true,
+      "completionSeconds": 5.416666666666653,
+      "hz": 60,
+      "id": "ordered-garden",
+      "keyboardPresses": 3,
+      "retryCleared": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "sequence-release",
+          "sequence": 1,
+          "source": {
+            "instanceId": "sequence-008",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-009",
+            "port": "enable"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "answer-1",
+          "sequence": 2,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step1"
+          },
+          "value": null
+        },
+        {
+          "cause": null,
+          "channel": "answer-2",
+          "sequence": 3,
+          "source": {
+            "instanceId": "switch-006",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step2"
+          },
+          "value": null
+        },
+        {
+          "cause": null,
+          "channel": "answer-3",
+          "sequence": 4,
+          "source": {
+            "instanceId": "switch-007",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step3"
+          },
+          "value": null
+        },
+        {
+          "cause": 4,
+          "channel": "sequence-release",
+          "sequence": 5,
+          "source": {
+            "instanceId": "sequence-008",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-009",
+            "port": "enable"
+          },
+          "value": true
+        }
+      ]
+    },
+    {
+      "checkpointRestored": true,
+      "completionSeconds": 5.358333333333389,
+      "hz": 120,
+      "id": "ordered-garden",
+      "keyboardPresses": 3,
+      "retryCleared": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "sequence-release",
+          "sequence": 1,
+          "source": {
+            "instanceId": "sequence-008",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-009",
+            "port": "enable"
+          },
+          "value": false
+        },
+        {
+          "cause": null,
+          "channel": "answer-1",
+          "sequence": 2,
+          "source": {
+            "instanceId": "switch-005",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step1"
+          },
+          "value": null
+        },
+        {
+          "cause": null,
+          "channel": "answer-2",
+          "sequence": 3,
+          "source": {
+            "instanceId": "switch-006",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step2"
+          },
+          "value": null
+        },
+        {
+          "cause": null,
+          "channel": "answer-3",
+          "sequence": 4,
+          "source": {
+            "instanceId": "switch-007",
+            "port": "activated"
+          },
+          "target": {
+            "instanceId": "sequence-008",
+            "port": "step3"
+          },
+          "value": null
+        },
+        {
+          "cause": 4,
+          "channel": "sequence-release",
+          "sequence": 5,
+          "source": {
+            "instanceId": "sequence-008",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "door-009",
+            "port": "enable"
+          },
+          "value": true
+        }
+      ]
+    }
+  ]
+}

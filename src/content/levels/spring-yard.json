@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "spring-yard",
+  "metadata": {
+    "name": "SPRING YARD",
+    "description": "Touch a spring, feel it charge, then use the rebound to reach the signal.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": -7,
+    "y": 0.6,
+    "z": -4
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 26,
+        "d": 16,
+        "label": "CHARGE / REBOUND"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "bumper-002",
+      "type": "bumper",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "radius": 0.9,
+        "kickSpeed": 10,
+        "cooldown": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "bumper-003",
+      "type": "bumper",
+      "transform": {
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": -4
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "radius": 0.7,
+        "kickSpeed": 8,
+        "cooldown": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-004",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -8
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 26,
+        "d": 0.5,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-005",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 8
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 26,
+        "d": 0.5,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-006",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 13,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 16,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-007",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -13,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 16,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-008",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": -6,
+          "y": 0,
+          "z": -4
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-009",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": -10,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "attempt"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-008",
+      "spawn": {
+        "x": -6,
+        "y": 0.6,
+        "z": -4
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-009",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "reactive-room",
+      "mode": "arena",
+      "priority": 1,
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 80,
+        "y": 12,
+        "z": 50
+      },
+      "viewHeight": 27
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": []
+  }
+}

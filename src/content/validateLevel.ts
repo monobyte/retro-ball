@@ -1,3 +1,6 @@
+import { signalDocument } from './SignalDocument.ts';
+import { validateSignalGraph } from '../signals/SignalGraph.ts';
+import { movingBounds, sweepOverlaps, isMovingPiece } from './MovingBounds.ts';
 import { PARTS, hasPart, type PartDefinition } from './PartRegistry.ts';
 import { resolveLevel, type LevelDocument, type Vec3 } from './LevelDocument.ts';
 
@@ -83,6 +86,12 @@ export function validateLevel(value: unknown, options: { draft?: boolean } = {})
     }
     if (type === 'laser' && Number(params['sweep']) > 0 && Number(params['speed']) <= 0) error(`${path}.parameters.speed`, 'A sweeping laser needs positive speed.', id);
     if (type === 'elevator' && Number(params['y1']) <= 0) error(`${path}.parameters.y1`, 'Elevator top must be above its base.', id);
+    if (type === 'elevator' && 1.5 * Number(params['y1']) / (.22 * Number(params['period'])) > 20) error(`${path}.parameters.period`, 'Slow the elevator: peak travel speed must stay at or below 20 units per second.', id);
+    if (type === 'laser' && 2 * Math.PI * Math.abs(Number(params['sweep'])) * Number(params['speed']) > 20) error(`${path}.parameters.speed`, 'Slow the laser sweep: peak travel speed must stay at or below 20 units per second.', id);
+    if (type === 'bridge' && Number(params['dwell']) * 2 >= Number(params['period']) - .1) error(`${path}.parameters.dwell`, 'Waiting windows must leave at least 0.1 seconds for each round trip.', id);
+    if (type === 'bridge' && 3 * Number(params['distance']) / (Number(params['period']) - 2 * Number(params['dwell'])) > 20) error(`${path}.parameters.period`, 'Increase the period or shorten travel: bridge speed must stay at or below 20 units per second.', id);
+    if (type === 'rotator' && Math.abs(Number(params['angularSpeed'])) * Math.PI / 180 * Math.hypot(Number(params['w']), Number(params['d'])) / 2 > 20) error(`${path}.parameters.angularSpeed`, 'Slow the rotation: outer corner speed must stay at or below 20 units per second.', id);
+    if (type === 'rotator' && Number(params['angularSpeed']) === 0) error(`${path}.parameters.angularSpeed`, 'Use a floor for stationary track; rotating platforms need nonzero angular speed.', id);
     if (type === 'checkpoint') {
       const n = Number(params['id']);
       if (!Number.isSafeInteger(n) || numericCheckpointIds.has(n)) error(`${path}.parameters.id`, 'Checkpoint number must be a unique integer.', id);
@@ -144,7 +153,7 @@ export function validateLevel(value: unknown, options: { draft?: boolean } = {})
   else {
     const nodes = unique(nav['nodes'], 'navigation.nodes', (node, path) => {
       const instance = reference(node['instanceId'], `${path}.instanceId`);
-      if (instance && !['slab', 'ramp', 'elevator'].includes(String(instance['type']))) error(`${path}.instanceId`, 'Navigation nodes require a traversable part.');
+      if (instance && !['slab', 'ramp', 'elevator', 'conveyor', 'bridge', 'rotator', 'seesaw', 'fragile'].includes(String(instance['type']))) error(`${path}.instanceId`, 'Navigation nodes require a traversable part.');
       if (!vector(node['position'])) error(`${path}.position`, 'Expected finite coordinates.');
     });
     nav['links'].forEach((l, i) => {
@@ -162,6 +171,14 @@ export function validateLevel(value: unknown, options: { draft?: boolean } = {})
   else for (const id of validation['intendedRoute']) reference(id, 'validation.intendedRoute');
   if (issues.some(i => i.severity === 'error')) return result();
 
+  const graph = signalDocument(value as unknown as LevelDocument);
+  for (const issue of validateSignalGraph(graph.nodes, graph.links)) {
+    const link=graph.links.find(link=>link.id===issue.linkId);
+    const ids=link?[link.source.instanceId,link.target.instanceId]:[...new Set(graph.links.flatMap(link=>[link.source.instanceId,link.target.instanceId]))];
+    error(issue.linkId?`signals.${issue.linkId}`:'signals',issue.message,ids[0],ids);
+  }
+  if (issues.some(i => i.severity === 'error')) return result();
+
   // Authoring can temporarily lack a goal or floor support. All data shapes,
   // parameter ranges and references above remain mandatory, even for drafts.
   // Runtime load/export/play always use the full validation path.
@@ -177,6 +194,51 @@ export function validateLevel(value: unknown, options: { draft?: boolean } = {})
   for (let i = 0; i < level.pieces.length; i++) {
     const p = level.pieces[i]!;
     const id = doc.instances[i]!.id;
+    if (isMovingPiece(p)) {
+      const bounds = movingBounds(p);
+      for (const [otherIndex, other] of level.pieces.entries()) {
+        const otherId = doc.instances[otherIndex]!.id;
+        if (other.kind === 'wall' && other.y < bounds.maxY + 1 && other.y + other.h > bounds.minY && sweepOverlaps(p, other, .5)) {
+          error(`instances.${id}`, `Moving surface sweep lacks marble clearance from wall ${otherId}. Move the wall or shorten the motion.`, id, [id, otherId]);
+        }
+        if (other.kind === 'slab' && Math.abs(p.y - other.y) < 1e-6 && sweepOverlaps(p, other)) {
+          error(`instances.${id}`, `Moving surface crosses coplanar floor ${otherId}; separate the heights or leave the sweep clear to avoid flickering.`, id, [id, otherId]);
+        }
+      }
+    }
+    if (['switch','logic','sequence'].includes(p.kind) && 'y' in p && !support({ x:p.x, y:p.y+.6, z:p.z })) error(`instances.${id}`, 'Place circuit controls on reachable supported floor.', id);
+    if (p.kind==='pressure' || p.kind==='door') {
+      if (!floors.some(f=>Math.abs(f.y-p.y)<.01 && Math.abs(p.x-f.x)+p.w/2<=f.w/2 && Math.abs(p.z-f.z)+p.d/2<=f.d/2)) error(`instances.${id}`, 'Place the full circuit footprint on supported floor.', id);
+      if (p.kind==='door') {
+        for (const [label,spawn] of [['spawn',doc.spawn],...doc.checkpoints.map(c=>[`checkpoints.${c.id}.spawn`,c.spawn] as const)] as const) {
+          if (Math.abs(spawn.x-p.x)<p.w/2+.6 && Math.abs(spawn.z-p.z)<p.d/2+.6 && spawn.y+.5>p.y && spawn.y-.5<p.y+p.h+1.4) error(label, `Keep spawn outside door ${id}'s complete travel.`);
+        }
+        for (const [otherIndex,other] of level.pieces.entries()) {
+          if ((other.kind==='slab' || other.kind==='wall') && Math.abs(other.x-p.x)<(other.w+p.w)/2 && Math.abs(other.z-p.z)<(other.d+p.d)/2 && (other.kind==='wall'?other.y:other.y-(other.thick??1))<p.y+p.h+1.4 && (other.kind==='wall'?other.y+other.h:other.y)>p.y+.01) error(`instances.${id}`, `Door travel intersects ${doc.instances[otherIndex]!.id}. Leave the lift clear.`, id, [id,doc.instances[otherIndex]!.id]);
+        }
+      }
+    }
+    if (p.kind==='pushable') {
+      const extent=p.size/2+.12;
+      if(!floors.some(f=>Math.abs(f.y-p.y)<.01 && Math.abs(p.x-f.x)+extent<=f.w/2 && Math.abs(p.z-f.z)+extent<=f.d/2))error(`instances.${id}`, 'The object home needs full floor support and recall clearance.', id);
+      for(const [label,spawn] of [['spawn',doc.spawn],...doc.checkpoints.map(c=>[`checkpoints.${c.id}.spawn`,c.spawn] as const)] as const) {
+        if(Math.abs(spawn.x-p.x)<extent+.6 && Math.abs(spawn.z-p.z)<extent+.6 && spawn.y+.5>p.y && spawn.y-.5<p.y+p.size+.24)error(label,`Keep the marble spawn clear of object home ${id}.`);
+      }
+      for(const [j,other] of level.pieces.entries()) {
+        if(j===i)continue;
+        const otherId=doc.instances[j]!.id;
+        if((other.kind==='wall'||other.kind==='door') && Math.abs(other.x-p.x)<other.w/2+extent && Math.abs(other.z-p.z)<other.d/2+extent && other.y<p.y+p.size+.24 && other.y+other.h+(other.kind==='door'?1.4:0)>p.y)error(`instances.${id}`,`Object home overlaps ${otherId}; recall must have a safe clear volume.`,id,[id,otherId]);
+        if(other.kind==='slab' && other.y>p.y+.05 && other.y-(other.thick??1)<p.y+p.size+.24 && Math.abs(other.x-p.x)<other.w/2+extent && Math.abs(other.z-p.z)<other.d/2+extent)error(`instances.${id}`,`Object home is obstructed by floor ${otherId}.`,id,[id,otherId]);
+        if(other.kind==='pushable' && j>i && Math.abs(other.x-p.x)<(other.size+p.size)/2+.24 && Math.abs(other.z-p.z)<(other.size+p.size)/2+.24 && Math.abs(other.y-p.y)<Math.max(other.size,p.size)+.24)error(`instances.${id}`,`Object homes overlap: ${otherId}.`,id,[id,otherId]);
+      }
+    }
+    if((p.kind==='pressure'||p.kind==='momentum') && p.match && p.match!=='any' && !level.pieces.some(other=>other.kind==='pushable'&&other.token===p.match))error(`instances.${id}`,`Matching ${p.match} receiver needs an object with the same symbol.`,id);
+    if (p.kind === 'bumper' || p.kind==='momentum') {
+      if (!floors.some(f => Math.abs(f.y-p.y)<.01 && Math.abs(p.x-f.x)+p.radius<=f.w/2 && Math.abs(p.z-f.z)+p.radius<=f.d/2)) error(`instances.${id}`, `Place the entire ${p.kind==='bumper'?'spring bumper':'momentum receiver'} on supported floor.`, id);
+      for (const [label, spawn] of [['spawn', doc.spawn], ...doc.checkpoints.map(c => [`checkpoints.${c.id}.spawn`, c.spawn] as const)] as const) {
+        if (Math.hypot(spawn.x-p.x, spawn.z-p.z) < p.radius + 1 && spawn.y > p.y-.5 && spawn.y < p.y+2) error(label, `Keep spawn outside ${p.kind==='bumper'?'bumper':'momentum receiver'} ${id}'s ${p.kind==='bumper'?'spring-contact':'impact'} clearance.`);
+      }
+    }
     if (p.kind === 'void' && Math.min(p.w, p.d) <= 1) error(`instances.${id}`, 'Void opening must exceed the marble diameter (1).', id);
     if (p.kind === 'void') for (const floor of floors) {
       const overlapX = Math.min(p.x + p.w / 2, floor.x + floor.w / 2) - Math.max(p.x - p.w / 2, floor.x - floor.w / 2);

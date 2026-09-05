@@ -1,3 +1,5 @@
+import { signalDocument } from '../content/SignalDocument.ts';
+import type { SignalLink, SignalRef } from '../signals/SignalTypes.ts';
 import { documentFromLegacy, type LevelDocument, type LevelInstance, type PieceKind, type Vec3, type QuarterTurn } from '../content/LevelDocument.ts';
 import { PARTS, type PartDefinition } from '../content/PartRegistry.ts';
 import { InvalidLevelError, parseLevel, validateLevel } from '../content/validateLevel.ts';
@@ -41,12 +43,25 @@ export function starterDocument(): LevelDocument {
 }
 
 const DEFAULTS: Record<PieceKind, Record<string, unknown>> = {
+  pushable: { shape: 'cube', token: 'triangle', size: 1.1, mass: 1.2, recoveryDelay: 2 },
+  momentum: { radius: .7, threshold: 6, match: 'any', label: 'HIT HARD' },
+  pressure: { w: 2.4, d: 2.4, mode: 'hold', duration: 5, label: 'HOLD' },
+  door: { w: 4, d: .6, h: 2.4, travelTime: .8, initial: 'closed', label: 'GATE' },
+  logic: { operation: 'and', label: 'BOTH' },
+  sequence: { timeout: 20, label: '1 / 2 / 3' },
+  switch: { mode: 'toggle', duration: 4, initial: 'off', label: 'INTERACT' },
+  bumper: { radius: .8, kickSpeed: 10, cooldown: 1 },
+  seesaw: { w: 10, d: 6, axis: 'z', maxTilt: 10, response: 3 },
+  fragile: { w: 4, d: 8, mode: 'drop', dir: '+z', warning: 1.2, recovery: 3 },
+  conveyor: { w: 6, d: 10, dir: '-z', speed: 6, acceleration: 12 },
+  bridge: { w: 6, d: 6, dir: '+x', distance: 8, period: 10, dwell: 2 },
+  rotator: { w: 12, d: 4, angularSpeed: 30 },
   slab: { w: 6, d: 6, tone: 'blue', surface: 'standard' },
   wall: { w: 6, d: .4, h: .8, tone: 'cyan' },
   ramp: { w: 6, len: 8, y1: 2, dir: '-z' },
   jumppad: { targetX: 0, targetZ: -10, targetY: .6, arc: 4 },
-  elevator: { w: 4, d: 4, y1: 4, period: 6 },
-  laser: { axis: 'x', length: 6, sweep: 0, speed: 0 },
+  elevator: { clock: 'resettable', w: 4, d: 4, y1: 4, period: 6 },
+  laser: { clock: 'resettable', axis: 'x', length: 6, sweep: 0, speed: 0 },
   void: { w: 1.5, d: 1.5 }, checkpoint: { id: 1 }, goal: { w: 3, d: 3 },
 };
 
@@ -185,6 +200,58 @@ export class EditorModel {
       d.navigation.links = d.navigation.links.filter(l => nodes.has(l.from) && nodes.has(l.to));
       d.validation.intendedRoute = d.validation.intendedRoute.filter(id => !removed.has(id));
       return [];
+    });
+  }
+
+  connectSignal(source: SignalRef, target: SignalRef, name = ''): void {
+    this.edit('Connect signal', d => {
+      const used=new Set(signalDocument(d).links.map(link=>link.id));
+      const id=name.trim() || idFor('signal',used);
+      if(d.signals.some(link=>link.id===id))throw new Error('Choose a unique signal name.');
+      d.signals.push({id,source:clone(source),target:clone(target)});
+    });
+  }
+  private removeLink(d: LevelDocument, id: string): SignalLink {
+    const link=signalDocument(d).links.find(link=>link.id===id);
+    if(!link)throw new Error('This signal no longer exists.');
+    const index=d.signals.findIndex(s=>s.id===id);
+    if(index>=0)d.signals.splice(index,1);
+    else {
+      const part=d.instances.find(i=>i.id===link.source.instanceId)!;
+      const local=part.links.findIndex((_,i)=>`inline/${part.id}/${i}`===id);
+      if(local<0)throw new Error('This local signal no longer exists.');
+      part.links.splice(local,1);
+    }
+    return link;
+  }
+  disconnectSignal(id: string): void { this.edit('Disconnect signal',d=>{this.removeLink(d,id)}); }
+  renameSignal(id: string, name: string): void {
+    this.edit('Name signal',d=>{const link=this.removeLink(d,id);d.signals.push({...link,id:name.trim()})});
+  }
+  addResetGroup(id: string, policy: LevelDocument['resetGroups'][number]['policy']='checkpoint'): void {
+    this.edit('Add reset group',d=>{d.resetGroups.push({id:id.trim(),policy})});
+  }
+  renameResetGroup(id: string, next: string): void {
+    this.edit('Rename reset group',d=>{
+      const group=d.resetGroups.find(g=>g.id===id);if(!group)throw new Error('Reset group not found.');
+      group.id=next.trim();
+      for(const part of d.instances)if(part.resetGroup===id)part.resetGroup=group.id;
+      for(const cp of d.checkpoints)cp.resetGroups=cp.resetGroups.map(value=>value===id?group.id:value);
+    });
+  }
+  assignResetGroup(id: string): void { this.edit('Assign reset group',(d,selected)=>{for(const part of d.instances)if(selected.includes(part.id))part.resetGroup=id}); }
+  mergeResetGroup(id: string, replacement: string): void {
+    this.edit('Merge reset group',d=>{
+      if(id===replacement || !d.resetGroups.some(g=>g.id===id) || !d.resetGroups.some(g=>g.id===replacement))throw new Error('Choose a different existing group to merge into.');
+      for(const part of d.instances)if(part.resetGroup===id)part.resetGroup=replacement;
+      for(const cp of d.checkpoints)cp.resetGroups=[...new Set(cp.resetGroups.map(value=>value===id?replacement:value))];
+      d.resetGroups=d.resetGroups.filter(g=>g.id!==id);
+    });
+  }
+  setCheckpointGroup(checkpoint: string, group: string, restore: boolean): void {
+    this.edit('Set checkpoint reset groups',d=>{
+      const cp=d.checkpoints.find(c=>c.id===checkpoint);if(!cp)throw new Error('Checkpoint not found.');
+      cp.resetGroups=restore?[...new Set([...cp.resetGroups,group])]:cp.resetGroups.filter(id=>id!==group);
     });
   }
 

@@ -1,0 +1,117 @@
+{
+  "inlinePulse": "queued native reset",
+  "samples": [
+    {
+      "checkpointCircuitRestored": true,
+      "completionSeconds": 1.333333333333334,
+      "hz": 30,
+      "rearmWarning": true,
+      "retryInitialState": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "main-power",
+          "sequence": 1,
+          "source": {
+            "instanceId": "switch-004",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "laser-005",
+            "port": "enable"
+          },
+          "value": true
+        },
+        {
+          "cause": null,
+          "channel": "main-power",
+          "sequence": 2,
+          "source": {
+            "instanceId": "switch-004",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "laser-005",
+            "port": "enable"
+          },
+          "value": false
+        }
+      ]
+    },
+    {
+      "checkpointCircuitRestored": true,
+      "completionSeconds": 1.3333333333333337,
+      "hz": 60,
+      "rearmWarning": true,
+      "retryInitialState": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "main-power",
+          "sequence": 1,
+          "source": {
+            "instanceId": "switch-004",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "laser-005",
+            "port": "enable"
+          },
+          "value": true
+        },
+        {
+          "cause": null,
+          "channel": "main-power",
+          "sequence": 2,
+          "source": {
+            "instanceId": "switch-004",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "laser-005",
+            "port": "enable"
+          },
+          "value": false
+        }
+      ]
+    },
+    {
+      "checkpointCircuitRestored": true,
+      "completionSeconds": 1.3249999999999975,
+      "hz": 120,
+      "rearmWarning": true,
+      "retryInitialState": true,
+      "trace": [
+        {
+          "cause": null,
+          "channel": "main-power",
+          "sequence": 1,
+          "source": {
+            "instanceId": "switch-004",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "laser-005",
+            "port": "enable"
+          },
+          "value": true
+        },
+        {
+          "cause": null,
+          "channel": "main-power",
+          "sequence": 2,
+          "source": {
+            "instanceId": "switch-004",
+            "port": "active"
+          },
+          "target": {
+            "instanceId": "laser-005",
+            "port": "enable"
+          },
+          "value": false
+        }
+      ]
+    }
+  ],
+  "timed": "activation, snapshot and expiry"
+}

@@ -1,0 +1,74 @@
+{
+  "checkpointRestored": 25,
+  "elevatorDisposal": "owned and idempotent",
+  "samples": [
+    {
+      "id": "jumppad-025",
+      "kind": "jumppad",
+      "snapshot": {
+        "active": false,
+        "arming": 0,
+        "elapsed": 2.2499999999999947,
+        "enabled": true,
+        "transient": {
+          "cooldownUntil": 2.8499999999999948
+        }
+      }
+    },
+    {
+      "id": "elevator-034",
+      "kind": "elevator",
+      "snapshot": {
+        "active": false,
+        "arming": 0,
+        "elapsed": 2.2499999999999947,
+        "enabled": true,
+        "transient": null
+      }
+    },
+    {
+      "id": "laser-009",
+      "kind": "laser",
+      "snapshot": {
+        "active": false,
+        "arming": 0,
+        "elapsed": 2.2499999999999947,
+        "enabled": true,
+        "transient": null
+      }
+    },
+    {
+      "id": "void-054",
+      "kind": "void",
+      "snapshot": {
+        "active": false,
+        "arming": 0,
+        "elapsed": 2.2499999999999947,
+        "enabled": true,
+        "transient": null
+      }
+    },
+    {
+      "id": "checkpoint-020",
+      "kind": "checkpoint",
+      "snapshot": {
+        "active": false,
+        "arming": 0,
+        "elapsed": 2.2499999999999947,
+        "enabled": true,
+        "transient": null
+      }
+    },
+    {
+      "id": "goal-121",
+      "kind": "goal",
+      "snapshot": {
+        "active": false,
+        "arming": 0,
+        "elapsed": 2.2499999999999947,
+        "enabled": true,
+        "transient": null
+      }
+    }
+  ]
+}

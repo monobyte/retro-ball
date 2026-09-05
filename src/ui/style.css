@@ -380,3 +380,15 @@ canvas#game {
 @media(max-width: 700px) { .editor-layout { grid-template-columns: 125px minmax(170px, 1fr); } .editor aside:last-child { grid-column: 1 / -1; max-height: 34vh; border-top: 1px solid #2a3d4e; } .editor header { padding-right: 110px; } .editor button { padding: 5px; } .editor footer { font-size: 10px; } }
 
 .runtime-menu > * { flex-shrink: 0; }
+
+/* Circuit evidence is available only while authoring or testing in the Workshop. */
+.signal-trace { position: fixed; z-index: 29; bottom: 44px; left: 220px; width: min(420px, calc(100vw - 245px)); max-height: 55vh; overflow: auto; padding: 10px 14px; border: 1px solid #3e706a; border-radius: 4px; background: #0b1823f5; color: #c5e9e3; font: 11px/1.5 var(--font-mono); text-shadow: none; }
+.signal-trace[hidden] { display: none; }
+.signal-trace summary { cursor: pointer; color: #a1fff0; }
+.signal-trace select { width: 100%; padding: 6px; background: #142a35; color: #fff; border: 1px solid #3e706a; font: inherit; }
+.signal-trace p, .signal-trace li { overflow-wrap: anywhere; }
+.signal-trace ol { padding-left: 20px; }
+.signal-trace pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.signal-trace details { margin-top: 10px; }
+.editor aside details > div > button, .editor aside details details > button { margin: 3px 3px 3px 0; }
+@media(max-width: 700px) { .signal-trace { left: 8px; bottom: 40px; width: calc(100vw - 16px); max-height: 40vh; } }

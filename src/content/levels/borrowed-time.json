@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "borrowed-time",
+  "metadata": {
+    "name": "BORROWED TIME",
+    "description": "Four bars count down before each floor drops or slides away. They return when the space is clear.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": -9,
+    "y": 0.6,
+    "z": 0
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 8,
+        "label": "WATCH THE COUNTDOWN"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "fragile-002",
+      "type": "fragile",
+      "transform": {
+        "position": {
+          "x": -2,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 8,
+        "mode": "drop",
+        "dir": "+z",
+        "warning": 1.2,
+        "recovery": 2.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-003",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 8,
+        "label": "CATCH YOUR BREATH"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "fragile-004",
+      "type": "fragile",
+      "transform": {
+        "position": {
+          "x": 6,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 8,
+        "mode": "retract",
+        "dir": "+z",
+        "warning": 1.2,
+        "recovery": 2.5
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-005",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 12,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 8,
+        "d": 8,
+        "label": "EVERYTHING RETURNS"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-006",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": -7,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-007",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 2,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-008",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 14,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "attempt"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-006",
+      "spawn": {
+        "x": -7,
+        "y": 0.6,
+        "z": 0
+      },
+      "resetGroups": [
+        "course"
+      ]
+    },
+    {
+      "id": "checkpoint-2",
+      "instanceId": "checkpoint-007",
+      "spawn": {
+        "x": 2,
+        "y": 0.6,
+        "z": 0
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-008",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "reactive-room",
+      "mode": "arena",
+      "priority": 1,
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 80,
+        "y": 12,
+        "z": 50
+      },
+      "viewHeight": 27
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": []
+  }
+}

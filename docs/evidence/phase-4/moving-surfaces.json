@@ -1,0 +1,131 @@
+{
+  "description": "Physical carrying/braking and belt acceleration at three presentation cadences; checkpoint-state round trip and world disposal",
+  "samples": [
+    {
+      "hz": 30,
+      "kind": "conveyor",
+      "lowest": 0.49821317195892334,
+      "position": [
+        3.735160350799561,
+        0.49821317195892334,
+        0
+      ],
+      "snapshot": {
+        "elapsed": 0.9999999999999988
+      },
+      "worstRelative": 0
+    },
+    {
+      "hz": 60,
+      "kind": "conveyor",
+      "lowest": 0.49821317195892334,
+      "position": [
+        3.735160350799561,
+        0.49821317195892334,
+        0
+      ],
+      "snapshot": {
+        "elapsed": 0.9999999999999988
+      },
+      "worstRelative": 0
+    },
+    {
+      "hz": 120,
+      "kind": "conveyor",
+      "lowest": 0.49821317195892334,
+      "position": [
+        3.735160350799561,
+        0.49821317195892334,
+        0
+      ],
+      "snapshot": {
+        "elapsed": 0.9999999999999988
+      },
+      "worstRelative": 0
+    },
+    {
+      "hz": 30,
+      "kind": "bridge",
+      "lowest": 0.4989824593067169,
+      "position": [
+        0.0002850365708582103,
+        0.49898406863212585,
+        0
+      ],
+      "snapshot": {
+        "elapsed": 10.000000000000073
+      },
+      "worstRelative": 0.032079219818115234
+    },
+    {
+      "hz": 60,
+      "kind": "bridge",
+      "lowest": 0.4989824593067169,
+      "position": [
+        0.0002850365708582103,
+        0.49898406863212585,
+        0
+      ],
+      "snapshot": {
+        "elapsed": 10.000000000000073
+      },
+      "worstRelative": 0.032079219818115234
+    },
+    {
+      "hz": 120,
+      "kind": "bridge",
+      "lowest": 0.4989824593067169,
+      "position": [
+        0.0002850365708582103,
+        0.49898406863212585,
+        0
+      ],
+      "snapshot": {
+        "elapsed": 10.000000000000073
+      },
+      "worstRelative": 0.03207969665527344
+    },
+    {
+      "hz": 30,
+      "kind": "rotator",
+      "lowest": 0.498984694480896,
+      "position": [
+        0.9924715161323548,
+        0.49898561835289,
+        1.7746150493621826
+      ],
+      "snapshot": {
+        "elapsed": 10.000000000000073
+      },
+      "worstRelative": 0.043224897693893635
+    },
+    {
+      "hz": 60,
+      "kind": "rotator",
+      "lowest": 0.498984694480896,
+      "position": [
+        0.9924715161323548,
+        0.49898561835289,
+        1.7746150493621826
+      ],
+      "snapshot": {
+        "elapsed": 10.000000000000073
+      },
+      "worstRelative": 0.043224897693893635
+    },
+    {
+      "hz": 120,
+      "kind": "rotator",
+      "lowest": 0.4989845752716065,
+      "position": [
+        0.9924715161323548,
+        0.49898561835289,
+        1.7746150493621826
+      ],
+      "snapshot": {
+        "elapsed": 10.000000000000073
+      },
+      "worstRelative": 0.043224897693893635
+    }
+  ]
+}

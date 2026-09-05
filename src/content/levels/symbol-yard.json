@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "symbol-yard",
+  "metadata": {
+    "name": "SYMBOL YARD",
+    "description": "Push each resonator onto the plate with its symbol. Leave both parked. Interact at a home marker to recall a misplaced object.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": 0,
+    "y": 0.6,
+    "z": 10
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 18,
+        "d": 28
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-002",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -9,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 28,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-003",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 9,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 28,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-004",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 9
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "pushable-005",
+      "type": "pushable",
+      "transform": {
+        "position": {
+          "x": -3,
+          "y": 0,
+          "z": 5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "shape": "cube",
+        "token": "triangle",
+        "size": 1.1,
+        "mass": 1.2,
+        "recoveryDelay": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "pushable-006",
+      "type": "pushable",
+      "transform": {
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": 5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "shape": "orb",
+        "token": "circle",
+        "size": 1.1,
+        "mass": 1.2,
+        "recoveryDelay": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "pressure-007",
+      "type": "pressure",
+      "transform": {
+        "position": {
+          "x": -3,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3,
+        "mode": "hold",
+        "duration": 4,
+        "match": "triangle"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "pressure-008",
+      "type": "pressure",
+      "transform": {
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3,
+        "mode": "hold",
+        "duration": 4,
+        "match": "circle"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-009",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -3,
+          "y": 0,
+          "z": -1.8
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 0.4,
+        "h": 1.2,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-010",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 3,
+          "y": 0,
+          "z": -1.8
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 0.4,
+        "h": 1.2,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "logic-011",
+      "type": "logic",
+      "transform": {
+        "position": {
+          "x": 6,
+          "y": 0,
+          "z": -3
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "operation": "and",
+        "label": "BOTH SYMBOLS"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "door-012",
+      "type": "door",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -6
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 17.5,
+        "d": 0.6,
+        "h": 2.4,
+        "travelTime": 0.8,
+        "initial": "closed",
+        "label": "RESONANCE"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-013",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -9
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-014",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -12
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-bay-0-0",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -4.7,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.4,
+        "d": 3.6,
+        "h": 1.2,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-bay-0-2",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -1.3,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.4,
+        "d": 3.6,
+        "h": 1.2,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-bay-6-0",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 1.3,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.4,
+        "d": 3.6,
+        "h": 1.2,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-bay-6-2",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 4.7,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.4,
+        "d": 3.6,
+        "h": 1.2,
+        "tone": "cyan"
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "checkpoint"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-004",
+      "spawn": {
+        "x": 0,
+        "y": 0.6,
+        "z": 9
+      },
+      "resetGroups": [
+        "course"
+      ]
+    },
+    {
+      "id": "checkpoint-2",
+      "instanceId": "checkpoint-013",
+      "spawn": {
+        "x": 0,
+        "y": 0.6,
+        "z": -9
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-014",
+      "required": true
+    }
+  ],
+  "signals": [
+    {
+      "id": "triangle-seat",
+      "source": {
+        "instanceId": "pressure-007",
+        "port": "active"
+      },
+      "target": {
+        "instanceId": "logic-011",
+        "port": "inputA"
+      }
+    },
+    {
+      "id": "circle-seat",
+      "source": {
+        "instanceId": "pressure-008",
+        "port": "active"
+      },
+      "target": {
+        "instanceId": "logic-011",
+        "port": "inputB"
+      }
+    },
+    {
+      "id": "both-seated",
+      "source": {
+        "instanceId": "logic-011",
+        "port": "active"
+      },
+      "target": {
+        "instanceId": "door-012",
+        "port": "enable"
+      }
+    }
+  ],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "objects",
+      "mode": "puzzle",
+      "priority": 1,
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 24,
+        "y": 12,
+        "z": 40
+      },
+      "viewHeight": 27
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": []
+  }
+}

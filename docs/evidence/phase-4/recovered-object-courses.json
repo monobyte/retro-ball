@@ -1,0 +1,157 @@
+{
+  "routes": [
+    {
+      "checkpointRestored": true,
+      "hz": 30,
+      "id": "symbol-yard",
+      "impact": 0,
+      "lostObjectsRecovered": [
+        "pushable-005",
+        "pushable-006"
+      ],
+      "objects": [
+        {
+          "position": {
+            "x": -3.100299596786499,
+            "y": 0.6191050410270691,
+            "z": -0.660195529460907
+          },
+          "token": "triangle"
+        },
+        {
+          "position": {
+            "x": 3.4952950477600098,
+            "y": 0.6106284260749817,
+            "z": -1.0500415563583374
+          },
+          "token": "circle"
+        }
+      ],
+      "physicalPush": true,
+      "solvedAfterRecovery": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 60,
+      "id": "symbol-yard",
+      "impact": 0,
+      "lostObjectsRecovered": [
+        "pushable-005",
+        "pushable-006"
+      ],
+      "objects": [
+        {
+          "position": {
+            "x": -3.1731693744659424,
+            "y": 0.6190972924232483,
+            "z": -0.6403419375419617
+          },
+          "token": "triangle"
+        },
+        {
+          "position": {
+            "x": 3.513905763626098,
+            "y": 0.610660970211029,
+            "z": -1.05005943775177
+          },
+          "token": "circle"
+        }
+      ],
+      "physicalPush": true,
+      "solvedAfterRecovery": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 120,
+      "id": "symbol-yard",
+      "impact": 0,
+      "lostObjectsRecovered": [
+        "pushable-005",
+        "pushable-006"
+      ],
+      "objects": [
+        {
+          "position": {
+            "x": -3.216740608215332,
+            "y": 0.6190868020057678,
+            "z": -0.647255539894104
+          },
+          "token": "triangle"
+        },
+        {
+          "position": {
+            "x": 3.462620973587036,
+            "y": 0.6106580495834351,
+            "z": -1.050052523612976
+          },
+          "token": "circle"
+        }
+      ],
+      "physicalPush": true,
+      "solvedAfterRecovery": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 30,
+      "id": "impulse-vault",
+      "impact": 5.084282443205341,
+      "lostObjectsRecovered": [
+        "pushable-005"
+      ],
+      "objects": [
+        {
+          "position": {
+            "x": -0.013596451841294764,
+            "y": 0.5497474074363708,
+            "z": 1.250031590461731
+          },
+          "token": "triangle"
+        }
+      ],
+      "physicalPush": true,
+      "solvedAfterRecovery": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 60,
+      "id": "impulse-vault",
+      "impact": 5.0835712654788505,
+      "lostObjectsRecovered": [
+        "pushable-005"
+      ],
+      "objects": [
+        {
+          "position": {
+            "x": -0.012040887027978895,
+            "y": 0.549746036529541,
+            "z": 1.2500104904174805
+          },
+          "token": "triangle"
+        }
+      ],
+      "physicalPush": true,
+      "solvedAfterRecovery": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 120,
+      "id": "impulse-vault",
+      "impact": 5.083077878946257,
+      "lostObjectsRecovered": [
+        "pushable-005"
+      ],
+      "objects": [
+        {
+          "position": {
+            "x": -0.014617406763136389,
+            "y": 0.5497461557388306,
+            "z": 1.2500207424163818
+          },
+          "token": "triangle"
+        }
+      ],
+      "physicalPush": true,
+      "solvedAfterRecovery": true
+    }
+  ]
+}

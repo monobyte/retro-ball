@@ -1,0 +1,270 @@
+{
+  "authoring": "UI events only; model used for assertions",
+  "completion": {
+    "checkpointReset": true,
+    "initialWin": true,
+    "time": 4.033333333333324
+  },
+  "draftText": "{\"schemaVersion\":1,\"contentVersion\":1,\"id\":\"untitled-signal\",\"metadata\":{\"name\":\"Workshop Circuit\",\"description\":\"A new route through the relay.\",\"difficulty\":\"test\"},\"themeId\":\"neon-grid\",\"musicId\":\"retro-main\",\"spawn\":{\"x\":0,\"y\":0.6,\"z\":3},\"instances\":[{\"id\":\"slab-001\",\"type\":\"slab\",\"transform\":{\"position\":{\"x\":0,\"y\":0,\"z\":0},\"yaw\":0},\"parameters\":{\"w\":12,\"d\":12},\"resetGroup\":\"course\",\"links\":[]},{\"id\":\"goal-002\",\"type\":\"goal\",\"transform\":{\"position\":{\"x\":0,\"y\":0,\"z\":-4},\"yaw\":0},\"parameters\":{\"w\":3,\"d\":3},\"resetGroup\":\"course\",\"links\":[]},{\"id\":\"switch-1\",\"type\":\"switch\",\"transform\":{\"position\":{\"x\":-1,\"y\":0,\"z\":3},\"yaw\":0},\"parameters\":{\"mode\":\"toggle\",\"duration\":4,\"initial\":\"off\",\"label\":\"INTERACT\"},\"resetGroup\":\"circuit\",\"links\":[]},{\"id\":\"logic-1\",\"type\":\"logic\",\"transform\":{\"position\":{\"x\":4,\"y\":0,\"z\":2},\"yaw\":0},\"parameters\":{\"operation\":\"and\",\"label\":\"BOTH\"},\"resetGroup\":\"circuit\",\"links\":[]},{\"id\":\"logic-2\",\"type\":\"logic\",\"transform\":{\"position\":{\"x\":4,\"y\":0,\"z\":-2},\"yaw\":0},\"parameters\":{\"operation\":\"and\",\"label\":\"BOTH\"},\"resetGroup\":\"course\",\"links\":[]},{\"id\":\"door-1\",\"type\":\"door\",\"transform\":{\"position\":{\"x\":0,\"y\":0,\"z\":0},\"yaw\":0},\"parameters\":{\"w\":11.5,\"d\":0.6,\"h\":2.4,\"travelTime\":0.8,\"initial\":\"closed\",\"label\":\"WORKSHOP GATE\"},\"resetGroup\":\"circuit\",\"links\":[]},{\"id\":\"checkpoint-1\",\"type\":\"checkpoint\",\"transform\":{\"position\":{\"x\":0,\"y\":0,\"z\":-2},\"yaw\":0},\"parameters\":{\"id\":1},\"resetGroup\":\"course\",\"links\":[]}],\"resetGroups\":[{\"id\":\"course\",\"policy\":\"course\"},{\"id\":\"circuit\",\"policy\":\"checkpoint\"}],\"checkpoints\":[{\"id\":\"checkpoint-policy-1\",\"instanceId\":\"checkpoint-1\",\"spawn\":{\"x\":0,\"y\":0.6,\"z\":-2},\"resetGroups\":[\"circuit\"]}],\"objectives\":[{\"id\":\"finish\",\"type\":\"reach-goal\",\"target\":\"goal-002\",\"required\":true}],\"signals\":[{\"id\":\"left-feed\",\"source\":{\"instanceId\":\"switch-1\",\"port\":\"active\"},\"target\":{\"instanceId\":\"logic-1\",\"port\":\"inputA\"}},{\"id\":\"right-feed\",\"source\":{\"instanceId\":\"switch-1\",\"port\":\"active\"},\"target\":{\"instanceId\":\"logic-1\",\"port\":\"inputB\"}},{\"id\":\"spare-feed\",\"source\":{\"instanceId\":\"logic-1\",\"port\":\"active\"},\"target\":{\"instanceId\":\"logic-2\",\"port\":\"inputA\"}},{\"id\":\"reset-gate\",\"source\":{\"instanceId\":\"switch-1\",\"port\":\"activated\"},\"target\":{\"instanceId\":\"door-1\",\"port\":\"reset\"}},{\"id\":\"door-power\",\"source\":{\"instanceId\":\"logic-1\",\"port\":\"active\"},\"target\":{\"instanceId\":\"door-1\",\"port\":\"enable\"}}],\"navigation\":{\"nodes\":[],\"links\":[]},\"cameraZones\":[],\"validation\":{\"intendedRoute\":[],\"notes\":[]}}",
+  "exported": {
+    "cameraZones": [],
+    "checkpoints": [
+      {
+        "id": "checkpoint-policy-1",
+        "instanceId": "checkpoint-1",
+        "resetGroups": [
+          "circuit"
+        ],
+        "spawn": {
+          "x": 0,
+          "y": 0.6,
+          "z": -2
+        }
+      }
+    ],
+    "contentVersion": 1,
+    "id": "untitled-signal",
+    "instances": [
+      {
+        "id": "slab-001",
+        "links": [],
+        "parameters": {
+          "d": 12,
+          "w": 12
+        },
+        "resetGroup": "course",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "yaw": 0
+        },
+        "type": "slab"
+      },
+      {
+        "id": "goal-002",
+        "links": [],
+        "parameters": {
+          "d": 3,
+          "w": 3
+        },
+        "resetGroup": "course",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -4
+          },
+          "yaw": 0
+        },
+        "type": "goal"
+      },
+      {
+        "id": "switch-1",
+        "links": [],
+        "parameters": {
+          "duration": 4,
+          "initial": "off",
+          "label": "INTERACT",
+          "mode": "toggle"
+        },
+        "resetGroup": "circuit",
+        "transform": {
+          "position": {
+            "x": -1,
+            "y": 0,
+            "z": 3
+          },
+          "yaw": 0
+        },
+        "type": "switch"
+      },
+      {
+        "id": "logic-1",
+        "links": [],
+        "parameters": {
+          "label": "BOTH",
+          "operation": "and"
+        },
+        "resetGroup": "circuit",
+        "transform": {
+          "position": {
+            "x": 4,
+            "y": 0,
+            "z": 2
+          },
+          "yaw": 0
+        },
+        "type": "logic"
+      },
+      {
+        "id": "logic-2",
+        "links": [],
+        "parameters": {
+          "label": "BOTH",
+          "operation": "and"
+        },
+        "resetGroup": "course",
+        "transform": {
+          "position": {
+            "x": 4,
+            "y": 0,
+            "z": -2
+          },
+          "yaw": 0
+        },
+        "type": "logic"
+      },
+      {
+        "id": "door-1",
+        "links": [],
+        "parameters": {
+          "d": 0.6,
+          "h": 2.4,
+          "initial": "closed",
+          "label": "WORKSHOP GATE",
+          "travelTime": 0.8,
+          "w": 11.5
+        },
+        "resetGroup": "circuit",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "yaw": 0
+        },
+        "type": "door"
+      },
+      {
+        "id": "checkpoint-1",
+        "links": [],
+        "parameters": {
+          "id": 1
+        },
+        "resetGroup": "course",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -2
+          },
+          "yaw": 0
+        },
+        "type": "checkpoint"
+      }
+    ],
+    "metadata": {
+      "description": "A new route through the relay.",
+      "difficulty": "test",
+      "name": "Workshop Circuit"
+    },
+    "musicId": "retro-main",
+    "navigation": {
+      "links": [],
+      "nodes": []
+    },
+    "objectives": [
+      {
+        "id": "finish",
+        "required": true,
+        "target": "goal-002",
+        "type": "reach-goal"
+      }
+    ],
+    "resetGroups": [
+      {
+        "id": "course",
+        "policy": "course"
+      },
+      {
+        "id": "circuit",
+        "policy": "checkpoint"
+      }
+    ],
+    "schemaVersion": 1,
+    "signals": [
+      {
+        "id": "left-feed",
+        "source": {
+          "instanceId": "switch-1",
+          "port": "active"
+        },
+        "target": {
+          "instanceId": "logic-1",
+          "port": "inputA"
+        }
+      },
+      {
+        "id": "right-feed",
+        "source": {
+          "instanceId": "switch-1",
+          "port": "active"
+        },
+        "target": {
+          "instanceId": "logic-1",
+          "port": "inputB"
+        }
+      },
+      {
+        "id": "spare-feed",
+        "source": {
+          "instanceId": "logic-1",
+          "port": "active"
+        },
+        "target": {
+          "instanceId": "logic-2",
+          "port": "inputA"
+        }
+      },
+      {
+        "id": "reset-gate",
+        "source": {
+          "instanceId": "switch-1",
+          "port": "activated"
+        },
+        "target": {
+          "instanceId": "door-1",
+          "port": "reset"
+        }
+      },
+      {
+        "id": "door-power",
+        "source": {
+          "instanceId": "logic-1",
+          "port": "active"
+        },
+        "target": {
+          "instanceId": "door-1",
+          "port": "enable"
+        }
+      }
+    ],
+    "spawn": {
+      "x": 0,
+      "y": 0.6,
+      "z": 3
+    },
+    "themeId": "neon-grid",
+    "validation": {
+      "intendedRoute": [],
+      "notes": []
+    }
+  },
+  "invalidCycle": "rejected atomically",
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "course"
+    },
+    {
+      "id": "circuit",
+      "policy": "checkpoint"
+    }
+  ],
+  "signals": 5,
+  "trace": "current input, upstream cause and detached last play"
+}

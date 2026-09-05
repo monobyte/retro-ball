@@ -1,0 +1,231 @@
+{
+  "cargo": [
+    {
+      "carriedTo": {
+        "x": 3.410621881484986,
+        "y": 0.5489872097969055,
+        "z": 0.0010470157722011209
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.933333333333334,
+      "hz": 30,
+      "kind": "bridge",
+      "lowest": 0.5489860773086548,
+      "shape": "cube"
+    },
+    {
+      "carriedTo": {
+        "x": 3.392188787460327,
+        "y": 0.5489872097969055,
+        "z": 0.0010469771223142743
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.916666666666667,
+      "hz": 60,
+      "kind": "bridge",
+      "lowest": 0.5489860773086548,
+      "shape": "cube"
+    },
+    {
+      "carriedTo": {
+        "x": 3.382892370223999,
+        "y": 0.5489871501922607,
+        "z": 0.0010469595436006784
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.916666666666667,
+      "hz": 120,
+      "kind": "bridge",
+      "lowest": 0.5489860773086548,
+      "shape": "cube"
+    },
+    {
+      "carriedTo": {
+        "x": 1.0275956392288208,
+        "y": 0.5489775538444519,
+        "z": 3.1708959621873e-17
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.933333333333334,
+      "hz": 30,
+      "kind": "bridge",
+      "lowest": 0.5489709377288818,
+      "shape": "orb"
+    },
+    {
+      "carriedTo": {
+        "x": 1.0217974185943604,
+        "y": 0.5489773154258728,
+        "z": 3.1980142513892386e-17
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.916666666666667,
+      "hz": 60,
+      "kind": "bridge",
+      "lowest": 0.5489709377288818,
+      "shape": "orb"
+    },
+    {
+      "carriedTo": {
+        "x": 1.0188754796981812,
+        "y": 0.5489771962165833,
+        "z": 2.940763396990962e-17
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.916666666666667,
+      "hz": 120,
+      "kind": "bridge",
+      "lowest": 0.5489709377288818,
+      "shape": "orb"
+    },
+    {
+      "carriedTo": {
+        "x": 1.1619402170181274,
+        "y": 0.5489861965179443,
+        "z": -1.873809814453125
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.933333333333334,
+      "hz": 30,
+      "kind": "rotator",
+      "lowest": 0.5489861369132996,
+      "shape": "cube"
+    },
+    {
+      "carriedTo": {
+        "x": 1.1619409322738647,
+        "y": 0.5489861369132996,
+        "z": -1.873807907104492
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.916666666666667,
+      "hz": 60,
+      "kind": "rotator",
+      "lowest": 0.54898601770401,
+      "shape": "cube"
+    },
+    {
+      "carriedTo": {
+        "x": 1.1619410514831543,
+        "y": 0.5489861965179443,
+        "z": -1.873807907104492
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.916666666666667,
+      "hz": 120,
+      "kind": "rotator",
+      "lowest": 0.548984706401825,
+      "shape": "cube"
+    },
+    {
+      "carriedTo": {
+        "x": 1.9026176929473877,
+        "y": 0.548984169960022,
+        "z": -0.6247235536575317
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.933333333333334,
+      "hz": 30,
+      "kind": "rotator",
+      "lowest": 0.5489836931228638,
+      "shape": "orb"
+    },
+    {
+      "carriedTo": {
+        "x": 1.902621150016785,
+        "y": 0.5489842891693115,
+        "z": -0.6247239112854004
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.916666666666667,
+      "hz": 60,
+      "kind": "rotator",
+      "lowest": 0.5489836931228638,
+      "shape": "orb"
+    },
+    {
+      "carriedTo": {
+        "x": 1.9026256799697876,
+        "y": 0.5489843487739563,
+        "z": -0.6247245669364929
+      },
+      "checkpointRestored": true,
+      "contactSeconds": 5.916666666666667,
+      "hz": 120,
+      "kind": "rotator",
+      "lowest": 0.5489836931228638,
+      "shape": "orb"
+    }
+  ],
+  "routes": [
+    {
+      "checkpointRestored": true,
+      "checkpointRevisitPreserved": true,
+      "completionSeconds": 26.06666666666712,
+      "contacts": {
+        "bridge": 9.933333333333309,
+        "conveyor": 1.7666666666666688,
+        "fragile": 0.8333333333333333,
+        "rotator": 10.76666666666664
+      },
+      "hz": 30,
+      "phases": [
+        "solid",
+        "warning",
+        "absent"
+      ],
+      "transfers": [
+        "conveyor",
+        "bridge",
+        "rotator",
+        "fragile"
+      ]
+    },
+    {
+      "checkpointRestored": true,
+      "checkpointRevisitPreserved": true,
+      "completionSeconds": 26.083333333333133,
+      "contacts": {
+        "bridge": 9.883333333333404,
+        "conveyor": 1.7666666666666653,
+        "fragile": 0.8166666666666675,
+        "rotator": 10.816666666666784
+      },
+      "hz": 60,
+      "phases": [
+        "solid",
+        "warning",
+        "absent"
+      ],
+      "transfers": [
+        "conveyor",
+        "bridge",
+        "rotator",
+        "fragile"
+      ]
+    },
+    {
+      "checkpointRestored": true,
+      "checkpointRevisitPreserved": true,
+      "completionSeconds": 26.058333333332495,
+      "contacts": {
+        "bridge": 9.883333333333413,
+        "conveyor": 1.7666666666666628,
+        "fragile": 0.8166666666666662,
+        "rotator": 10.80833333333336
+      },
+      "hz": 120,
+      "phases": [
+        "solid",
+        "warning",
+        "absent"
+      ],
+      "transfers": [
+        "conveyor",
+        "bridge",
+        "rotator",
+        "fragile"
+      ]
+    }
+  ]
+}

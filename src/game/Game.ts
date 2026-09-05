@@ -125,7 +125,7 @@ export class Game {
     this.root.add(this.level.group);
     for (const box of this.level.boxes) physics.addStaticBox(box);
 
-    this.dynamics = new LevelDynamics(def, physics, this.level.labels, TUNING.gravity, TUNING.linearDamping, document);
+    this.dynamics = new LevelDynamics(def, physics, this.level.labels, TUNING.gravity, TUNING.linearDamping, document, this.level.bounds.min.y-10);
     this.root.add(this.dynamics.group);
 
     this.environment = buildNeonEnvironment(renderer.renderer);
@@ -143,6 +143,7 @@ export class Game {
 
     this.spawn = new THREE.Vector3(def.start.x, def.start.y, def.start.z);
     this.ball = physics.createBall(this.spawn);
+    this.dynamics.protectSpawn(this.spawn);
     this.checkpointSnapshot = this.captureCheckpoint(null);
     this.level.bounds.getCenter(this.levelCenter);
     this.lowestY = this.level.bounds.min.y;
@@ -260,6 +261,7 @@ export class Game {
   }
 
   private updatePlay(dt: number): void {
+    if (this.input.actionPressed('interact')) this.dynamics.queueInteraction(this.ballPos);
     this.runTime += dt;
     const axis = this.input.axis();
     const basis = this.renderer.groundBasis();
@@ -273,6 +275,9 @@ export class Game {
       this.ball.collider.setRestitution(SURFACES[this.surface].ballRestitution);
       this.ball.body.setLinearDamping(this.grounded ? SURFACES[this.surface].linearDamping : TUNING.linearDamping);
       this.ball.body.setAngularDamping(this.grounded ? SURFACES[this.surface].angularDamping : TUNING.angularDamping);
+      for (const moving of this.dynamics.movingSurfaces) moving.contact(this.ball, this.physics.groundCollider, stepDt);
+      for (const plate of this.dynamics.reactivePlates) plate.contact(this.ball, this.physics.groundCollider);
+      for (const bumper of this.dynamics.bumpers) if (bumper.contact(this.ball)) { this.audio?.impact(.8); this.fx.bloomBoost = .35; }
       this.applyControls(axis, basis, stepDt);
     }, stepDt => {
       this.impactCooldown = Math.max(0, this.impactCooldown - stepDt);
@@ -287,6 +292,8 @@ export class Game {
     const sliding = this.grounded && Math.hypot(this.ballVel.x, this.ballVel.z) > 1 && contactVelocity.length() > 1.8;
     this.audio?.roll(this.ballVel.length(), this.grounded, this.surface, this.input.brake(), sliding ? 1 : 0);
     this.hud.setTraction(this.grounded ? `${SURFACES[this.surface].label}${this.input.brake() > 0 ? ' · BRAKING' : sliding ? ' · SKIDDING' : ''}` : 'AIRBORNE');
+
+    if (this.dynamics.signals.fault) this.hud.showToast(this.dynamics.signals.fault);
 
     if (this.ballPos.y < this.lowestY - 10) {
       this.die('fall');
@@ -311,6 +318,7 @@ export class Game {
           const policy = this.document.checkpoints.find(c => c.instanceId === instance?.id);
           this.spawn.copy(ev.position);
           if (policy) this.spawn.set(policy.spawn.x, policy.spawn.y, policy.spawn.z);
+          if (instance) { this.dynamics.signals.emit(instance.id,'activated',null); this.dynamics.signals.flush(); }
           this.checkpointSnapshot = this.captureCheckpoint(policy?.id ?? null);
           this.hud.showToast('CHECKPOINT LOGGED');
           this.hud.flash('rgba(56,245,255,0.35)', 0.6);
@@ -327,7 +335,8 @@ export class Game {
   private applyControls(axis: { x: number; y: number }, basis: { up: THREE.Vector3; right: THREE.Vector3 }, stepDt: number): void {
     const profile = SURFACES[this.surface];
     if (this.grounded) {
-      const tangent = this.ballVel.clone().addScaledVector(this.groundN, -this.ballVel.dot(this.groundN));
+      const relative = this.ballVel.clone().sub(this.physics.groundVelocity);
+      const tangent = relative.addScaledVector(this.groundN, -relative.dot(this.groundN));
       const speed = tangent.length();
       const brake = Math.max(0, Math.min(1, this.input.brake()));
       const loss = Math.min(speed, profile.braking * brake * stepDt + speed * (1 - Math.exp(-profile.drag * stepDt)));
@@ -337,7 +346,8 @@ export class Game {
       }
       if (brake > 0) {
         const spin = this.ball.body.angvel(), factor = Math.exp(-12 * brake * stepDt);
-        this.ball.body.setAngvel({ x: spin.x * factor, y: spin.y * factor, z: spin.z * factor }, true);
+        const supportSpin = this.physics.groundAngularVelocity;
+        this.ball.body.setAngvel({ x: supportSpin.x + (spin.x - supportSpin.x) * factor, y: supportSpin.y + (spin.y - supportSpin.y) * factor, z: supportSpin.z + (spin.z - supportSpin.z) * factor }, true);
       }
     }
     if (axis.x === 0 && axis.y === 0) return;
@@ -360,10 +370,11 @@ export class Game {
     const accel = (this.grounded ? TUNING.groundAccel * profile.acceleration : TUNING.airAccel) * Math.min(1, Math.hypot(axis.x, axis.y));
 
     // Soft speed cap: only resist the component that would exceed max speed.
-    const horizSpeed = Math.hypot(this.ballVel.x, this.ballVel.z);
+    const relativeVelocity = this.ballVel.clone().sub(this.grounded ? this.physics.groundVelocity : new THREE.Vector3());
+    const horizSpeed = Math.hypot(relativeVelocity.x, relativeVelocity.z);
     let scale = 1;
     if (horizSpeed > (this.grounded ? profile.speedLimit : TUNING.maxSpeed)) {
-      const along = (this.ballVel.x * dir.x + this.ballVel.z * dir.z) / horizSpeed;
+      const along = (relativeVelocity.x * dir.x + relativeVelocity.z * dir.z) / horizSpeed;
       if (along > 0) scale = Math.max(0, 1 - along);
     }
     const mass = this.ball.body.mass();
@@ -466,6 +477,8 @@ export class Game {
     const obscured = this.state === 'play' && this.physics.sightlineBlocked(this.ball, this.sightDirection);
     this.level.setOcclusion(obscured, this.sightDirection);
     for (const elevator of this.dynamics.elevators) elevator.material.setOcclusion(obscured, this.sightDirection);
+    for (const moving of this.dynamics.movingSurfaces) moving.material.setOcclusion(obscured, this.sightDirection);
+    for (const plate of this.dynamics.reactivePlates) plate.material.setOcclusion(obscured, this.sightDirection);
   }
 
   /* -------------------------------------------------------- transitions */
@@ -494,6 +507,7 @@ export class Game {
     const t = this.stateTime;
     if (t > 0.75 && this.marble.scale === 0) {
       this.restoreCheckpointGroups();
+      this.dynamics.protectSpawn(this.spawn);
       this.input.clear();
       this.prevVel.set(0, 0, 0); this.impactCooldown = 0;
       this.physics.resetBall(this.ball, this.spawn);
@@ -515,6 +529,8 @@ export class Game {
   }
 
   private win(at: THREE.Vector3): void {
+    const goal = this.document.instances.find(instance => instance.type === 'goal');
+    if (goal) this.dynamics.signals.emit(goal.id,'completed',null);
     this.setState('win');
     this.winOrigin.copy(at);
     this.ball.body.setGravityScale(0, true);
@@ -554,6 +570,7 @@ export class Game {
       // Cooldowns and transient triggers clear even for persistent course groups.
       else if (component.capture() === null) component.reset(null);
     }
+    this.dynamics.resetSignals();
   }
 
   restart(): void {
@@ -562,6 +579,8 @@ export class Game {
     this.spawn.set(this.def.start.x, this.def.start.y, this.def.start.z);
     this.dynamics.resetCheckpoints();
     for (const component of this.dynamics.components) component.reset(null);
+    this.dynamics.resetSignals();
+    this.dynamics.protectSpawn(this.spawn);
     this.checkpointSnapshot = this.captureCheckpoint(null);
     this.input.clear(); this.prevVel.set(0, 0, 0); this.impactCooldown = 0;
     this.physics.resetBall(this.ball, this.spawn);

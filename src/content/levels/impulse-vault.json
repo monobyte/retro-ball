@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "impulse-vault",
+  "metadata": {
+    "name": "IMPULSE VAULT",
+    "description": "Build speed behind the triangle resonator and strike the receiver. A gentle push will not release the vault. Recall the resonator at its home if needed.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": 0,
+    "y": 0.6,
+    "z": 10
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 18,
+        "d": 28
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-002",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -9,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 28,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-003",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 9,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 28,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-004",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 9
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "pushable-005",
+      "type": "pushable",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "shape": "cube",
+        "token": "triangle",
+        "size": 1.1,
+        "mass": 1.2,
+        "recoveryDelay": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "momentum-006",
+      "type": "momentum",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "radius": 0.7,
+        "threshold": 4.5,
+        "match": "triangle",
+        "label": "HIT HARD"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "door-007",
+      "type": "door",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -6
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 17.5,
+        "d": 0.6,
+        "h": 2.4,
+        "travelTime": 0.8,
+        "initial": "closed",
+        "label": "RESONANCE"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-008",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -9
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-009",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -12
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "checkpoint"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-004",
+      "spawn": {
+        "x": 0,
+        "y": 0.6,
+        "z": 9
+      },
+      "resetGroups": [
+        "course"
+      ]
+    },
+    {
+      "id": "checkpoint-2",
+      "instanceId": "checkpoint-008",
+      "spawn": {
+        "x": 0,
+        "y": 0.6,
+        "z": -9
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-009",
+      "required": true
+    }
+  ],
+  "signals": [
+    {
+      "id": "impact-release",
+      "source": {
+        "instanceId": "momentum-006",
+        "port": "active"
+      },
+      "target": {
+        "instanceId": "door-007",
+        "port": "enable"
+      }
+    }
+  ],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "objects",
+      "mode": "puzzle",
+      "priority": 1,
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 24,
+        "y": 12,
+        "z": 40
+      },
+      "viewHeight": 27
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": []
+  }
+}

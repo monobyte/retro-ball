@@ -1,0 +1,130 @@
+{
+  "routes": [
+    {
+      "checkpointRestored": true,
+      "hz": 30,
+      "id": "symbol-yard",
+      "impact": 0,
+      "objects": [
+        {
+          "position": {
+            "x": -3.090820550918579,
+            "y": 0.6190937161445618,
+            "z": -0.6666252017021179
+          },
+          "token": "triangle"
+        },
+        {
+          "position": {
+            "x": 3.4655559062957764,
+            "y": 0.6106657385826111,
+            "z": -1.0500640869140625
+          },
+          "token": "circle"
+        }
+      ],
+      "physicalPush": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 60,
+      "id": "symbol-yard",
+      "impact": 0,
+      "objects": [
+        {
+          "position": {
+            "x": -3.180006265640259,
+            "y": 0.6190977692604065,
+            "z": -0.6418060660362244
+          },
+          "token": "triangle"
+        },
+        {
+          "position": {
+            "x": 3.497008800506592,
+            "y": 0.6106614470481873,
+            "z": -1.0500595569610596
+          },
+          "token": "circle"
+        }
+      ],
+      "physicalPush": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 120,
+      "id": "symbol-yard",
+      "impact": 0,
+      "objects": [
+        {
+          "position": {
+            "x": -3.2182703018188477,
+            "y": 0.6191129088401794,
+            "z": -0.6731145977973938
+          },
+          "token": "triangle"
+        },
+        {
+          "position": {
+            "x": 3.4677846431732178,
+            "y": 0.6106778979301453,
+            "z": -1.0500811338424685
+          },
+          "token": "circle"
+        }
+      ],
+      "physicalPush": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 30,
+      "id": "impulse-vault",
+      "impact": 5.084315261329863,
+      "objects": [
+        {
+          "position": {
+            "x": -0.0139095950871706,
+            "y": 0.5497473478317261,
+            "z": 1.2500219345092771
+          },
+          "token": "triangle"
+        }
+      ],
+      "physicalPush": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 60,
+      "id": "impulse-vault",
+      "impact": 5.0837759614653555,
+      "objects": [
+        {
+          "position": {
+            "x": -0.012632420286536217,
+            "y": 0.5497474074363708,
+            "z": 1.25001060962677
+          },
+          "token": "triangle"
+        }
+      ],
+      "physicalPush": true
+    },
+    {
+      "checkpointRestored": true,
+      "hz": 120,
+      "id": "impulse-vault",
+      "impact": 5.083080158168809,
+      "objects": [
+        {
+          "position": {
+            "x": -0.014410294592380524,
+            "y": 0.5497475266456604,
+            "z": 1.2500369548797607
+          },
+          "token": "triangle"
+        }
+      ],
+      "physicalPush": true
+    }
+  ]
+}

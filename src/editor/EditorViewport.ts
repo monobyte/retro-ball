@@ -1,3 +1,7 @@
+import { signalDocument } from '../content/SignalDocument';
+import { PORT_TYPES } from '../signals/SignalTypes';
+import { obstacleBounds } from '../content/ObstacleBounds';
+import { movingBounds, isMovingPiece } from '../content/MovingBounds';
 import * as THREE from 'three';
 import { resolveInstance, type LevelDocument, type LevelInstance, type Vec3 } from '../content/LevelDocument';
 import { pieceToBox } from '../game/Level';
@@ -17,8 +21,8 @@ export function footprint(instance: LevelInstance): { x: number; z: number; w: n
     points = [];
     for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [-1, 1]) points.push(new THREE.Vector3(x * box.size.x / 2, y * box.size.y / 2, z * box.size.z / 2).applyQuaternion(box.quat).add(box.center));
   } else {
-    const w = 'w' in piece ? piece.w : piece.kind === 'laser' && piece.axis === 'x' ? piece.length : 1.5;
-    const d = 'd' in piece ? piece.d : piece.kind === 'laser' && piece.axis === 'z' ? piece.length : 1.5;
+    const w = 'w' in piece ? piece.w : 'radius' in piece ? piece.radius * 2 : piece.kind === 'pushable' ? piece.size : piece.kind === 'logic' || piece.kind === 'sequence' ? 2.6 : piece.kind === 'laser' && piece.axis === 'x' ? piece.length : 1.5;
+    const d = 'd' in piece ? piece.d : 'radius' in piece ? piece.radius * 2 : piece.kind === 'pushable' ? piece.size : piece.kind === 'logic' || piece.kind === 'sequence' ? 1.5 : piece.kind === 'laser' && piece.axis === 'z' ? piece.length : 1.5;
     points = [new THREE.Vector3(piece.x - w / 2, 0, piece.z - d / 2), new THREE.Vector3(piece.x + w / 2, 0, piece.z + d / 2)];
   }
   const minX = Math.min(...points.map(p => p.x)), maxX = Math.max(...points.map(p => p.x));
@@ -35,6 +39,7 @@ export class EditorViewport {
   placing = false;
   elevation = 0;
   overlays = true;
+  wires = true;
   layerOnly = false;
   private level: LevelDocument | null = null;
   private selection: string[] = [];
@@ -52,6 +57,8 @@ export class EditorViewport {
       if (e.button !== 0 && e.button !== 1) return;
       e.preventDefault(); this.svg.focus(); const p = this.point(e);
       if (this.placing && e.button === 0 && !e.altKey) { this.onPlace({ x: p.x, y: this.elevation, z: p.z }); return; }
+      const wire = (e.target as Element).closest('[data-wire]')?.getAttribute('data-wire');
+      if (wire && !e.altKey && e.button === 0) { this.selectWire(wire); return; }
       const id = (e.target as Element).closest('[data-instance]')?.getAttribute('data-instance');
       const mode = e.button === 1 || e.altKey ? 'pan' : id ? 'move' : 'select';
       if (mode === 'move' && id) {
@@ -84,6 +91,8 @@ export class EditorViewport {
     }, { signal });
     this.svg.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
+      const wire = (e.target as Element).closest('[data-wire]')?.getAttribute('data-wire');
+      if (wire) { e.preventDefault(); this.selectWire(wire); return; }
       const id = (e.target as Element).closest('[data-instance]')?.getAttribute('data-instance');
       if (id) { e.preventDefault(); this.onSelect(e.shiftKey ? [...new Set([...this.selection, id])] : [id]); }
     }, { signal });
@@ -95,6 +104,10 @@ export class EditorViewport {
       this.view.w *= factor; this.view.h *= factor; this.draw();
     }, { signal, passive: false });
   }
+  private selectWire(id: string): void {
+    const link = this.level && signalDocument(this.level).links.find(link => link.id === id);
+    if (link) this.onSelect([link.source.instanceId, link.target.instanceId]);
+  }
   private point(event: MouseEvent): { x: number; z: number } {
     const inverse = this.svg.getScreenCTM()?.inverse();
     const p = new DOMPoint(event.clientX, event.clientY).matrixTransform(inverse);
@@ -104,7 +117,15 @@ export class EditorViewport {
   fit(selectionOnly = false): void {
     const parts = this.level?.instances.filter(i => !selectionOnly || this.selection.includes(i.id)) ?? [];
     if (!parts.length) return;
-    const boxes = parts.map(footprint), minX = Math.min(...boxes.map(b => b.x)), minZ = Math.min(...boxes.map(b => b.z));
+    const boxes = parts.map(instance => {
+      const piece = resolveInstance(instance);
+      if (this.overlays && isMovingPiece(piece)) {
+        const b = movingBounds(piece);
+        return { x: b.minX - .5, z: b.minZ - .5, w: b.maxX - b.minX + 1, d: b.maxZ - b.minZ + 1 };
+      }
+      const bounds = this.overlays ? obstacleBounds(piece) : null;
+      return bounds ? { x:bounds.minX, z:bounds.minZ, w:bounds.maxX-bounds.minX, d:bounds.maxZ-bounds.minZ } : footprint(instance);
+    }), minX = Math.min(...boxes.map(b => b.x)), minZ = Math.min(...boxes.map(b => b.z));
     const maxX = Math.max(...boxes.map(b => b.x + b.w)), maxZ = Math.max(...boxes.map(b => b.z + b.d));
     const size = Math.max(maxX - minX, maxZ - minZ, 12) + 8;
     this.view = { x: (minX + maxX - size) / 2, z: (minZ + maxZ - size) / 2, w: size, h: size }; this.draw();
@@ -120,6 +141,28 @@ export class EditorViewport {
     const fontSize = Math.max(.25, this.view.w * 11 / Math.max(120, Math.min(this.svg.clientWidth, this.svg.clientHeight)));
     for (const instance of [...this.level.instances].sort((a, b) => a.transform.position.y - b.transform.position.y || Number(a.type !== 'slab') - Number(b.type !== 'slab'))) {
       if (this.layerOnly && Math.abs(instance.transform.position.y - this.elevation) > .01) continue;
+      const resolved = resolveInstance(instance);
+      if (this.overlays && isMovingPiece(resolved)) {
+        const sweep = movingBounds(resolved);
+        const style = { fill: '#ffd263', 'fill-opacity': .06, stroke: '#ffd263', 'stroke-width': .07, 'stroke-dasharray': '.3 .2', 'pointer-events': 'none', 'data-sweep': instance.id };
+        this.svg.append(sweep.radius
+          ? node('circle', { cx: resolved.x, cy: resolved.z, r: sweep.radius + .5, ...style })
+          : node('rect', { x: sweep.minX - .5, y: sweep.minZ - .5, width: sweep.maxX - sweep.minX + 1, height: sweep.maxZ - sweep.minZ + 1, ...style }));
+      }
+      if (this.overlays && !isMovingPiece(resolved)) {
+        const bounds = obstacleBounds(resolved);
+        if (bounds) {
+          const diagnostic = node('g', { 'data-obstacle-bounds': instance.id, 'pointer-events': 'none' });
+          const title = node('title'); title.textContent = `${PARTS[instance.type].label}: ${bounds.minY.toFixed(2)} to ${bounds.maxY.toFixed(2)}m elevation`; diagnostic.append(title);
+          const style = { fill: 'none', stroke: '#ffb56b', 'stroke-width': .06, 'stroke-dasharray': '.25 .15' };
+          diagnostic.append(bounds.radius ? node('circle', { cx:resolved.x,cy:resolved.z,r:bounds.radius,...style }) : node('rect', {x:bounds.minX,y:bounds.minZ,width:bounds.maxX-bounds.minX,height:bounds.maxZ-bounds.minZ,...style}));
+          if (resolved.kind === 'jumppad') {
+            diagnostic.append(node('line', {x1:resolved.x,y1:resolved.z,x2:resolved.targetX,y2:resolved.targetZ,...style}));
+            diagnostic.append(node('circle', {cx:resolved.targetX,cy:resolved.targetZ,r:.5,...style}));
+          }
+          this.svg.append(diagnostic);
+        }
+      }
       const b = footprint(instance), selected = this.selection.includes(instance.id);
       const group = node('g', { 'data-instance': instance.id, 'data-selected': String(selected), role: 'button', 'aria-label': `${PARTS[instance.type].label} ${instance.id}`, tabindex: '0' });
       const surface = instance.type === 'slab' || instance.type === 'ramp' ? instance.parameters.surface ?? 'standard' : null;
@@ -134,9 +177,31 @@ export class EditorViewport {
     if (this.overlays) for (const zone of this.level.cameraZones) {
       this.svg.append(node('rect', { x: zone.center.x - zone.size.x / 2, y: zone.center.z - zone.size.z / 2, width: zone.size.x, height: zone.size.z, fill: 'none', stroke: '#d29bff', 'stroke-dasharray': '.5 .3', 'stroke-width': .08, 'pointer-events': 'none' }));
     }
+    if (this.wires) this.drawWires(fontSize);
     const spawn = this.level.spawn;
     this.svg.append(node('circle', { cx: spawn.x, cy: spawn.z, r: .5, fill: this.invalidSpawn ? '#ff557c' : '#fff', stroke: '#061119', 'stroke-width': .12, 'pointer-events': 'none' }));
     const label = node('text', { x: spawn.x, y: spawn.z + 1.1, fill: '#fff', 'font-size': fontSize, 'text-anchor': 'middle', 'pointer-events': 'none' }); label.textContent = 'SPAWN'; this.svg.append(label);
+  }
+  private drawWires(fontSize: number): void {
+    if (!this.level) return;
+    const links = signalDocument(this.level).links;
+    for (const link of links) {
+      const a = this.level.instances.find(i => i.id === link.source.instanceId)?.transform.position;
+      const b = this.level.instances.find(i => i.id === link.target.instanceId)?.transform.position;
+      if (!a || !b || (this.layerOnly && Math.abs(a.y-this.elevation) > .01 && Math.abs(b.y-this.elevation) > .01)) continue;
+      const siblings=links.filter(other=>other.source.instanceId===link.source.instanceId && other.target.instanceId===link.target.instanceId);
+      const bend=.8+(siblings.indexOf(link)-(siblings.length-1)/2)*2.6;
+      const dx=b.x-a.x, dz=b.z-a.z, length=Math.hypot(dx,dz) || 1;
+      const mx=(a.x+b.x)/2-dz/length*bend, mz=(a.z+b.z)/2+dx/length*bend;
+      const color=this.selection.includes(link.source.instanceId)||this.selection.includes(link.target.instanceId)?'#fff0a8':'#62e7db';
+      const group=node('g',{'data-wire':link.id,tabindex:0,role:'button','aria-label':`Signal ${link.id}: ${link.source.instanceId}.${link.source.port} to ${link.target.instanceId}.${link.target.port}`});
+      const path=`M ${a.x} ${a.z} Q ${mx} ${mz} ${b.x} ${b.z}`;
+      group.append(node('path',{d:path,fill:'none',stroke:'transparent','stroke-width':.5}));
+      group.append(node('path',{d:path,fill:'none',stroke:color,'stroke-width':.09,'stroke-dasharray':PORT_TYPES[link.source.port]==='pulse'?'.25 .15':'none','pointer-events':'none'}));
+      const angle=Math.atan2(b.z-mz,b.x-mx);
+      group.append(node('path',{d:`M ${b.x-.5*Math.cos(angle-.5)} ${b.z-.5*Math.sin(angle-.5)} L ${b.x} ${b.z} L ${b.x-.5*Math.cos(angle+.5)} ${b.z-.5*Math.sin(angle+.5)}`,fill:'none',stroke:color,'stroke-width':.1,'pointer-events':'none'}));
+      const label=node('text',{x:(a.x+2*mx+b.x)/4,y:(a.z+2*mz+b.z)/4-.2,fill:color,stroke:'#07111b','stroke-width':.08,'paint-order':'stroke','font-size':fontSize,'text-anchor':'middle'});label.textContent=link.id;group.append(label);this.svg.append(group);
+    }
   }
   dispose(): void { this.resizeObserver.disconnect(); this.listeners.abort(); this.svg.remove(); }
 }

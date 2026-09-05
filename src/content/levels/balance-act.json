@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "balance-act",
+  "metadata": {
+    "name": "BALANCE ACT",
+    "description": "Your weight tips the deck. Cross smoothly or brake to feel the pivot respond.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": -9,
+    "y": 0.6,
+    "z": 0
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 8,
+        "label": "LOAD THE PIVOT"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "seesaw-002",
+      "type": "seesaw",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0.06,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 10,
+        "d": 8,
+        "axis": "z",
+        "maxTilt": 6,
+        "response": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "slab-003",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 8,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 6,
+        "d": 8,
+        "label": "FIND YOUR BALANCE"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-004",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": -8,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-005",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 9,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "attempt"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-004",
+      "spawn": {
+        "x": -8,
+        "y": 0.6,
+        "z": 0
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-005",
+      "required": true
+    }
+  ],
+  "signals": [],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "reactive-room",
+      "mode": "arena",
+      "priority": 1,
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 80,
+        "y": 12,
+        "z": 50
+      },
+      "viewHeight": 27
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": []
+  }
+}

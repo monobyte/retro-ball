@@ -1,0 +1,1050 @@
+{
+  "checks": [
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": -3.011033296585083,
+          "y": 0.5497474670410156,
+          "z": 4.991055011749268
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": -8.151994279614885e-8,
+          "y": 1.016736518977268e-6,
+          "z": -1.0682339279810549e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": -3.011033296585083,
+          "y": 0.5497474670410156,
+          "z": 4.991055011749268
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": -8.151994279614885e-8,
+          "y": 1.016736518977268e-6,
+          "z": -1.0682339279810549e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pushable-006",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": 3,
+          "y": 0.5497475266456604,
+          "z": 5
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pushable-006",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": 3,
+          "y": 0.5497475266456604,
+          "z": 5
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pressure-007",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pressure-007",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pressure-008",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pressure-008",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": -3.011033296585083,
+          "y": 0.5497474670410156,
+          "z": 4.991055011749268
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": -8.151994279614885e-8,
+          "y": 1.016736518977268e-6,
+          "z": -1.0682339279810549e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": -3.011033296585083,
+          "y": 0.5497474670410156,
+          "z": 4.991055011749268
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": -8.151994279614885e-8,
+          "y": 1.016736518977268e-6,
+          "z": -1.0682339279810549e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pushable-006",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": 3,
+          "y": 0.5497475266456604,
+          "z": 5
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pushable-006",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": 3,
+          "y": 0.5497475266456604,
+          "z": 5
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pressure-007",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pressure-007",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pressure-008",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pressure-008",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": -3.011033296585083,
+          "y": 0.5497474670410156,
+          "z": 4.991055011749268
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": -8.151994279614885e-8,
+          "y": 1.016736518977268e-6,
+          "z": -1.0682339279810549e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": -3.011033296585083,
+          "y": 0.5497474670410156,
+          "z": 4.991055011749268
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": -8.151994279614885e-8,
+          "y": 1.016736518977268e-6,
+          "z": -1.0682339279810549e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pushable-006",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": 3,
+          "y": 0.5497475266456604,
+          "z": 5
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pushable-006",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": 3,
+          "y": 0.5497475266456604,
+          "z": 5
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pressure-007",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pressure-007",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pressure-008",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "symbol-yard",
+      "part": "pressure-008",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": -3.011033296585083,
+          "y": 0.5497474670410156,
+          "z": 4.991055011749268
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": -8.151994279614885e-8,
+          "y": 1.016736518977268e-6,
+          "z": -1.0682339279810549e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": -3.011033296585083,
+          "y": 0.5497474670410156,
+          "z": 4.991055011749268
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": -8.151994279614885e-8,
+          "y": 1.016736518977268e-6,
+          "z": -1.0682339279810549e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pushable-006",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": 3,
+          "y": 0.5497475266456604,
+          "z": 5
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pushable-006",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": 3,
+          "y": 0.5497475266456604,
+          "z": 5
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pressure-007",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pressure-007",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pressure-008",
+      "state": {
+        "active": false,
+        "held": false,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "symbol-yard",
+      "part": "pressure-008",
+      "state": {
+        "active": true,
+        "held": true,
+        "remaining": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": -0.011035818606615068,
+          "y": 0.5497475266456604,
+          "z": 4.991055011749268
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": -8.13702101254421e-8,
+          "y": 1.0167951813855325e-6,
+          "z": -1.0806624572978762e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": -0.011035818606615068,
+          "y": 0.5497475266456604,
+          "z": 4.991055011749268
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": -8.13702101254421e-8,
+          "y": 1.0167951813855325e-6,
+          "z": -1.0806624572978762e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": false,
+        "momentum": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": false,
+        "momentum": 2.6999999999999997
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": true,
+        "momentum": 6.75
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": -0.011035818606615068,
+          "y": 0.5497475266456604,
+          "z": 4.991055011749268
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": -8.13702101254421e-8,
+          "y": 1.0167951813855325e-6,
+          "z": -1.0806624572978762e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": -0.011035818606615068,
+          "y": 0.5497475266456604,
+          "z": 4.991055011749268
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": -8.13702101254421e-8,
+          "y": 1.0167951813855325e-6,
+          "z": -1.0806624572978762e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": false,
+        "momentum": 0
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": false,
+        "momentum": 2.6999999999999997
+      }
+    },
+    {
+      "antialias": false,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": true,
+        "momentum": 6.75
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": -0.011035818606615068,
+          "y": 0.5497475266456604,
+          "z": 4.991055011749268
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": -8.13702101254421e-8,
+          "y": 1.0167951813855325e-6,
+          "z": -1.0806624572978762e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": -0.011035818606615068,
+          "y": 0.5497475266456604,
+          "z": 4.991055011749268
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": -8.13702101254421e-8,
+          "y": 1.0167951813855325e-6,
+          "z": -1.0806624572978762e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": false,
+        "momentum": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": false,
+        "momentum": 2.6999999999999997
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": false,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": true,
+        "momentum": 6.75
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "live",
+        "position": {
+          "x": -0.011035818606615068,
+          "y": 0.5497475266456604,
+          "z": 4.991055011749268
+        },
+        "remaining": 0,
+        "rotation": {
+          "w": 1,
+          "x": -8.13702101254421e-8,
+          "y": 1.0167951813855325e-6,
+          "z": -1.0806624572978762e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "pushable-005",
+      "state": {
+        "angularVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "phase": "recovering",
+        "position": {
+          "x": -0.011035818606615068,
+          "y": 0.5497475266456604,
+          "z": 4.991055011749268
+        },
+        "remaining": 1,
+        "rotation": {
+          "w": 1,
+          "x": -8.13702101254421e-8,
+          "y": 1.0167951813855325e-6,
+          "z": -1.0806624572978762e-7
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        }
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": false,
+        "momentum": 0
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": false,
+        "momentum": 2.6999999999999997
+      }
+    },
+    {
+      "antialias": true,
+      "bloom": true,
+      "id": "impulse-vault",
+      "part": "momentum-006",
+      "state": {
+        "active": true,
+        "momentum": 6.75
+      }
+    }
+  ],
+  "devicePixelRatio": 1,
+  "passed": 52,
+  "viewport": [
+    1280,
+    800
+  ]
+}

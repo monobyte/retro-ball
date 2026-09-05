@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 const session=process.env.BROWSER_SESSION??'retro-editor-check', output=process.env.EVIDENCE_DIR??'/tmp/retro-editor-checks';
 mkdirSync(output,{recursive:true});
 function browser(args,input){const r=spawnSync('agent-browser',['--session',session,...args],{input,encoding:'utf8',timeout:120000});if(r.error||r.status!==0)throw new Error(r.error?.message??r.stderr+r.stdout);return r.stdout;}
@@ -88,9 +88,19 @@ click('New');
 evaluate(`(()=>{const f=new File([${JSON.stringify(exported)}],'course.json',{type:'application/json'});const dt=new DataTransfer();dt.items.add(f);const input=document.querySelector('[data-editor-import]');input.files=dt.files;input.dispatchEvent(new Event('change'));return true})()`);
 browser(['wait','--fn',"document.querySelector('.editor [role=status]').textContent.includes('Course imported')"]);
 assert(`JSON.stringify(__retro.app.editor.model.document)===${JSON.stringify(stable)}`,'Valid import did not restore exported course');
+assert(`(()=>{const view=document.querySelector('.editor-canvas').viewBox.baseVal;return __retro.app.editor.model.document.instances.every(i=>{const p=i.transform.position,w=i.parameters.w??0,d=i.parameters.d??0;return p.x-w/2>=view.x&&p.x+w/2<=view.x+view.width&&p.z-d/2>=view.y&&p.z+d/2<=view.y+view.height})})()`,'Import framed the previous document instead of the imported footprint');
 click('Fit course');browser(['screenshot',`${output}/workshop.png`]);
 browser(['set','viewport','960','640','1']);browser(['screenshot',`${output}/workshop-small.png`]);
 assert('document.querySelector(".editor").scrollWidth<=innerWidth','Editor overflows smaller window');
 browser(['set','viewport','1280','800','1']);
 const result={completion,overlap:'offending pair selected and highlighted',groupTransforms:'rotate and elevate with undo',exposedParameters:'width override applied',parts:JSON.parse(stable).instances.length,prefab:'saved, placed and recovered',commands:'resize, pointer drag, undo, redo',import:'valid replacement and invalid preservation',recovery:'page reload',play:'spawn/checkpoint/selection and unchanged return',scope:'UI events with real pointer placement/drag; no direct model edits'};
 writeFileSync(`${output}/editor.json`,JSON.stringify(result,null,2));console.log(result);
+
+const circuits=evaluate(readFileSync('tests/editor-circuits.browser.js','utf8'));
+writeFileSync(`${output}/editor-circuits.json`,JSON.stringify(circuits,null,2));
+browser(['screenshot',`${output}/workshop-circuits.png`]);
+const circuitDraft=circuits.draftText;
+browser(['reload']);browser(['wait','--fn','!!window.__retro']);browser(['scrollintoview','[data-editor-open]']);browser(['click','[data-editor-open]']);browser(['wait','--fn',"__retro.app.state==='editor'"]);
+assert(`JSON.stringify(__retro.app.editor.model.document)===${JSON.stringify(circuitDraft)}`,'Circuit reload recovery lost links or checkpoint groups');
+assert('document.querySelector(".signal-trace").hidden','Reload showed obsolete trace evidence');
+console.log({circuitAuthoring:'passed',signals:circuits.signals,recovery:'circuit draft survives page reload; trace does not'});

@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": 1,
+  "id": "two-factor",
+  "metadata": {
+    "name": "TWO FACTOR",
+    "description": "Flip ARM, then roll onto the clock plate. Both inputs must agree. Eight seconds to cross.",
+    "difficulty": "test"
+  },
+  "themeId": "neon-grid",
+  "musicId": "retro-main",
+  "spawn": {
+    "x": 0,
+    "y": 0.6,
+    "z": 9
+  },
+  "instances": [
+    {
+      "id": "slab-001",
+      "type": "slab",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 14,
+        "d": 24
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-002",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": -7,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 24,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "wall-003",
+      "type": "wall",
+      "transform": {
+        "position": {
+          "x": 7,
+          "y": 0,
+          "z": 0
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 0.5,
+        "d": 24,
+        "h": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-004",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 8
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 1
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "switch-005",
+      "type": "switch",
+      "transform": {
+        "position": {
+          "x": -3,
+          "y": 0,
+          "z": 6
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "mode": "toggle",
+        "duration": 4,
+        "initial": "off",
+        "label": "ARM"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "pressure-006",
+      "type": "pressure",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 3
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 3,
+        "d": 3,
+        "mode": "timed",
+        "duration": 8,
+        "label": "8 SEC"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "logic-007",
+      "type": "logic",
+      "transform": {
+        "position": {
+          "x": 4,
+          "y": 0,
+          "z": 1
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "operation": "and",
+        "label": "BOTH"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "door-008",
+      "type": "door",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -2
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 13.5,
+        "d": 0.6,
+        "h": 2.4,
+        "travelTime": 0.8,
+        "initial": "closed",
+        "label": "ACCESS"
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "checkpoint-009",
+      "type": "checkpoint",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -5
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "id": 2
+      },
+      "resetGroup": "course",
+      "links": []
+    },
+    {
+      "id": "goal-010",
+      "type": "goal",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -9
+        },
+        "yaw": 0
+      },
+      "parameters": {
+        "w": 4,
+        "d": 3
+      },
+      "resetGroup": "course",
+      "links": []
+    }
+  ],
+  "resetGroups": [
+    {
+      "id": "course",
+      "policy": "checkpoint"
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "checkpoint-1",
+      "instanceId": "checkpoint-004",
+      "spawn": {
+        "x": 0,
+        "y": 0.6,
+        "z": 8
+      },
+      "resetGroups": [
+        "course"
+      ]
+    },
+    {
+      "id": "checkpoint-2",
+      "instanceId": "checkpoint-009",
+      "spawn": {
+        "x": 0,
+        "y": 0.6,
+        "z": -5
+      },
+      "resetGroups": [
+        "course"
+      ]
+    }
+  ],
+  "objectives": [
+    {
+      "id": "finish",
+      "type": "reach-goal",
+      "target": "goal-010",
+      "required": true
+    }
+  ],
+  "signals": [
+    {
+      "id": "armed",
+      "source": {
+        "instanceId": "switch-005",
+        "port": "active"
+      },
+      "target": {
+        "instanceId": "logic-007",
+        "port": "inputA"
+      }
+    },
+    {
+      "id": "permission",
+      "source": {
+        "instanceId": "pressure-006",
+        "port": "active"
+      },
+      "target": {
+        "instanceId": "logic-007",
+        "port": "inputB"
+      }
+    },
+    {
+      "id": "access",
+      "source": {
+        "instanceId": "logic-007",
+        "port": "active"
+      },
+      "target": {
+        "instanceId": "door-008",
+        "port": "enable"
+      }
+    }
+  ],
+  "navigation": {
+    "nodes": [],
+    "links": []
+  },
+  "cameraZones": [
+    {
+      "id": "puzzle",
+      "mode": "puzzle",
+      "priority": 1,
+      "center": {
+        "x": 0,
+        "y": 2,
+        "z": 0
+      },
+      "size": {
+        "x": 22,
+        "y": 12,
+        "z": 40
+      },
+      "viewHeight": 25
+    }
+  ],
+  "validation": {
+    "intendedRoute": [],
+    "notes": [
+      "Playable signal puzzle; controller route and checkpoint recovery covered by puzzle browser checks."
+    ]
+  }
+}
